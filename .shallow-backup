@@ -1,0 +1,32 @@
+{
+    "backup_path": "~/shallow-backup",
+    "dotfiles": [
+        ".bashrc",
+        ".bash_profile",
+        ".gitconfig",
+        ".profile",
+        ".pypirc",
+        ".shallow-backup",
+        ".vimrc",
+        ".zlogin",
+        ".zprofile",
+        ".zshrc"
+    ],
+    "dotfolders": [
+        ".ssh",
+        ".vim"
+    ],
+    "default-gitignore": [
+        "dotfiles/.ssh",
+        "dotfiles/.pypirc"
+    ],
+    "config_mapping": {
+        "/Users/alichtman/Library/Application Support/Sublime Text 2": "sublime2",
+        "/Users/alichtman/Library/Application Support/Sublime Text 3": "sublime3",
+        "/Users/alichtman/Library/Application Support/Code/User/settings.json": "vscode/settings",
+        "/Users/alichtman/Library/Application Support/Code/User/Snippets": "vscode/Snippets",
+        "/Users/alichtman/Library/Application Support/Code/User/keybindings.json": "vscode/keybindings",
+        "/Users/alichtman/.atom": "atom",
+        "/Users/alichtman/Library/Preferences/com.apple.Terminal.plist": "terminal_plist"
+    }
+}
