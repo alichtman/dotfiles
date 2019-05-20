@@ -8,4 +8,4 @@ My default setup consists of:
 - `zsh`
 - `git`
 
-The rest of the dotfiles are included for completeness, but they are not terribly complete.
+The rest of the dotfiles are included for completeness, but they are not terribly useful.
