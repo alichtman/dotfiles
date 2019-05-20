@@ -1,3 +1,11 @@
-# dotfiles
+# Aaron's Dotfiles 
 
-Aaron's Dotfiles (macOS, but mostly Linux compatible)
+These are written for `macOS`, but they are `Linux` compatible for the most part.
+
+My default setup consists of:
+
+- `vim`
+- `zsh`
+- `git`
+
+The rest of the dotfiles are included for completeness, but they are not terribly complete.
