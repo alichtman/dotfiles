@@ -67,7 +67,7 @@ COMPLETION_WAITING_DOTS="true"
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
 # The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
+HIST_STAMPS="mm/dd/yyyy"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
@@ -109,13 +109,14 @@ alias google="googler"
 alias fuck='eval $(TF_ALIAS=fuck PYTHONIOENCODING=utf-8 thefuck $(fc -ln -1))'
 alias cargo-update='cargo install-update -a'
 alias update='cargo-update; brewup; apm upgrade; rustup;'
-alias change-screenshot-dir='defaults write com.apple.screencapture location ~/Documents/Screenshots; killall SystemUIServer;'
 alias kill-touchbar='sudo pkill "Touch Bar agent";sudo killall "ControlStrip";'
 alias unthrottle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=0;'
 alias throttle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=1;'
-#alias vim='mvim -v -S ~/.vimrc' # macvim errors on start up now and I don't give enough of a shit to debug it so now I'm an neovim guy, I guess.
+#alias vim='mvim -v -S ~/.vimrc' # macvim errors on start up (?) and I don't care enough to debug it so now I'm an neovim guy, I guess.
 alias vim='nvim'
+alias spacemacs='emacs'
 alias xbuild='/Library/Frameworks/Mono.framework/Versions/5.12.0/bin/xbuild'
+alias xcode='open -a Xcode'
 alias exa='exa -1a -s Name --group-directories-first'
 alias trip='yes "$(seq 231 -1 16)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
 alias vol='volatility --plugins=/Users/alichtman/volatility-plugins'

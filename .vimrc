@@ -1,9 +1,10 @@
-" Indenting configuration. Tabs master race.
-
 " Default in nvim, left in for vim compatibility
 set autoindent
 set noexpandtab
 
+set nocompatible
+
+" Indenting configuration.
 set smartindent
 set copyindent
 set preserveindent
@@ -14,13 +15,20 @@ filetype plugin indent on
 
 set encoding=utf8
 
+" Fix weird line tracers while scrolling bug
+if &term =~ '256color'
+    " Disable Background Color Erase (BCE) so that color schemes
+    " work properly when Vim is used inside tmux and GNU screen.
+    set t_ut=
+endif
+
 " breaking
 set wrap
 set nolinebreak
 set breakindent
 set breakindentopt=min:40
 
-" 80, 120 character guidelines
+" TODO: 80, 120 character guidelines. Not sure why this doesn't work... classic.
 "set cc=81
 "hi ColorColumn ctermbg=lightgrey guibg=lightgrey
 
@@ -50,10 +58,17 @@ set title
 " Allow backspace in insert mode
 set backspace=indent,eol,start
 
-" Enhance tab completion
+" Tab completion menu
 set wildmenu
+set wildmode=full
+
 set ruler
 set secure
+
+" Allow mouse scrolling
+"set mouse=a
+
+set incsearch
 
 " Tell Vim to automatically use absolute line numbers when we’re in insert mode
 " and relative numbers when we’re in normal mode
@@ -62,7 +77,7 @@ autocmd InsertEnter * :set number
 autocmd InsertLeave * :set relativenumber
 
 " store a bunch of undo history
-set undolevels=400
+set undolevels=1000
 
 " Show matching brackets/parenthesis
 set showmatch
@@ -77,6 +92,122 @@ set ignorecase
 " Case sensitive if we type an uppercase
 set smartcase
 
+" Disable Markdown folding
+let g:vim_markdown_folding_disabled = 1
+" Autoresize TOC window
+let g:vim_markdown_toc_autofit = 1
+
+""""""""""""""""
+" Key Remappings
+""""""""""""""""
+
+" Make help always appear as vertical split.
+cabbrev h vert h
+
+" Move the current line above or below
+" These mappings also take a count, so 2]e moves the current line 2 lines below.
+nnoremap [e  :<c-u>execute 'move -1-'. v:count1<cr>
+nnoremap ]e  :<c-u>execute 'move +'. v:count1<cr>
+
+"Traverse the buffer list more easily.
+"Taken from Tim Pope’s unimpaired.vim plugin
+nnoremap <silent> [b :bprevious<CR>
+nnoremap <silent> ]b :bnext<CR>
+nnoremap <silent> [B :bfirst<CR>
+nnoremap <silent> ]B :blast<CR>
+
+"Force myself to use h,j,k,l for navigation
+"
+"noremap <Up> <Nop>
+"noremap <Down> <Nop>
+"noremap <Left> <Nop>
+"noremap <Right> <Nop>
+
+" Move a line of text using ALT+[jk]
+nmap <M-j> mz:m+<cr>`z
+nmap <M-k> mz:m-2<cr>`z
+vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
+vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+" source: http://amix.dk/vim/vimrc.html
+
+" Make j and k operate on virtual lines, not real lines.
+nnoremap k gk
+nnoremap gk k
+nnoremap j gj
+nnoremap gj j
+
+"""""""""
+" Plugins
+"""""""""
+
+call plug#begin('~/.vim/plugged')
+
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'jremmen/vim-ripgrep'
+Plug 'sheerun/vim-polyglot'
+
+" Automatic closing of quotes, parenthesis, brackets, etc
+Plug 'Raimondi/delimitMate'
+
+" Tab completion
+Plug 'ervandew/supertab'
+
+" File explorer
+Plug 'scrooloose/nerdtree'
+
+Plug 'easymotion/vim-easymotion'
+
+" Prettify vim
+Plug 'ryanoasis/vim-devicons'
+Plug 'joshdick/onedark.vim'
+Plug 'morhetz/gruvbox'
+Plug 'nightsense/snow'
+Plug 'mhinz/vim-startify'
+Plug 'mhartington/oceanic-next'
+
+" Status bar
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+" TODO: Learn to use Tabular
+Plug 'godlygeek/tabular'
+
+" Markdown
+Plug 'plasticboy/vim-markdown'
+
+" Commenting
+"Plug 'tpope/vim-commentary'
+Plug 'scrooloose/nerdcommenter'
+
+" Linting and autocomplete
+" Syntastic is really really slow...
+Plug 'vim-syntastic/syntastic'
+"Plug 'w0rp/ale'
+"Plug 'davidhalter/jedi-vim'
+
+call plug#end()
+
+"""""""""""""""
+" Plugin Config
+"""""""""""""""
+
+" Yeah, I should really have been writing code instead of picking different
+" themes for my terminal.
+colorscheme snow
+colorscheme gruvbox
+colorscheme onedark
+colorscheme OceanicNext
+
+" Set SuperTab to scroll down the list instead of up the list
+let g:SuperTabDefaultCompletionType = "<c-n>"
+
+" Theme
+set background=dark
+"set background=light
+
+let python_highlight_all=1
+syntax on
+
 "Startify config
 let g:startify_lists = [
           \ { 'type': 'files',     'header': ['   MRU']            },
@@ -86,15 +217,20 @@ let g:startify_lists = [
           \ { 'type': 'commands',  'header': ['   Commands']       },
           \ ]
 
-let g:startify_bookmarks = [ {'a': '~/.vimrc'}, {'b': '~/.zshrc'} ]
+let g:startify_bookmarks = [
+			\ {'a': '~/.vimrc'},
+			\ {'b': '~/.zshrc'},
+			\ {'c': '~/Desktop/todo.md'},
+			\ {'d': '~/Desktop/Development/security/notes'},
+			\ {'e': '~/Desktop/Development/notes'} ]
 
 let g:startify_custom_header = [
             \ '                               ',
-            \ '            __                 ',
-            \ '    __  __ /\_\    ___ ___     ',
-            \ '   /\ \/\ \\/\ \ /'' __` __`\  ',
-            \ '   \ \ \_/ |\ \ \/\ \/\ \/\ \  ',
-            \ '    \ \___/  \ \_\ \_\ \_\ \_\ ',
+            \ '            __',
+            \ '    __  __ /\_\    ___ ___',
+            \ '   /\ \/\ \\/\ \ /'' __` __`\',
+            \ '   \ \ \_/ |\ \ \/\ \/\ \/\ \',
+            \ '    \ \___/  \ \_\ \_\ \_\ \_\',
             \ '     \/__/    \/_/\/_/\/_/\/_/',
 \ ]
 
@@ -128,79 +264,23 @@ let g:WebDevIconsOS = 'Darwin'
 let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
 let g:webdevicons_conceal_nerdtree_brackets = 0
 
-" Disable Markdown folding
-let g:vim_markdown_folding_disabled = 1
-" Autoresize TOC window
-let g:vim_markdown_toc_autofit = 1
-
-" Vim-Plug
-call plug#begin('~/.vim/plugged')
-
-Plug 'ntpeters/vim-better-whitespace'
-Plug 'jremmen/vim-ripgrep'
-Plug 'morhetz/gruvbox'
-Plug 'sheerun/vim-polyglot'
-
-" Status bar
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-
-" Automatic closing of quotes, parenthesis, brackets, etc
-Plug 'Raimondi/delimitMate'
-
-" Tab completion
-Plug 'ervandew/supertab'
-
-" File explorer
-Plug 'scrooloose/nerdtree'
-
-Plug 'easymotion/vim-easymotion'
-
-" Prettify vim
-Plug 'ryanoasis/vim-devicons'
-Plug 'joshdick/onedark.vim'
-Plug 'mhinz/vim-startify'
-"Plug 'mhartington/oceanic-next'
-
-Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
-" TODO: Set up linting and autocomplete
-"Plug 'vim-syntastic/syntastic'
-"Plug 'w0rp/ale'
-"Plug 'davidhalter/jedi-vim'
-
-call plug#end()
-
-" Set SuperTab to scroll down the list instead of up the list
-let g:SuperTabDefaultCompletionType = "<c-n>"
-
-" Theme
-set background=dark
-"set background=light
-
-syntax on
-
 " Better Whitespace
 let g:better_whitespace_enabled=1
 let g:strip_whitespace_on_save=1
 let g:better_whitespace_skip_empty_lines=1
 let g:show_spaces_that_precede_tabs=1
 
-" Airline config
+" Airline
 let g:airline_theme='onedark'
 let g:airline_powerline_fonts = 1
 
-colorscheme onedark
-"colorscheme OceanicNext
 
-" Move the current line above or below
-" These mappings also take a count, so 2]e moves the current line 2 lines below.
-nnoremap [e  :<c-u>execute 'move -1-'. v:count1<cr>
-nnoremap ]e  :<c-u>execute 'move +'. v:count1<cr>
+" Syntastic
+" set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
-" Move a line of text using ALT+[jk]
-nmap <M-j> mz:m+<cr>`z
-nmap <M-k> mz:m-2<cr>`z
-vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
-vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
-" source: http://amix.dk/vim/vimrc.html
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
