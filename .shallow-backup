@@ -7,6 +7,7 @@
         ".profile",
         ".pypirc",
         ".shallow-backup",
+        ".tmux.conf",
         ".vimrc",
         ".zlogin",
         ".zprofile",
@@ -18,7 +19,8 @@
     ],
     "default-gitignore": [
         "dotfiles/.ssh",
-        "dotfiles/.pypirc"
+        "dotfiles/.pypirc",
+        ".DS_Store"
     ],
     "config_mapping": {
         "/Users/alichtman/Library/Application Support/Sublime Text 2": "sublime2",

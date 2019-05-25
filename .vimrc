@@ -1,4 +1,9 @@
-" Default in nvim, left in for vim compatibility
+" .vimrc for Neovim
+" Aaron Lichtman
+
+""""""""""""""""""
+" General Settings
+""""""""""""""""""
 set autoindent
 set noexpandtab
 
@@ -14,6 +19,56 @@ set tabstop=4
 filetype plugin indent on
 
 set encoding=utf8
+set autochdir
+
+" Don’t reset cursor to start of line when moving around.
+set nostartofline
+
+" Show the filename in the window titlebar
+set title
+
+" Allow backspace in insert mode
+set backspace=indent,eol,start
+
+" Tab completion menu
+set wildmenu
+set wildmode=full
+
+set ruler
+set secure
+
+set ssop-=options    " do not store global and local values in a session
+set ssop-=folds      " do not store folds
+
+" Tell Vim to automatically use absolute line numbers when we’re in insert mode
+" and relative numbers when we’re in normal mode
+set number
+autocmd InsertEnter * :set number
+autocmd InsertLeave * :set relativenumber
+
+" store a bunch of undo history
+set undolevels=1000
+
+" Show matching brackets/parenthesis
+set showmatch
+" Don't blink when matching
+set matchtime=0
+" Find as you type search
+set incsearch
+" Highlight search terms
+set hlsearch
+" Case insensitive search
+set ignorecase
+" Case sensitive if we type an uppercase
+set smartcase
+
+" Enable spellcheck for markdown and txt files
+"set spelllang=en
+"autocmd BufRead,BufNewFile *.md set filetype=markdown
+"autocmd BufRead,BufNewFile *.txt set filetype=text
+"autocmd FileType markdown setlocal spell
+"autocmd FileType text setlocal spell
+"hi SpellBad cterm=underline ctermfg=red
 
 " Fix weird line tracers while scrolling bug
 if &term =~ '256color'
@@ -49,60 +104,27 @@ autocmd BufReadPost *
     \   execute "normal! g`\"" |
     \ endif
 
-" Don’t reset cursor to start of line when moving around.
-set nostartofline
-
-" Show the filename in the window titlebar
-set title
-
-" Allow backspace in insert mode
-set backspace=indent,eol,start
-
-" Tab completion menu
-set wildmenu
-set wildmode=full
-
-set ruler
-set secure
-
-" Allow mouse scrolling
-"set mouse=a
-
-set incsearch
-
-" Tell Vim to automatically use absolute line numbers when we’re in insert mode
-" and relative numbers when we’re in normal mode
-set number
-autocmd InsertEnter * :set number
-autocmd InsertLeave * :set relativenumber
-
-" store a bunch of undo history
-set undolevels=1000
-
-" Show matching brackets/parenthesis
-set showmatch
-" Don't blink when matching
-set matchtime=0
-" Find as you type search
-set incsearch
-" Highlight search terms
-set hlsearch
-" Case insensitive search
-set ignorecase
-" Case sensitive if we type an uppercase
-set smartcase
 
 " Disable Markdown folding
 let g:vim_markdown_folding_disabled = 1
 " Autoresize TOC window
 let g:vim_markdown_toc_autofit = 1
 
-""""""""""""""""
-" Key Remappings
-""""""""""""""""
+"""""""""""""""""""""""""
+" Key/Command Remappings
+"""""""""""""""""""""""""
+
+" Yeet
+:command! WQ wq
+:command! Wq wq
+:command! W w
+:command! Q q
 
 " Make help always appear as vertical split.
 cabbrev h vert h
+
+" Distraction Free Mode
+nnoremap <silent> <leader>z :Goyo<cr>
 
 " Move the current line above or below
 " These mappings also take a count, so 2]e moves the current line 2 lines below.
@@ -117,7 +139,6 @@ nnoremap <silent> [B :bfirst<CR>
 nnoremap <silent> ]B :blast<CR>
 
 "Force myself to use h,j,k,l for navigation
-"
 "noremap <Up> <Nop>
 "noremap <Down> <Nop>
 "noremap <Left> <Nop>
@@ -139,7 +160,6 @@ nnoremap gj j
 """""""""
 " Plugins
 """""""""
-
 call plug#begin('~/.vim/plugged')
 
 Plug 'ntpeters/vim-better-whitespace'
@@ -152,51 +172,61 @@ Plug 'Raimondi/delimitMate'
 " Tab completion
 Plug 'ervandew/supertab'
 
-" File explorer
+" File explorer. Possibly replace with vifm or vimfiler
 Plug 'scrooloose/nerdtree'
 
 Plug 'easymotion/vim-easymotion'
 
 " Prettify vim
+Plug 'mhinz/vim-startify'
 Plug 'ryanoasis/vim-devicons'
+
+" Themes
 Plug 'joshdick/onedark.vim'
 Plug 'morhetz/gruvbox'
 Plug 'nightsense/snow'
-Plug 'mhinz/vim-startify'
 Plug 'mhartington/oceanic-next'
 
 " Status bar
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-" TODO: Learn to use Tabular
+" Tables and alignment
 Plug 'godlygeek/tabular'
 
 " Markdown
 Plug 'plasticboy/vim-markdown'
 
+" Lists
+Plug 'dkarter/bullets.vim'
+
+" Distraction-Free Writing
+Plug 'junegunn/goyo.vim'
+Plug 'amix/vim-zenroom2'
+
 " Commenting
-"Plug 'tpope/vim-commentary'
 Plug 'scrooloose/nerdcommenter'
 
 " Linting and autocomplete
 " Syntastic is really really slow...
 Plug 'vim-syntastic/syntastic'
 "Plug 'w0rp/ale'
-"Plug 'davidhalter/jedi-vim'
+
+" Timetracking
+Plug 'wakatime/vim-wakatime'
 
 call plug#end()
 
-"""""""""""""""
-" Plugin Config
-"""""""""""""""
+"""""""""""""""""
+" Plugin Settings
+"""""""""""""""""
 
 " Yeah, I should really have been writing code instead of picking different
-" themes for my terminal.
-colorscheme snow
+" themes for my terminal...
+"colorscheme snow
 colorscheme gruvbox
-colorscheme onedark
-colorscheme OceanicNext
+"colorscheme onedark
+"colorscheme OceanicNext
 
 " Set SuperTab to scroll down the list instead of up the list
 let g:SuperTabDefaultCompletionType = "<c-n>"
@@ -220,9 +250,10 @@ let g:startify_lists = [
 let g:startify_bookmarks = [
 			\ {'a': '~/.vimrc'},
 			\ {'b': '~/.zshrc'},
-			\ {'c': '~/Desktop/todo.md'},
+			\ {'c': '~/Desktop/Aaron/todo.md'},
 			\ {'d': '~/Desktop/Development/security/notes'},
-			\ {'e': '~/Desktop/Development/notes'} ]
+			\ {'e': '~/Desktop/Development/security/notes/books/practical-binary-analysis'},
+			\ {'f': '~/Desktop/Development/notes'} ]
 
 let g:startify_custom_header = [
             \ '                               ',
@@ -233,6 +264,11 @@ let g:startify_custom_header = [
             \ '    \ \___/  \ \_\ \_\ \_\ \_\',
             \ '     \/__/    \/_/\/_/\/_/\/_/',
 \ ]
+
+let g:startify_files_number = 6
+let g:startify_update_oldfiles = 0
+let g:startify_session_persistence = 1
+let g:startify_session_autoload = 1
 
 " NERDTree Config
 
@@ -273,10 +309,35 @@ let g:show_spaces_that_precede_tabs=1
 " Airline
 let g:airline_theme='onedark'
 let g:airline_powerline_fonts = 1
+" Enable the list of buffers
+let g:airline#extensions#tabline#enabled = 1
+" Show just the filename
+let g:airline#extensions#tabline#fnamemod = ':t'
 
+"""""""""""""""
+" NerdCommenter
+"""""""""""""""
 
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+
+"""""""""""""
+" Bullets.vim
+"""""""""""""
+let g:bullets_enabled_file_types = [
+    \ 'markdown',
+    \ 'text',
+    \ 'gitcommit',
+    \ 'scratch'
+    \]
+
+"""""""""""
 " Syntastic
-" set statusline+=%#warningmsg#
+"""""""""""
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 

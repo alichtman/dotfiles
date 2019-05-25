@@ -75,6 +75,7 @@ HIST_STAMPS="mm/dd/yyyy"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
+  tmux
   #zsh-syntax-highlighting
   zsh-autosuggestions
 )
@@ -94,10 +95,13 @@ export BAT_THEME="1337"
 # Aliases
 ###
 
-alias ip='ipconfig getifaddr en0'
+# ls
 alias ls='LC_COLLATE=cs_CZ.ISO8859-2 colorls -1A --sd --gs'
 alias ll='LC_COLLATE=cs_CZ.ISO8859-2 colorls -1A --sd -l --gs'
 alias lsd='lsd -1a'
+alias exa='exa -1a -s Name --group-directories-first'
+
+alias ip='ipconfig getifaddr en0'
 alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor'
 alias pipes='pipes.sh -f 75 -t 3 -B'
 alias changelog='github_changelog_generator'
@@ -117,7 +121,6 @@ alias vim='nvim'
 alias spacemacs='emacs'
 alias xbuild='/Library/Frameworks/Mono.framework/Versions/5.12.0/bin/xbuild'
 alias xcode='open -a Xcode'
-alias exa='exa -1a -s Name --group-directories-first'
 alias trip='yes "$(seq 231 -1 16)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
 alias vol='volatility --plugins=/Users/alichtman/volatility-plugins'
 
