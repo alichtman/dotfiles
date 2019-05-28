@@ -13,6 +13,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$PATH:/usr/local/Cellar/node/11.6.0/bin"
 export PATH="$PATH:/usr/local/Cellar/john-jumbo/1.8.0/share/john"
+export PATH="$PATH:/Users/alichtman/.local/share/radare2/prefix/bin"
 export PATH="$PATH:$GOPATH/bin"
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
