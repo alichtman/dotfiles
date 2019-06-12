@@ -1,0 +1,62 @@
+#########
+# Aliases
+#########
+
+# $ ls # and Friends
+alias ls='LC_COLLATE=cs_CZ.ISO8859-2 colorls -1A --sd --gs'
+alias ll='LC_COLLATE=cs_CZ.ISO8859-2 colorls -l -A --sd --gs'
+alias lsd='lsd -1a'
+alias exa='exa -1a -s Name --group-directories-first'
+
+# Updates
+alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor'
+alias cargo-update='cargo install-update -a'
+alias update='cargo-update; brewup; apm upgrade; rustup;'
+
+# Dev-Related
+alias changelog='github_changelog_generator'
+alias activate=". venv/bin/activate"
+alias rc='radix-calc'
+alias rcc='radix-calc --all'
+
+# -> Pypi
+
+# Test upload
+alias pypitestup='python3 setup.py bdist_wheel; twine upload --repository testpypi dist/*'
+# Test download and install
+alias pip3test='pip3 install --index-url https://test.pypi.org/simple/'
+# Deployment upload
+alias pypiup='python3 setup.py bdist_wheel; twine upload --repository pypi dist/*'
+# Generate binary for distribution (?)
+alias pypibinary='python3 setup.py sdist'
+
+# Forensics
+alias vol='volatility --plugins=/Users/alichtman/volatility-plugins'
+
+# Convenience
+alias ip='ipconfig getifaddr en0'
+alias please='sudo $(fc -ln -1)' # Rerun last command with sudo
+alias google="googler"
+alias fuck='eval $(TF_ALIAS=fuck PYTHONIOENCODING=utf-8 thefuck $(fc -ln -1))'
+
+# macOS Management
+alias kill-touchbar='sudo pkill "Touch Bar agent";sudo killall "ControlStrip";'
+alias unthrottle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=0;'
+alias throttle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=1;'
+
+# Editing
+alias vim='nvim'
+alias vimdiff="nvim -d"
+alias spacemacs='emacs'
+alias xcode='open -a Xcode'
+
+# r/unixporn
+alias news="newsroom"
+alias matrix='unimatrix -s 93'
+alias pipes='pipes.sh -f 75 -t 3 -B'
+alias trip='yes "$(seq 231 -1 16)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
+
+# ANTLR
+export CLASSPATH=".:/usr/local/lib/antlr-4.7-complete.jar:$CLASSPATH"
+alias antlr4='java -jar /usr/local/lib/antlr-4.7-complete.jar'
+alias grun='java org.antlr.v4.gui.TestRig'

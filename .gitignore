@@ -1,3 +1,4 @@
 .ssh
 .pypirc
 .vim
+.tmux/plugins

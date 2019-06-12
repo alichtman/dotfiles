@@ -1,17 +1,14 @@
 # .zshrc for macOS
 # Aaron Lichtman
 
-#########
-# THEMES
-#########
+################
+# Prompt Styling
+################
 
 ZSH_THEME="spaceship"
 #ZSH_THEME="agnoster"
 
-#########
 # Spaceship Config
-#########
-
 if [ $ZSH_THEME = "spaceship" ]; then
   SPACESHIP_TIME_SHOW=true
   SPACESHIP_TIME_12HR=true
@@ -57,6 +54,27 @@ fi
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
 
+set termguicolors
+
+# Clean up prompt. TODO: Figure out what this actually does.
+prompt_context() {}
+
+##########
+# Env Vars
+##########
+
+# Python Better Exceptions
+export BETTER_EXCEPTIONS=1
+export HOMEBREW_NO_ANALYTICS=1
+export BAT_THEME="1337"
+export EDITOR='nvim'
+export VISUAL='nvim'
+export ZSH=$HOME/.oh-my-zsh
+
+############
+# Completion
+############
+
 # Uncomment the following line to use hyphen-insensitive completion. Case
 # sensitive completion must be off. _ and - will be interchangeable.
 HYPHEN_INSENSITIVE="true"
@@ -64,108 +82,13 @@ HYPHEN_INSENSITIVE="true"
 # Display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
 
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-HIST_STAMPS="mm/dd/yyyy"
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(
-  git
-  tmux
-  #zsh-syntax-highlighting
-  zsh-autosuggestions
-)
-
+# tbh not sure, but definitely needs to be here
 fpath=(/usr/local/share/zsh-completions $fpath)
 autoload -U compinit && compinit
+# Include dotfiles in completions
+setopt globdots
 
-set termguicolors
-unsetopt nomatch # Fix $ git reset --soft HEAD^ error.
-
-export EDITOR='nvim'
-export ZSH=$HOME/.oh-my-zsh
-source $ZSH/oh-my-zsh.sh
-export BAT_THEME="1337"
-
-###
-# Aliases
-###
-
-# ls
-alias ls='LC_COLLATE=cs_CZ.ISO8859-2 colorls -1A --sd --gs'
-alias ll='LC_COLLATE=cs_CZ.ISO8859-2 colorls -1A --sd -l --gs'
-alias lsd='lsd -1a'
-alias exa='exa -1a -s Name --group-directories-first'
-
-alias ip='ipconfig getifaddr en0'
-alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor'
-alias pipes='pipes.sh -f 75 -t 3 -B'
-alias changelog='github_changelog_generator'
-alias matrix='unimatrix -s 93'
-alias news="newsroom"
-alias activate=". venv/bin/activate"
-alias please="sudo"
-alias google="googler"
-alias fuck='eval $(TF_ALIAS=fuck PYTHONIOENCODING=utf-8 thefuck $(fc -ln -1))'
-alias cargo-update='cargo install-update -a'
-alias update='cargo-update; brewup; apm upgrade; rustup;'
-alias kill-touchbar='sudo pkill "Touch Bar agent";sudo killall "ControlStrip";'
-alias unthrottle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=0;'
-alias throttle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=1;'
-#alias vim='mvim -v -S ~/.vimrc' # macvim errors on start up (?) and I don't care enough to debug it so now I'm an neovim guy, I guess.
-alias vim='nvim'
-alias spacemacs='emacs'
-alias xbuild='/Library/Frameworks/Mono.framework/Versions/5.12.0/bin/xbuild'
-alias xcode='open -a Xcode'
-alias trip='yes "$(seq 231 -1 16)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
-alias vol='volatility --plugins=/Users/alichtman/volatility-plugins'
-
-#alias ling490mount='sshfs aaronjl2@cl.linguistics.illinois.edu:/home/aaronjl2 ~/Desktop/LING490'
-#alias ling490unmount='umount -f ~/Desktop/LING490'
-
-alias rc='radix-calc'
-alias rcc='radix-calc --all'
-
-######
-# Looking out for future me.
-######
-
-alias rm="safe-rm"
-# Prompt to confirm rm DIR/*
-unsetopt RM_STAR_SILENT
-setopt RM_STAR_WAIT
-
-###
-# Pypi
-###
-
-# Test upload
-alias pypitestup='python3 setup.py bdist_wheel; twine upload --repository testpypi dist/*'
-# Test download and install
-alias pip3test='pip3 install --index-url https://test.pypi.org/simple/'
-# Deployment upload
-alias pypiup='python3 setup.py bdist_wheel; twine upload --repository pypi dist/*'
-# Generate binary for distribution (?)
-alias pypibinary='python3 setup.py sdist'
-
-# ANTLR
-export CLASSPATH=".:/usr/local/lib/antlr-4.7-complete.jar:$CLASSPATH"
-# Tool to generate lexer and parser
-alias antlr4='java -jar /usr/local/lib/antlr-4.7-complete.jar'
-# Tool to test the generated code
-alias grun='java org.antlr.v4.gui.TestRig'
-
-# Autojump
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
-
-# Clean up prompt. Ok, so honestly not too sure what this does but I don't want to remove it either so... here we are.
-prompt_context() {}
-
-# pip zsh completion start
+# pip zsh completion
 function _pip_completion {
   local words cword
   read -Ac words
@@ -175,7 +98,37 @@ function _pip_completion {
              PIP_AUTO_COMPLETE=1 $words[1] ) )
 }
 compctl -K _pip_completion pip
-# pip zsh completion end
+
+##################
+# General Behavior
+##################
+
+# Always work in a tmux session if tmux is installed
+# https://github.com/chrishunt/dot-files/blob/master/.zshrc
+# TODO: Fix "duplicate session" bug
+#if which tmux 2>&1 >/dev/null; then
+#  if [ $TERM != "screen-256color" ] && [  $TERM != "screen" ]; then
+    # tmux attach -t carbon || tmux new -s carbon;
+  # fi
+# fi
+
+# History date format
+HIST_STAMPS="mm/dd/yyyy"
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+  git
+  tmux
+  zsh-autosuggestions
+)
+
+# Autojump
+[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+
+# Fix $ git reset --soft HEAD^ error.
+unsetopt nomatch
 
 # type '...' to get '../..'
 function _rationalise-dot() {
@@ -190,12 +143,21 @@ zle -N _rationalise-dot
 bindkey . _rationalise-dot
 # without this, typing a . aborts incremental history search
 bindkey -M isearch . self-insert
-# dito for searching in menu selection
-bindkey -M menuselect . self-insert
 
-## FZF FUNCTIONS ##
+###########################
+# Looking out for future me.
+###########################
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+alias rm="safe-rm"
+# Prompt to confirm rm DIR/*
+unsetopt RM_STAR_SILENT
+setopt RM_STAR_WAIT
+
+###############
+# fzf Functions
+###############
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh;
 
 # Fuzzy File Search
 # fo [FUZZY PATTERN] - Open the selected file with the default editor
@@ -213,16 +175,11 @@ fh() {
   print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
 }
 
-#### Transfer.sh
-#transfer() {
-#  curl --progress-bar --upload-file "$1" https://transfer.sh/$(basename $1) | tee /dev/null;
-#}
+######################
+# Sourcing Other Files
+######################
 
-#alias transfer=transfer
-
-# Python Better Exceptions
-export BETTER_EXCEPTIONS=1
-export HOMEBREW_NO_ANALYTICS=1
-
-# Hide secrets
+source ~/.aliases
+source ~/.zprofile
 source ~/.api-keys-and-tokens
+source $ZSH/oh-my-zsh.sh

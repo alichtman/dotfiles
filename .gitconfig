@@ -34,3 +34,7 @@
 	tool = meld
 [diff]
 	guitool = meld
+[pull]
+    rebase = true
+[push]
+    followTags = true

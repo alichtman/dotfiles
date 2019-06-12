@@ -1,6 +1,7 @@
 {
     "backup_path": "~/shallow-backup",
     "dotfiles": [
+        ".aliases",
         ".bashrc",
         ".bash_profile",
         ".gitconfig",
@@ -15,7 +16,8 @@
     ],
     "dotfolders": [
         ".ssh",
-        ".vim"
+        ".vim",
+        ".tmux"
     ],
     "default-gitignore": [
         "dotfiles/.ssh",
