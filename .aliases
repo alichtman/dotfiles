@@ -2,13 +2,25 @@
 # Aliases
 #########
 
-# $ ls # and Friends
-alias ls='LC_COLLATE=cs_CZ.ISO8859-2 colorls -1A --sd --gs'
-alias ll='LC_COLLATE=cs_CZ.ISO8859-2 colorls -l -A --sd --gs'
-alias lsd='lsd -1a'
+# $ ls and Friends
+
+# colorls
+alias color_ls='LC_COLLATE=cs_CZ.ISO8859-2 colorls -1A --sd --gs'
+alias gls='color_ls'
+alias color_ll='LC_COLLATE=cs_CZ.ISO8859-2 colorls -l -A --sd --gs'
+
+# lsd
+alias ls='lsd -1A --group-dirs first'
+alias ll='lsd -1Al --group-dirs first'
+alias tree='ls --tree'
+
+# exa
 alias exa='exa -1a -s Name --group-directories-first'
 
+#########
 # Updates
+#########
+
 alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor'
 alias cargo-update='cargo install-update -a'
 alias update='cargo-update; brewup; apm upgrade; rustup;'
@@ -16,6 +28,13 @@ alias update='cargo-update; brewup; apm upgrade; rustup;'
 # Dev-Related
 alias changelog='github_changelog_generator'
 alias activate=". venv/bin/activate"
+
+
+###########
+# SECURITY
+###########
+
+alias objdumpd='objdump -x86-asm-syntax=intel -d' # Disassemble with Intel syntax
 alias rc='radix-calc'
 alias rcc='radix-calc --all'
 

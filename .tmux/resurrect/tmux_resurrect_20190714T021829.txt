@@ -1,0 +1,3 @@
+pane	0	0	:zsh	1	:*	0	:/Users/alichtman/Desktop/Development/security/projects/mac-malware-hunter	1	zsh	:
+window	0	0	1	:*	c03e,178x44,0,0,1
+state	0	
