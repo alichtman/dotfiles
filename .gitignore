@@ -2,3 +2,5 @@
 .pypirc
 .vim
 .tmux/plugins
+.tmux/resurrect/
+.tmux/resurrect/last

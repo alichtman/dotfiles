@@ -14,26 +14,27 @@ alias ls='lsd -1A --group-dirs first'
 alias ll='lsd -1Al --group-dirs first'
 alias tree='ls --tree'
 
-# exa
-alias exa='exa -1a -s Name --group-directories-first'
-
 #########
 # Updates
 #########
 
 alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor'
 alias cargo-update='cargo install-update -a'
-alias update='cargo-update; brewup; apm upgrade; rustup;'
+alias update='cargo-update; brewup; apm upgrade; rustup update; op update'
 
 # Dev-Related
 alias changelog='github_changelog_generator'
 alias activate=". venv/bin/activate"
 
-
 ###########
 # SECURITY
 ###########
 
+# 1Password
+alias 1p_signin='eval $(op signin my)'
+alias op_signin='1p_signin'
+
+# CLI Stuff
 alias objdumpd='objdump -x86-asm-syntax=intel -d' # Disassemble with Intel syntax
 alias rc='radix-calc'
 alias rcc='radix-calc --all'
@@ -65,6 +66,7 @@ alias throttle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=1;'
 
 # Editing
 alias vim='nvim'
+alias vimb='vim `fzf --preview="cat {}" --preview-window=right:60%:wrap`' # vim browse
 alias vimdiff="nvim -d"
 alias spacemacs='emacs'
 alias xcode='open -a Xcode'
