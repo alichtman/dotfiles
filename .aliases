@@ -14,13 +14,17 @@ alias ls='lsd -1A --group-dirs first'
 alias ll='lsd -1Al --group-dirs first'
 alias tree='ls --tree'
 
+# Autojump with z and zz
+alias j='z'
+alias jj='zz'
+
 #########
 # Updates
 #########
 
 alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor'
 alias cargo-update='cargo install-update -a'
-alias update='cargo-update; brewup; apm upgrade; rustup update; op update'
+alias update='cargo-update; brewup; apm upgrade; rustup update; op update; zplug update;'
 
 # Dev-Related
 alias changelog='github_changelog_generator'
@@ -66,7 +70,6 @@ alias throttle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=1;'
 
 # Editing
 alias vim='nvim'
-alias vimb='vim `fzf --preview="cat {}" --preview-window=right:60%:wrap`' # vim browse
 alias vimdiff="nvim -d"
 alias spacemacs='emacs'
 alias xcode='open -a Xcode'

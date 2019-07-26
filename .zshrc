@@ -63,13 +63,13 @@ prompt_context() {}
 # Env Vars
 ##########
 
-# Python Better Exceptions
-export BETTER_EXCEPTIONS=1
+export BETTER_EXCEPTIONS=1 # Python Better Exceptions
 export HOMEBREW_NO_ANALYTICS=1
 export BAT_THEME="1337"
 export EDITOR='nvim'
 export VISUAL='nvim'
 export ZSH=$HOME/.oh-my-zsh
+export NOTES=$HOME/Desktop/Development/notes
 
 ############
 # Completion
@@ -99,9 +99,9 @@ function _pip_completion {
 }
 compctl -K _pip_completion pip
 
-##################
-# General Behavior
-##################
+######################
+# General zsh Behavior
+######################
 
 # Always work in a tmux session if tmux is installed
 # https://github.com/chrishunt/dot-files/blob/master/.zshrc
@@ -112,23 +112,11 @@ compctl -K _pip_completion pip
   # fi
 # fi
 
-# History date format
-HIST_STAMPS="mm/dd/yyyy"
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(
-  git
-  tmux
-  zsh-autosuggestions
-)
-
-# Autojump
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
-
 # Fix $ git reset --soft HEAD^ error.
 unsetopt nomatch
+
+# History date format
+HIST_STAMPS="mm/dd/yyyy"
 
 # type '...' to get '../..'
 function _rationalise-dot() {
@@ -144,6 +132,36 @@ bindkey . _rationalise-dot
 # without this, typing a . aborts incremental history search
 bindkey -M isearch . self-insert
 
+#########
+# PLUGINS
+#########
+
+# Plugins can be found in ~/.oh-my-zsh/plugins/*
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+plugins=(
+  fzf
+  git
+  tmux
+  zsh-autosuggestions
+)
+
+source ~/.zplug/init.zsh
+
+zplug "changyuheng/zsh-interactive-cd"
+zplug "changyuheng/fz", defer:1
+zplug "rupa/z", use:z.sh
+zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+
+# zplug check returns true if all packages are installed
+# Therefore, when it returns false, run zplug install
+if ! zplug check; then
+    zplug install
+fi
+
+# fz config
+FZ_CMD=j
+FZ_SUBDIR_CMD=jj
+
 ###########################
 # Looking out for future me.
 ###########################
@@ -153,26 +171,22 @@ alias rm="safe-rm"
 unsetopt RM_STAR_SILENT
 setopt RM_STAR_WAIT
 
-###############
-# fzf Functions
-###############
+############
+# FZF Config
+############
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh;
 
-# Fuzzy File Search
+# Show hidden files in search and ignore .git directory
+export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -l -g ""'
+
 # fo [FUZZY PATTERN] - Open the selected file with the default editor
 #   - Bypass fuzzy finder if there's only one match (--select-1)
 #   - Exit if there's no match (--exit-0)
 fo() {
   local files
-  IFS=$'\n' files=($(fzf --query="$1" --multi --select-1 --exit-0))
+  IFS=$'\n' files=($(fzf --preview="cat {}" --preview-window=right:70%:wrap --query="$1" --multi --select-1 --exit-0))
   [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
-}
-
-# Fuzzy History Search
-# fh [FUZZY PATTERN] - Search in command history
-fh() {
-  print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
 }
 
 ######################
@@ -183,3 +197,4 @@ source ~/.aliases
 source ~/.zprofile
 source ~/.api-keys-and-tokens
 source $ZSH/oh-my-zsh.sh
+zplug load
