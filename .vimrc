@@ -4,10 +4,10 @@
 """"""""""""""""""
 " General Settings
 """"""""""""""""""
-set autoindent
-set noexpandtab
 
 set nocompatible
+set autoindent
+set noexpandtab
 
 " Indenting configuration.
 set smartindent
@@ -18,17 +18,11 @@ set shiftwidth=4
 set tabstop=4
 filetype plugin indent on
 
-set encoding=utf8
+set encoding=utf-8
 set autochdir
-
-" Don’t reset cursor to start of line when moving around.
-set nostartofline
-
-" Show the filename in the window titlebar
-set title
-
-" Allow backspace in insert mode
-set backspace=indent,eol,start
+set nostartofline              " Don’t reset cursor to start of line when moving around.
+set title                      " Show the filename in the window titlebar
+set backspace=indent,eol,start " Allow backspace in insert mode
 
 " Tab completion menu
 set wildmenu
@@ -37,38 +31,27 @@ set wildmode=full
 set ruler
 set secure
 
-set ssop-=options    " do not store global and local values in a session
-set ssop-=folds      " do not store folds
+" Undo
+set undolevels=1000  " store a bunch of undo history
+set undofile
 
-" Tell Vim to automatically use absolute line numbers when we’re in insert mode
+" Automatically use absolute line numbers when we’re in insert mode
 " and relative numbers when we’re in normal mode
 set number
 autocmd InsertEnter * :set number
 autocmd InsertLeave * :set relativenumber
 
-" store a bunch of undo history
-set undolevels=1000
+" Go to file
+set suffixesadd=.md,.c,.h,.cpp,.py,.tex
 
-" Show matching brackets/parenthesis
-set showmatch
-" Don't blink when matching
-set matchtime=0
-" Find as you type search
-set incsearch
-" Highlight search terms
-set hlsearch
-" Case insensitive search
-set ignorecase
-" Case sensitive if we type an uppercase
-set smartcase
-
-" Enable spellcheck for markdown and txt files
-"set spelllang=en
-"autocmd BufRead,BufNewFile *.md set filetype=markdown
-"autocmd BufRead,BufNewFile *.txt set filetype=text
-"autocmd FileType markdown setlocal spell
-"autocmd FileType text setlocal spell
-"hi SpellBad cterm=underline ctermfg=red
+" Search Config
+set showmatch   " Show matching brackets/parenthesis
+set matchtime=0 " Don't blink when matching
+set incsearch   " Find as you type search
+set hlsearch    " Highlight search terms
+set ignorecase  " Case insensitive search
+set inccommand=nosplit " Show regex replacement changes as you're typing
+set smartcase   " Case sensitive if we type an uppercase
 
 " Fix weird line tracers while scrolling bug
 if &term =~ '256color'
@@ -114,6 +97,9 @@ let g:vim_markdown_toc_autofit = 1
 " Key/Command Remappings
 """""""""""""""""""""""""
 
+" Set , as leader
+let mapleader = ","
+
 " Yeet
 :command! WQ wq
 :command! Wq wq
@@ -130,36 +116,32 @@ cabbrev h vert h
 " Distraction Free Mode
 nnoremap <silent> <leader>z :Goyo<cr>
 
-" Move the current line above or below
-" These mappings also take a count, so 2]e moves the current line 2 lines below.
-nnoremap [e  :<c-u>execute 'move -1-'. v:count1<cr>
-nnoremap ]e  :<c-u>execute 'move +'. v:count1<cr>
-
 "Traverse the buffer list more easily.
-"Taken from Tim Pope’s unimpaired.vim plugin
 nnoremap <silent> [b :bprevious<CR>
 nnoremap <silent> ]b :bnext<CR>
 nnoremap <silent> [B :bfirst<CR>
 nnoremap <silent> ]B :blast<CR>
 
-"Force myself to use h,j,k,l for navigation
-"noremap <Up> <Nop>
-"noremap <Down> <Nop>
-"noremap <Left> <Nop>
-"noremap <Right> <Nop>
-
-" Move a line of text using ALT+[jk]
-nmap <M-j> mz:m+<cr>`z
-nmap <M-k> mz:m-2<cr>`z
-vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
-vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
-" source: http://amix.dk/vim/vimrc.html
+" Move the current line above or below with ALT + [j/k]
+nnoremap <A-j> :<c-u>execute 'move +'. v:count1<cr>
+nnoremap <A-k> :<c-u>execute 'move -1-'. v:count1<cr>
 
 " Make j and k operate on virtual lines, not real lines.
 nnoremap k gk
 nnoremap gk k
 nnoremap j gj
 nnoremap gj j
+
+" Toggle spell checking on and off with `,s`
+nmap <silent> <leader>s :set spell!<CR>
+set spelllang=en
+
+" Enable spellcheck for markdown and txt files
+"autocmd BufRead,BufNewFile *.md set filetype=markdown
+"autocmd BufRead,BufNewFile *.txt set filetype=text
+"autocmd FileType markdown setlocal spell
+"autocmd FileType text setlocal spell
+"hi SpellBad cterm=underline ctermfg=red
 
 """""""""
 " Plugins
@@ -174,7 +156,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'Raimondi/delimitMate'
 
 " Tab Completion
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " File explorer.
 Plug 'scrooloose/nerdtree'
@@ -227,7 +209,6 @@ call plug#end()
 """""""""""""""""
 " Plugin Settings
 """""""""""""""""
-
 
 " Yeah, I should really have been writing code instead of picking different
 " themes for my terminal...
@@ -338,7 +319,7 @@ nmap <leader>qf  <Plug>(coc-fix-current)
 command! -nargs=0 Format :call CocAction('format')
 
 " Use `:Fold` to fold current buffer
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+command! -nargs=? Fold :call CocAction('fold', <f-args>)
 
 """"""""""""""""
 " End CoC Config
@@ -359,10 +340,9 @@ let g:startify_lists = [
 let g:startify_bookmarks = [
 			\ {'a': '~/.vimrc'},
 			\ {'b': '~/.zshrc'},
-			\ {'c': '~/Desktop/Aaron/todo.md'},
-			\ {'d': '~/Desktop/Development/security/notes'},
-			\ {'e': '~/Desktop/Development/security/notes/books/practical-binary-analysis'},
-			\ {'f': '~/Desktop/Development/notes'} ]
+			\ {'c': '~/.tmux.conf'},
+			\ {'d': '~/Desktop/personal/'},
+			\ {'e': '~/Desktop/Development/notes'} ]
 
 let g:startify_custom_header = [
             \ '                               ',
@@ -374,7 +354,7 @@ let g:startify_custom_header = [
             \ '     \/__/    \/_/\/_/\/_/\/_/',
 			\ ]
 
-let g:startify_files_number = 6
+let g:startify_files_number = 8
 let g:startify_update_oldfiles = 0
 let g:startify_session_persistence = 1
 let g:startify_session_autoload = 1

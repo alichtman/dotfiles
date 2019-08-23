@@ -1,15 +1,10 @@
-#########
-# Aliases
-#########
+###########
+# Aliases #
+###########
 
 # $ ls and Friends
-
-# colorls
-alias color_ls='LC_COLLATE=cs_CZ.ISO8859-2 colorls -1A --sd --gs'
-alias gls='color_ls'
+alias gls='LC_COLLATE=cs_CZ.ISO8859-2 colorls -1A --sd --gs'
 alias color_ll='LC_COLLATE=cs_CZ.ISO8859-2 colorls -l -A --sd --gs'
-
-# lsd
 alias ls='lsd -1A --group-dirs first'
 alias ll='lsd -1Al --group-dirs first'
 alias tree='ls --tree'
@@ -26,19 +21,17 @@ alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew d
 alias cargo-update='cargo install-update -a'
 alias update='cargo-update; brewup; apm upgrade; rustup update; op update; zplug update;'
 
-# Dev-Related
-alias changelog='github_changelog_generator'
-alias activate=". venv/bin/activate"
-
 ###########
-# SECURITY
-###########
-
 # 1Password
+###########
+
 alias 1p_signin='eval $(op signin my)'
 alias op_signin='1p_signin'
 
-# CLI Stuff
+#################
+# Binary Analysis
+#################
+
 alias objdumpd='objdump -x86-asm-syntax=intel -d' # Disassemble with Intel syntax
 alias rc='radix-calc'
 alias rcc='radix-calc --all'
@@ -67,12 +60,18 @@ alias fuck='eval $(TF_ALIAS=fuck PYTHONIOENCODING=utf-8 thefuck $(fc -ln -1))'
 alias kill-touchbar='sudo pkill "Touch Bar agent";sudo killall "ControlStrip";'
 alias unthrottle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=0;'
 alias throttle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=1;'
+alias show-desktop='defaults write com.apple.finder CreateDesktop true; killall Finder'
+alias hide-desktop='defaults write com.apple.finder CreateDesktop false; killall Finder'
 
 # Editing
 alias vim='nvim'
 alias vimdiff="nvim -d"
 alias spacemacs='emacs'
 alias xcode='open -a Xcode'
+
+# Dev-Related
+alias changelog='github_changelog_generator'
+alias activate=". venv/bin/activate"
 
 # r/unixporn
 alias news="newsroom"

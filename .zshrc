@@ -65,7 +65,7 @@ prompt_context() {}
 
 export BETTER_EXCEPTIONS=1 # Python Better Exceptions
 export HOMEBREW_NO_ANALYTICS=1
-export BAT_THEME="1337"
+export BAT_THEME="TwoDark"
 export EDITOR='nvim'
 export VISUAL='nvim'
 export ZSH=$HOME/.oh-my-zsh
@@ -179,6 +179,7 @@ setopt RM_STAR_WAIT
 
 # Show hidden files in search and ignore .git directory
 export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -l -g ""'
+export FZF_DEFAULT_OPTS="--cycle"
 
 # fo [FUZZY PATTERN] - Open the selected file with the default editor
 #   - Bypass fuzzy finder if there's only one match (--select-1)
@@ -187,6 +188,11 @@ fo() {
   local files
   IFS=$'\n' files=($(fzf --preview="cat {}" --preview-window=right:70%:wrap --query="$1" --multi --select-1 --exit-0))
   [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+}
+
+# fman [FUZZY PATTERN] - Search man pages.
+fman() {
+    man -k . | fzf --prompt='Man> ' | awk '{print $1}' | cut -d "(" -f1 | xargs man
 }
 
 ######################
