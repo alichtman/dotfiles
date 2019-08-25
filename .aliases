@@ -19,7 +19,7 @@ alias jj='zz'
 
 alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor'
 alias cargo-update='cargo install-update -a'
-alias update='cargo-update; brewup; apm upgrade; rustup update; op update; zplug update;'
+alias update='cargo-update; brewup; apm upgrade --no-confirm; rustup update; op update; zplug update;'
 
 ###########
 # 1Password

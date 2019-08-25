@@ -56,9 +56,6 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
 
 set termguicolors
 
-# Clean up prompt. TODO: Figure out what this actually does.
-prompt_context() {}
-
 ##########
 # Env Vars
 ##########
@@ -71,20 +68,29 @@ export VISUAL='nvim'
 export ZSH=$HOME/.oh-my-zsh
 export NOTES=$HOME/Desktop/Development/notes
 
+###################
+# oh-my-zsh Plugins
+###################
+
+# Plugins can be found in ~/.oh-my-zsh/plugins/*
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+plugins=(
+  fzf
+  git
+  tmux
+  zsh-autosuggestions
+)
+
 ############
 # Completion
 ############
 
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
+# Use hyphen-insensitive completion. Case sensitive completion must be off. _ and - will be interchangeable.
 HYPHEN_INSENSITIVE="true"
 
 # Display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
 
-# tbh not sure, but definitely needs to be here
-fpath=(/usr/local/share/zsh-completions $fpath)
-autoload -U compinit && compinit
 # Include dotfiles in completions
 setopt globdots
 
@@ -98,25 +104,6 @@ function _pip_completion {
              PIP_AUTO_COMPLETE=1 $words[1] ) )
 }
 compctl -K _pip_completion pip
-
-######################
-# General zsh Behavior
-######################
-
-# Always work in a tmux session if tmux is installed
-# https://github.com/chrishunt/dot-files/blob/master/.zshrc
-# TODO: Fix "duplicate session" bug
-#if which tmux 2>&1 >/dev/null; then
-#  if [ $TERM != "screen-256color" ] && [  $TERM != "screen" ]; then
-    # tmux attach -t carbon || tmux new -s carbon;
-  # fi
-# fi
-
-# Fix $ git reset --soft HEAD^ error.
-unsetopt nomatch
-
-# History date format
-HIST_STAMPS="mm/dd/yyyy"
 
 # type '...' to get '../..'
 function _rationalise-dot() {
@@ -132,18 +119,28 @@ bindkey . _rationalise-dot
 # without this, typing a . aborts incremental history search
 bindkey -M isearch . self-insert
 
-#########
-# PLUGINS
-#########
+######
+# tmux
+######
 
-# Plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(
-  fzf
-  git
-  tmux
-  zsh-autosuggestions
-)
+# Always work in a tmux session if tmux is installed
+# https://github.com/chrishunt/dot-files/blob/master/.zshrc
+# TODO: Fix "duplicate session" bug
+#if which tmux 2>&1 >/dev/null; then
+#  if [ $TERM != "screen-256color" ] && [  $TERM != "screen" ]; then
+    # tmux attach -t carbon || tmux new -s carbon;
+  # fi
+# fi
+
+######################
+# General zsh Behavior
+######################
+
+# Fix $ git reset --soft HEAD^ error.
+unsetopt nomatch
+
+# History date format
+HIST_STAMPS="mm/dd/yyyy"
 
 source ~/.zplug/init.zsh
 
@@ -199,8 +196,14 @@ fman() {
 # Sourcing Other Files
 ######################
 
-source ~/.aliases
+if [ -f ~/.aliases ]; then
+    source ~/.aliases
+fi
+
+if [ -f ~/.secrets ]; then
+	source ~/.secrets
+fi
+
 source ~/.zprofile
-source ~/.api-keys-and-tokens
 source $ZSH/oh-my-zsh.sh
 zplug load
