@@ -7,5 +7,6 @@ My default setup consists of:
 - `vim`
 - `zsh`
 - `git`
+- `tmux`
 
 The rest of the dotfiles are included for completeness, but they are not terribly useful.
