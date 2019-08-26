@@ -1,0 +1,22 @@
+eval scr.color = true
+eval dbg.bep   = entry
+# Show stack and regs in visual mode in a slow but verbose mode
+eval dbg.slow = true
+
+eval file.id   = true
+eval file.flag = true
+eval file.analyze = true
+
+# Show comments at right of disassembly if they fit in screen
+eval asm.cmtright = true
+
+# Display stack and register values on top of disasembly view (visual mode)
+eval cmd.stack = true
+eco focus
+eval scr.utf8 = true
+eval asm.relsub = true
+eval asm.syntax = intel
+
+# Shows pseudocode in disassembly.
+eval asm.pseudo = true
+eval asm.describe = true

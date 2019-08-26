@@ -178,26 +178,16 @@ setopt RM_STAR_WAIT
 export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -l -g ""'
 export FZF_DEFAULT_OPTS="--cycle"
 
-# fo [FUZZY PATTERN] - Open the selected file with the default editor
-#   - Bypass fuzzy finder if there's only one match (--select-1)
-#   - Exit if there's no match (--exit-0)
-fo() {
-  local files
-  IFS=$'\n' files=($(fzf --preview="cat {}" --preview-window=right:70%:wrap --query="$1" --multi --select-1 --exit-0))
-  [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
-}
-
-# fman [FUZZY PATTERN] - Search man pages.
-fman() {
-    man -k . | fzf --prompt='Man> ' | awk '{print $1}' | cut -d "(" -f1 | xargs man
-}
-
 ######################
 # Sourcing Other Files
 ######################
 
 if [ -f ~/.aliases ]; then
     source ~/.aliases
+fi
+
+if [ -f ~/.zfunctions ]; then
+	source ~/.zfunctions
 fi
 
 if [ -f ~/.secrets ]; then

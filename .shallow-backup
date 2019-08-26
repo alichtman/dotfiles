@@ -7,10 +7,12 @@
         ".gitconfig",
         ".profile",
         ".pypirc",
+        ".radare2rc",
         ".shallow-backup",
         ".tmux.conf",
         ".vimrc",
         ".zlogin",
+        ".zfunctions",
         ".zprofile",
         ".zshrc"
     ],
