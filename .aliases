@@ -37,24 +37,26 @@ alias rc='radix-calc'
 alias rcc='radix-calc --all'
 alias vol='volatility --plugins=/Users/alichtman/volatility-plugins'
 
-######
-# Pypi
-######
+#####
+# Dev
+#####
 
-# Test upload
+# github CLI integration
+eval "$(hub alias -s)"
+alias changelog='github_changelog_generator'
+
+# Pypi
 alias pypitestup='python3 setup.py bdist_wheel; twine upload --repository testpypi dist/*'
-# Test download and install
 alias pip3test='pip3 install --index-url https://test.pypi.org/simple/'
-# Deployment upload
 alias pypiup='python3 setup.py bdist_wheel; twine upload --repository pypi dist/*'
-# Generate binary for distribution (?)
 alias pypibinary='python3 setup.py sdist'
 
 # Convenience
 alias ip='ipconfig getifaddr en0'
 alias please='sudo $(fc -ln -1)' # Rerun last command with sudo
-alias google="googler"
+alias google="googler -l en"
 alias fuck='eval $(TF_ALIAS=fuck PYTHONIOENCODING=utf-8 thefuck $(fc -ln -1))'
+alias activate=". venv/bin/activate"
 
 # Editing
 alias vim='nvim'
@@ -62,15 +64,14 @@ alias vimdiff="nvim -d"
 alias spacemacs='emacs'
 alias xcode='open -a Xcode'
 
-# vim / tmux habits
+# vim habits
 alias :wq="exit"
 alias :q="exit"
 
-# Dev-Related
-alias changelog='github_changelog_generator'
-alias activate=". venv/bin/activate"
-
+############
 # r/unixporn
+############
+
 alias news="newsroom"
 alias matrix='unimatrix -s 93'
 alias pipes='pipes.sh -f 75 -t 3 -B'

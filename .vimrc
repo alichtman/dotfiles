@@ -6,30 +6,18 @@
 """"""""""""""""""
 
 set nocompatible
-set autoindent
-set noexpandtab
-
-" Indenting configuration.
-set smartindent
-set copyindent
-set preserveindent
-set softtabstop=0
-set shiftwidth=4
-set tabstop=4
-filetype plugin indent on
-
 set encoding=utf-8
 set autochdir
 set nostartofline              " Don’t reset cursor to start of line when moving around.
 set title                      " Show the filename in the window titlebar
 set backspace=indent,eol,start " Allow backspace in insert mode
+set modeline
+set ruler
+set secure
 
 " Tab completion menu
 set wildmenu
 set wildmode=full
-
-set ruler
-set secure
 
 " Undo
 set undolevels=1000  " store a bunch of undo history
@@ -60,7 +48,7 @@ if &term =~ '256color'
     set t_ut=
 endif
 
-" breaking
+" Line breaking
 set wrap
 set nolinebreak
 set breakindent
@@ -87,11 +75,34 @@ autocmd BufReadPost *
 			\   execute "normal! g`\"" |
 			\ endif
 
+" Close vim if the quickfix window is the only window visible (and only tab)
+" https://stackoverflow.com/a/7477056
+aug QFClose
+  au!
+  au WinEnter * if winnr('$') == 1 && &buftype == "quickfix"|q|endif
+aug END
 
 " Disable Markdown folding
 let g:vim_markdown_folding_disabled = 1
 " Autoresize TOC window
 let g:vim_markdown_toc_autofit = 1
+
+""""""""""""""
+" Indentataion
+""""""""""""""
+
+set autoindent
+set smartindent
+set copyindent
+set preserveindent
+" Use tabs, not spaces. #TabsMasterRace
+set noexpandtab
+set softtabstop=4
+" Control how many columns text is indented with the reindent operations (<< and >>)
+set shiftwidth=4
+" How many spaces a tab is
+set tabstop=4
+filetype plugin indent on
 
 """""""""""""""""""""""""
 " Key/Command Remappings
@@ -100,11 +111,13 @@ let g:vim_markdown_toc_autofit = 1
 " Set , as leader
 let mapleader = ","
 
-" Yeet
+" Yeet those "Not an editor command" errors right out the fucking window
+" Or, defenestrate, as my Dad would say.
 :command! WQ wq
 :command! Wq wq
 :command! W w
 :command! Q q
+:command! Qa qa
 
 " Use jk or kj for Escape
 :imap jk <Esc>
@@ -142,6 +155,20 @@ set spelllang=en
 "autocmd FileType markdown setlocal spell
 "autocmd FileType text setlocal spell
 "hi SpellBad cterm=underline ctermfg=red
+
+" Append modeline after last line in buffer with <Leader>ml
+" Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
+" files.
+function! AppendModeline()
+  let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set :",
+        \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
+  let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
+  call append(line("$"), l:modeline)
+endfunction
+nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
+
+map <C-n> :NERDTreeToggle<CR>
+
 
 """""""""
 " Plugins
@@ -361,7 +388,7 @@ let g:startify_session_autoload = 1
 
 " NERDTree Config
 
-" Make startify and NERDTree work together
+" On $ vim, open startify and NERDTree
 autocmd VimEnter *
             \   if !argc()
             \ |   Startify
@@ -436,5 +463,13 @@ set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 1
+let g:syntastic_python_python_exec = 'python3'
+let g:syntastic_python_pylint_exe = 'python3 -m pylint'
+
+""""""""
+" Python
+""""""""
+
+let g:python3_host_prog = '/usr/local/bin/python3'

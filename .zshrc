@@ -52,9 +52,6 @@ if [ $ZSH_THEME = "spaceship" ]; then
   )
 fi
 
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
-
-set termguicolors
 
 ##########
 # Env Vars
@@ -79,11 +76,14 @@ plugins=(
   git
   tmux
   zsh-autosuggestions
+  zsh-completions
 )
 
 ############
 # Completion
 ############
+
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
 
 # Use hyphen-insensitive completion. Case sensitive completion must be off. _ and - will be interchangeable.
 HYPHEN_INSENSITIVE="true"
@@ -93,6 +93,11 @@ COMPLETION_WAITING_DOTS="true"
 
 # Include dotfiles in completions
 setopt globdots
+
+# homebrew completions
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+fi
 
 # pip zsh completion
 function _pip_completion {
@@ -119,9 +124,13 @@ bindkey . _rationalise-dot
 # without this, typing a . aborts incremental history search
 bindkey -M isearch . self-insert
 
+autoload -U compinit && compinit
+
 ######
 # tmux
 ######
+
+export ZSH_TMUX_AUTOQUIT=false
 
 # Always work in a tmux session if tmux is installed
 # https://github.com/chrishunt/dot-files/blob/master/.zshrc
@@ -135,6 +144,8 @@ bindkey -M isearch . self-insert
 ######################
 # General zsh Behavior
 ######################
+
+set termguicolors
 
 # Fix $ git reset --soft HEAD^ error.
 unsetopt nomatch
@@ -197,3 +208,5 @@ fi
 source ~/.zprofile
 source $ZSH/oh-my-zsh.sh
 zplug load
+
+zsh-startify
