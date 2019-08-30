@@ -1,174 +1,10 @@
 " .vimrc for Neovim
 " Aaron Lichtman
 
-""""""""""""""""""
-" General Settings
-""""""""""""""""""
-
-set nocompatible
-set encoding=utf-8
-set autochdir
-set nostartofline              " Don’t reset cursor to start of line when moving around.
-set title                      " Show the filename in the window titlebar
-set backspace=indent,eol,start " Allow backspace in insert mode
-set modeline
-set ruler
-set secure
-
-" Tab completion menu
-set wildmenu
-set wildmode=full
-
-" Undo
-set undolevels=1000  " store a bunch of undo history
-set undofile
-
-" Automatically use absolute line numbers when we’re in insert mode
-" and relative numbers when we’re in normal mode
-set number
-autocmd InsertEnter * :set number
-autocmd InsertLeave * :set relativenumber
-
-" Go to file
-set suffixesadd=.md,.c,.h,.cpp,.py,.tex
-
-" Search Config
-set showmatch   " Show matching brackets/parenthesis
-set matchtime=0 " Don't blink when matching
-set incsearch   " Find as you type search
-set hlsearch    " Highlight search terms
-set ignorecase  " Case insensitive search
-set inccommand=nosplit " Show regex replacement changes as you're typing
-set smartcase   " Case sensitive if we type an uppercase
-
-" Fix weird line tracers while scrolling bug
-if &term =~ '256color'
-    " Disable Background Color Erase (BCE) so that color schemes
-    " work properly when Vim is used inside tmux and GNU screen.
-    set t_ut=
-endif
-
-" Line breaking
-set wrap
-set nolinebreak
-set breakindent
-set breakindentopt=min:40
-
-" TODO: 80, 120 character guidelines. Not sure why this doesn't work... classic.
-"set cc=81
-"hi ColorColumn ctermbg=lightgrey guibg=lightgrey
-
-" Highlight current line
-set cursorline
-
-" Show “invisible” characters
-set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
-set list
-
-" Jump from .h to .c file
-autocmd BufLeave *.{c,cpp} mark C
-autocmd BufLeave *.h       mark H
-
-" Restore cursor position when opening a file
-autocmd BufReadPost *
-			\ if line("'\"") > 1 && line("'\"") <= line("$") |
-			\   execute "normal! g`\"" |
-			\ endif
-
-" Close vim if the quickfix window is the only window visible (and only tab)
-" https://stackoverflow.com/a/7477056
-aug QFClose
-  au!
-  au WinEnter * if winnr('$') == 1 && &buftype == "quickfix"|q|endif
-aug END
-
-" Disable Markdown folding
-let g:vim_markdown_folding_disabled = 1
-" Autoresize TOC window
-let g:vim_markdown_toc_autofit = 1
-
-""""""""""""""
-" Indentataion
-""""""""""""""
-
-set autoindent
-set smartindent
-set copyindent
-set preserveindent
-" Use tabs, not spaces. #TabsMasterRace
-set noexpandtab
-set softtabstop=4
-" Control how many columns text is indented with the reindent operations (<< and >>)
-set shiftwidth=4
-" How many spaces a tab is
-set tabstop=4
-filetype plugin indent on
-
-"""""""""""""""""""""""""
-" Key/Command Remappings
-"""""""""""""""""""""""""
-
-" Set , as leader
-let mapleader = ","
-
-" Yeet those "Not an editor command" errors right out the fucking window
-" Or, defenestrate, as my Dad would say.
-:command! WQ wq
-:command! Wq wq
-:command! W w
-:command! Q q
-:command! Qa qa
-
-" Use jk or kj for Escape
-:imap jk <Esc>
-:imap kj <Esc>
-
-" Make help always appear as vertical split.
-cabbrev h vert h
-
-" Distraction Free Mode
-nnoremap <silent> <leader>z :Goyo<cr>
-
-"Traverse the buffer list more easily.
-nnoremap <silent> [b :bprevious<CR>
-nnoremap <silent> ]b :bnext<CR>
-nnoremap <silent> [B :bfirst<CR>
-nnoremap <silent> ]B :blast<CR>
-
-" Move the current line above or below with ALT + [j/k]
-nnoremap <A-j> :<c-u>execute 'move +'. v:count1<cr>
-nnoremap <A-k> :<c-u>execute 'move -1-'. v:count1<cr>
-
-" Make j and k operate on virtual lines, not real lines.
-nnoremap k gk
-nnoremap gk k
-nnoremap j gj
-nnoremap gj j
-
-" Toggle spell checking on and off with `,s`
-nmap <silent> <leader>s :set spell!<CR>
-set spelllang=en
-
-" Enable spellcheck for markdown and txt files
-"autocmd BufRead,BufNewFile *.md set filetype=markdown
-"autocmd BufRead,BufNewFile *.txt set filetype=text
-"autocmd FileType markdown setlocal spell
-"autocmd FileType text setlocal spell
-"hi SpellBad cterm=underline ctermfg=red
-
-" Append modeline after last line in buffer with <Leader>ml
-" Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
-" files.
-function! AppendModeline()
-  let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set :",
-        \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
-  let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
-  call append(line("$"), l:modeline)
-endfunction
-nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
-
-map <C-n> :NERDTreeToggle<CR>
-
+"""""""
+" TODO
+" Wrap every autocommand in an augroup with multiple autocommands in the same group if it makes sense
+" Better logical organization of settings
 
 """""""""
 " Plugins
@@ -232,13 +68,218 @@ Plug 'vim-syntastic/syntastic'
 Plug 'wakatime/vim-wakatime'
 
 call plug#end()
+""""""""""""""""""
+" General Settings
+""""""""""""""""""
+
+set nocompatible
+set encoding=utf-8
+set autochdir
+set nostartofline  " Don’t reset cursor to start of line when moving around.
+set title        " Show the filename in the window titlebar
+set backspace=indent,eol,start " Allow backspace in insert mode
+set modeline
+set ruler
+set secure
+set spelllang=en
+
+" Tab completion menu
+set wildmenu
+set wildmode=full
+
+" Undo
+set undolevels=1000  " store a bunch of undo history
+set undofile
+
+" Automatically use absolute line numbers when we’re in insert mode
+" and relative numbers when we’re in normal mode
+set number
+
+augroup lineNumbers
+	autocmd InsertEnter * :set number
+	autocmd InsertLeave * :set relativenumber
+augroup END
+
+" Use gtf to jump to files with these extensions
+set suffixesadd=.md,.c,.h,.cpp,.py,.tex
+
+" Don't treat hyphens and underscores like whitespace
+set iskeyword+=-
+set iskeyword+=_
+
+" Search Config
+set showmatch   " Show matching brackets/parenthesis
+set matchtime=0 " Don't blink when matching
+set incsearch   " Find as you type search
+set hlsearch    " Highlight search terms
+set ignorecase  " Case insensitive search
+set inccommand=nosplit " Show regex replacement changes as you're typing
+set smartcase   " Case sensitive if we type an uppercase
+
+" Fix weird line tracers while scrolling bug
+if &term =~ '256color'
+    " Disable Background Color Erase (BCE) so that color schemes
+    " work properly when Vim is used inside tmux and GNU screen.
+    set t_ut=
+endif
+
+" Line breaking
+set wrap
+set nolinebreak
+set breakindent
+set breakindentopt=min:40
+
+" TODO: 80, 120 character guidelines. Not sure why this doesn't work... classic.
+"set cc=81
+"hi ColorColumn ctermbg=lightgrey guibg=lightgrey
+
+" Highlight current line
+set cursorline
+
+" Show “invisible” characters
+set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
+set list
+
+" Restore cursor position when opening a file
+autocmd BufReadPost *
+			\ if line("'\"") > 1 && line("'\"") <= line("$") |
+			\   execute "normal! g`\"" |
+			\ endif
+
+" Close vim if the quickfix window is the only window visible (and only tab)
+" https://stackoverflow.com/a/7477056
+aug QFClose
+  au!
+  au WinEnter * if winnr('$') == 1 && &buftype == "quickfix"|q|endif
+aug END
+
+" Disable Markdown folding
+let g:vim_markdown_folding_disabled = 1
+" Autoresize TOC window
+let g:vim_markdown_toc_autofit = 1
+
+""""""""""""""
+" Indentataion
+""""""""""""""
+
+set autoindent
+set smartindent
+set copyindent
+set preserveindent
+" Use tabs, not spaces. #TabsMasterRace
+set noexpandtab
+set softtabstop=4
+" Control how many columns text is indented with the reindent operations (<< and >>)
+set shiftwidth=4
+" How many spaces a tab is
+set tabstop=4
+filetype plugin indent on
+
+""""""""""""
+" Remappings
+""""""""""""
+
+" Set , as leader
+let mapleader = ","
+let maplocalleader = "-"
+
+" Quickly edit dotfiles
+nnoremap <leader>ev :vsplit ~/.vimrc<cr>
+nnoremap <leader>sv :source ~/.vimrc<cr>
+nnoremap <leader>et :vsplit ~/.tmux.conf<cr>
+
+" Yeet those "Not an editor command" errors right out the fucking window
+" Or, defenestrate, as my Dad would say.
+command! WQ wq
+command! Wq wq
+command! W w
+command! Q q
+command! Qa qa
+
+" Use jk or kj for Escape
+inoremap jk <Esc>
+inoremap kj <Esc>
+
+" Quoting Shortcuts
+" TODO: tpope/vim-surround instead?
+" nnoremap <leader>" viw<esc>bi"<esc>ea"<esc>lel
+" nnoremap <leader>' viw<esc>bi'<esc>ea'<esc>lel
+" nnoremap <leader>` viw<esc>bi`<esc>ea`<esc>lel
+
+" Make help always appear as a vertical split.
+cabbrev h vert h
+
+" Insert mdash
+iabbrev <buffer> --- &mdash
+
+" Distraction Free Mode
+nnoremap <silent> <leader>z :Goyo<cr>
+
+"Traverse the buffer list more easily.
+nnoremap <silent> b[ :bprevious<CR>
+nnoremap <silent> b] :bnext<CR>
+nnoremap <silent> B[ :bfirst<CR>
+nnoremap <silent> B] :blast<CR>
+
+" Move the current line above or below with ALT + [j/k].
+noremap <A-j> ddjP
+noremap <A-k> ddkP
+
+" Make j and k operate on virtual lines, not real lines.
+nnoremap k gk
+nnoremap gk k
+nnoremap j gj
+nnoremap gj j
+
+" Toggle spell checking on and off with `,s`
+nmap <silent> <leader>s :set spell!<CR>
+
+" TODO: Enable spellcheck for markdown and txt files
+" TODO: Add autocorrect.vim
+augroup spellcheck
+	autocmd!
+	autocmd BufRead,BufNewFile *.md set filetype=markdown
+	autocmd BufRead,BufNewFile *.txt set filetype=text
+	autocmd FileType markdown setlocal spell
+	autocmd FileType text setlocal spell
+	hi SpellBad cterm=underline ctermfg=red
+augroup END
+
+" Append modeline after last line in buffer with <Leader>ml
+" Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
+" files.
+function! AppendModeline()
+  let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set :",
+        \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
+  let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
+  call append(line("$"), l:modeline)
+endfunction
+nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
+
+" Open / Close NERDTree with Ctrl + n
+map <C-n> :NERDTreeToggle<CR>
+
+" Visually select text then press Ctrl-u to convert the text to UPPER CASE,
+" then to lower case, then to Title Case.
+" https://vim.fandom.com/wiki/Switching_case_of_characters
+function! CycleCasing(str)
+  if a:str ==# toupper(a:str)
+    let result = tolower(a:str)
+  elseif a:str ==# tolower(a:str)
+    let result = substitute(a:str,'\(\<\w\+\>\)', '\u\1', 'g')
+  else
+    let result = toupper(a:str)
+  endif
+  return result
+endfunction
+vnoremap <c-u> y:call setreg('', CycleCasing(@"), getregtype(''))<CR>gv""Pgv
+
 
 """""""""""""""""
 " Plugin Settings
 """""""""""""""""
 
-" Yeah, I should really have been writing code instead of picking different
-" themes for my terminal...
+" Yep, shoulda been writing code instead of picking different colorscehemes.
 "colorscheme snow
 colorscheme gruvbox
 "colorscheme onedark
@@ -250,15 +291,17 @@ let g:gruvbox_contrast_dark='dark'
 set background=dark
 "set background=light
 
-""""""
+" TODO: Move to YouCompleteMe
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CoC Config
 " https://github.com/neoclide/coc.nvim#example-vim-configuration
-""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " if hidden is not set, TextEdit might fail.
 set hidden
 
 " Some servers have issues with backup files, see #649
+" Scary!
 set nobackup
 set nowritebackup
 
@@ -372,7 +415,7 @@ let g:startify_bookmarks = [
 			\ {'e': '~/Desktop/Development/notes'} ]
 
 let g:startify_custom_header = [
-            \ '                               ',
+            \ ' ',
             \ '            __',
             \ '    __  __ /\_\    ___ ___',
             \ '   /\ \/\ \\/\ \ /'' __` __`\',
@@ -389,15 +432,17 @@ let g:startify_session_autoload = 1
 " NERDTree Config
 
 " On $ vim, open startify and NERDTree
-autocmd VimEnter *
-            \   if !argc()
-            \ |   Startify
-            \ |   NERDTree
-            \ |   wincmd w
-            \ | endif
+augroup nerdtree-open-close
+	autocmd VimEnter *
+				\   if !argc()
+				\ |   Startify
+				\ |   NERDTree
+				\ |   wincmd w
+				\ | endif
 
-" Close vim if only thing remaining is NERDTree
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+	" Close vim if only thing remaining is NERDTree
+	autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+augroup END
 
 let NERDTreeShowHidden = 1
 let NERDTreeStatusline = 0
