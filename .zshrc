@@ -193,6 +193,8 @@ export FZF_DEFAULT_OPTS="--cycle"
 # Sourcing Other Files
 ######################
 
+source $ZSH/oh-my-zsh.sh
+
 if [ -f ~/.aliases ]; then
     source ~/.aliases
 fi
@@ -206,7 +208,6 @@ if [ -f ~/.secrets ]; then
 fi
 
 source ~/.zprofile
-source $ZSH/oh-my-zsh.sh
 zplug load
 
 zsh-startify

@@ -5,6 +5,8 @@
 " TODO
 " Wrap every autocommand in an augroup with multiple autocommands in the same group if it makes sense
 " Better logical organization of settings
+" Finish configuring coc.nvim
+" Figure out how to use tags
 
 """""""""
 " Plugins
@@ -18,8 +20,11 @@ Plug 'sheerun/vim-polyglot'
 " Automatic closing of quotes, parenthesis, brackets, etc
 Plug 'Raimondi/delimitMate'
 
-" Tab Completion
+" Linting and Completion
+Plug 'vim-syntastic/syntastic'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'davidhalter/jedi-vim'
+"Plug 'w0rp/ale'
 
 " File explorer.
 Plug 'scrooloose/nerdtree'
@@ -34,10 +39,10 @@ Plug 'mhinz/vim-startify'
 Plug 'ryanoasis/vim-devicons'
 
 " Themes
-Plug 'joshdick/onedark.vim'
+"Plug 'joshdick/onedark.vim'
 Plug 'morhetz/gruvbox'
-Plug 'nightsense/snow'
-Plug 'mhartington/oceanic-next'
+"Plug 'nightsense/snow'
+"Plug 'mhartington/oceanic-next'
 
 " Status bar
 Plug 'vim-airline/vim-airline'
@@ -59,21 +64,16 @@ Plug 'amix/vim-zenroom2'
 " Commenting
 Plug 'scrooloose/nerdcommenter'
 
-" Linting and autocomplete
-" Syntastic is really really slow...
-Plug 'vim-syntastic/syntastic'
-"TODO: Plug 'w0rp/ale'
-
 " Timetracking
 Plug 'wakatime/vim-wakatime'
 
 call plug#end()
+
 """"""""""""""""""
 " General Settings
 """"""""""""""""""
 
 set nocompatible
-set encoding=utf-8
 set autochdir
 set nostartofline  " Don’t reset cursor to start of line when moving around.
 set title        " Show the filename in the window titlebar
@@ -82,6 +82,7 @@ set modeline
 set ruler
 set secure
 set spelllang=en
+syntax on
 
 " Tab completion menu
 set wildmenu
@@ -175,6 +176,22 @@ set shiftwidth=4
 set tabstop=4
 filetype plugin indent on
 
+
+""""""""""""
+" Appearance
+""""""""""""
+
+" Yep, shoulda been writing code instead of picking different colorscehemes.
+"colorscheme snow
+colorscheme gruvbox
+"colorscheme onedark
+"colorscheme OceanicNext
+
+let g:gruvbox_contrast_dark='dark'
+
+set background=dark
+"set background=light
+
 """"""""""""
 " Remappings
 """"""""""""
@@ -231,19 +248,23 @@ nnoremap gk k
 nnoremap j gj
 nnoremap gj j
 
+" Jump to anywhere you want with minimal keystrokes, with just one key binding.
+" `s{char}{char}{label}`
+nmap s <Plug>(easymotion-overwin-f2)
+
 " Toggle spell checking on and off with `,s`
-nmap <silent> <leader>s :set spell!<CR>
+" nmap <silent> <leader>s :set spell!<CR>
 
 " TODO: Enable spellcheck for markdown and txt files
 " TODO: Add autocorrect.vim
-augroup spellcheck
-	autocmd!
-	autocmd BufRead,BufNewFile *.md set filetype=markdown
-	autocmd BufRead,BufNewFile *.txt set filetype=text
-	autocmd FileType markdown setlocal spell
-	autocmd FileType text setlocal spell
-	hi SpellBad cterm=underline ctermfg=red
-augroup END
+" augroup spellcheck
+	" autocmd!
+	" autocmd BufRead,BufNewFile *.md set filetype=markdown
+	" autocmd BufRead,BufNewFile *.txt set filetype=text
+	" autocmd FileType markdown setlocal spell
+	" autocmd FileType text setlocal spell
+	" hi SpellBad cterm=underline ctermfg=red
+" augroup END
 
 " Append modeline after last line in buffer with <Leader>ml
 " Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
@@ -274,26 +295,8 @@ function! CycleCasing(str)
 endfunction
 vnoremap <c-u> y:call setreg('', CycleCasing(@"), getregtype(''))<CR>gv""Pgv
 
-
-"""""""""""""""""
-" Plugin Settings
-"""""""""""""""""
-
-" Yep, shoulda been writing code instead of picking different colorscehemes.
-"colorscheme snow
-colorscheme gruvbox
-"colorscheme onedark
-"colorscheme OceanicNext
-
-let g:gruvbox_contrast_dark='dark'
-
-" Theme
-set background=dark
-"set background=light
-
-" TODO: Move to YouCompleteMe
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" CoC Config
+" coc.nvim
 " https://github.com/neoclide/coc.nvim#example-vim-configuration
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -391,14 +394,14 @@ command! -nargs=0 Format :call CocAction('format')
 " Use `:Fold` to fold current buffer
 command! -nargs=? Fold :call CocAction('fold', <f-args>)
 
-""""""""""""""""
-" End CoC Config
-""""""""""""""""
+""""""""""""""
+" End coc.nvim
+""""""""""""""
 
-let python_highlight_all=1
-syntax on
+""""""""""
+" Startify
+""""""""""
 
-"Startify config
 let g:startify_lists = [
 			\ { 'type': 'files',     'header': ['   MRU']            },
 			\ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
@@ -415,13 +418,13 @@ let g:startify_bookmarks = [
 			\ {'e': '~/Desktop/Development/notes'} ]
 
 let g:startify_custom_header = [
-            \ ' ',
-            \ '            __',
-            \ '    __  __ /\_\    ___ ___',
-            \ '   /\ \/\ \\/\ \ /'' __` __`\',
-            \ '   \ \ \_/ |\ \ \/\ \/\ \/\ \',
-            \ '    \ \___/  \ \_\ \_\ \_\ \_\',
-            \ '     \/__/    \/_/\/_/\/_/\/_/',
+			\ ' ',
+			\ '            __',
+			\ '    __  __ /\_\    ___ ___',
+			\ '   /\ \/\ \\/\ \ /'' __` __`\',
+			\ '   \ \ \_/ |\ \ \/\ \/\ \/\ \',
+			\ '    \ \___/  \ \_\ \_\ \_\ \_\',
+			\ '     \/__/    \/_/\/_/\/_/\/_/',
 			\ ]
 
 let g:startify_files_number = 8
@@ -429,7 +432,9 @@ let g:startify_update_oldfiles = 0
 let g:startify_session_persistence = 1
 let g:startify_session_autoload = 1
 
-" NERDTree Config
+""""""""""
+" NERDTree
+""""""""""
 
 " On $ vim, open startify and NERDTree
 augroup nerdtree-open-close
@@ -450,10 +455,6 @@ let NERDTreeStatusline = 0
 " vim-easymotion
 " Turn on case insensitive feature
 let g:EasyMotion_smartcase = 1
-
-" Jump to anywhere you want with minimal keystrokes, with just one key binding.
-" `s{char}{char}{label}`
-nmap s <Plug>(easymotion-overwin-f2)
 
 " Vim Dev Icons
 let g:WebDevIconsUnicodeGlyphDoubleWidth = 0
@@ -478,15 +479,18 @@ let g:airline#extensions#tabline#enabled = 1
 " Show just the filename
 let g:airline#extensions#tabline#fnamemod = ':t'
 
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
 """""""""""""""
 " NerdCommenter
 """""""""""""""
 
-" Add spaces after comment delimiters by default
+" Add spaces after comment delimiters
 let g:NERDSpaceDelims = 1
 " Allow commenting and inverting empty lines (useful when commenting a region)
 let g:NERDCommentEmptyLines = 1
-" Enable trimming of trailing whitespace when uncommenting
+" Trim trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
 
 """""""""""""
@@ -503,8 +507,6 @@ let g:bullets_enabled_file_types = [
 """""""""""
 " Syntastic
 """""""""""
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
@@ -517,4 +519,6 @@ let g:syntastic_python_pylint_exe = 'python3 -m pylint'
 " Python
 """"""""
 
+let python_highlight_all=1
 let g:python3_host_prog = '/usr/local/bin/python3'
+
