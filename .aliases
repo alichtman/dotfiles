@@ -59,7 +59,7 @@ alias please='sudo $(fc -ln -1)' # Rerun last command with sudo
 alias google="googler -l en"
 alias fuck='eval $(TF_ALIAS=fuck PYTHONIOENCODING=utf-8 thefuck $(fc -ln -1))'
 alias activate=". venv/bin/activate"
-alias backup-dots='shallow-backup -dotfiles && cd ~/shallow-backup/dotfiles/ && ga . && gc -m "Update Dotfiles" && gp'
+alias backup-dots='shallow-backup -dotfiles && cd ~/shallow-backup/dotfiles/ && ga . && gc -m "Update Dotfiles" && gp && cd -1'
 
 
 # Editing
