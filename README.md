@@ -1,6 +1,9 @@
-# Aaron's Dotfiles 
+# Aaron's Dotfiles
 
 These are written for `macOS`, but they are `Linux` compatible for the most part. Automatically backed up with [`shallow-backup`](https://github.com/alichtman/shallow-backup).
+
+![Tmux Demo](img/tmux.png)
+![Vim Demo](img/vim.png)
 
 My default setup consists mainly of:
 
