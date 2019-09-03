@@ -29,6 +29,10 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " File explorer.
 Plug 'scrooloose/nerdtree'
 
+" Tags
+Plug 'majutsushi/tagbar'
+Plug 'ludovicchabant/vim-gutentags'
+
 Plug 'easymotion/vim-easymotion'
 
 " Git
@@ -103,6 +107,8 @@ augroup END
 
 " Use gtf to jump to files with these extensions
 set suffixesadd=.md,.c,.h,.cpp,.py,.tex
+
+set tags=tags
 
 " Don't treat hyphens and underscores like whitespace
 set iskeyword+=-
@@ -184,6 +190,7 @@ filetype plugin indent on
 " Yep, shoulda been writing code instead of picking different colorscehemes.
 "colorscheme snow
 colorscheme gruvbox
+"colorscheme jellybeans
 "colorscheme onedark
 "colorscheme OceanicNext
 
@@ -277,8 +284,11 @@ function! AppendModeline()
 endfunction
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 
-" Open / Close NERDTree with Ctrl + n
-map <C-n> :NERDTreeToggle<CR>
+" Toggle NERDTree
+nmap <C-n> :NERDTreeToggle<CR>
+
+" Toggle tagbar
+nmap <Leader>tb :TagbarToggle<CR>
 
 " Visually select text then press Ctrl-u to convert the text to UPPER CASE,
 " then to lower case, then to Title Case.

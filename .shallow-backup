@@ -2,10 +2,8 @@
     "backup_path": "~/shallow-backup",
     "dotfiles": [
         ".aliases",
-        ".bashrc",
-        ".bash_profile",
+        ".ctags",
         ".gitconfig",
-        ".profile",
         ".pypirc",
         ".radare2rc",
         ".shallow-backup",
