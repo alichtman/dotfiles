@@ -26,12 +26,13 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "Plug 'davidhalter/jedi-vim'
 "Plug 'w0rp/ale'
 
-" File explorer.
+" File explorers
 Plug 'scrooloose/nerdtree'
+Plug 'ctrlpvim/ctrlp.vim'
 
 " Tags
 Plug 'majutsushi/tagbar'
-Plug 'ludovicchabant/vim-gutentags'
+"Plug 'ludovicchabant/vim-gutentags'
 
 Plug 'easymotion/vim-easymotion'
 
@@ -84,13 +85,19 @@ set title        " Show the filename in the window titlebar
 set backspace=indent,eol,start " Allow backspace in insert mode
 set modeline
 set ruler
+
+" Showing mode under statusline with mode is redundant
+set noshowmode
 set secure
 set spelllang=en
+set scrolloff=8
 syntax on
 
 " Tab completion menu
 set wildmenu
 set wildmode=full
+
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 
 " Undo
 set undolevels=1000  " store a bunch of undo history
@@ -129,6 +136,9 @@ if &term =~ '256color'
     " work properly when Vim is used inside tmux and GNU screen.
     set t_ut=
 endif
+
+" If opening buffer, search first in opened windows.
+set switchbuf=usetab
 
 " Line breaking
 set wrap
@@ -190,7 +200,6 @@ filetype plugin indent on
 " Yep, shoulda been writing code instead of picking different colorscehemes.
 "colorscheme snow
 colorscheme gruvbox
-"colorscheme jellybeans
 "colorscheme onedark
 "colorscheme OceanicNext
 
@@ -250,10 +259,14 @@ noremap <A-j> ddjP
 noremap <A-k> ddkP
 
 " Make j and k operate on virtual lines, not real lines.
-nnoremap k gk
-nnoremap gk k
+vnoremap j gj
+vnoremap k gk
 nnoremap j gj
-nnoremap gj j
+nnoremap k gk
+
+" Auto center on matched string.
+noremap n nzz
+noremap N Nzz
 
 " Jump to anywhere you want with minimal keystrokes, with just one key binding.
 " `s{char}{char}{label}`
@@ -285,7 +298,13 @@ endfunction
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 
 " Toggle NERDTree
-nmap <C-n> :NERDTreeToggle<CR>
+function! ToggleNerdTree()
+	:NERDTreeToggle
+	:AirlineRefresh
+endfunction
+nnoremap <Leader>n :call ToggleNerdTree()<CR>
+
+noremap <Leader>/ :noh<CR>
 
 " Toggle tagbar
 nmap <Leader>tb :TagbarToggle<CR>
@@ -461,6 +480,30 @@ augroup END
 
 let NERDTreeShowHidden = 1
 let NERDTreeStatusline = 0
+
+""""""""""""""
+" END NERDTree
+""""""""""""""
+
+""""""""
+" ctrl-p
+""""""""
+
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+if executable('ag')
+    set grepprg=ag\ --nogroup\ --nocolor
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+else
+  let g:ctrlp_user_command = ['.git',
+    \ 'cd %s && git ls-files . -co --exclude-standard',
+    \ 'find %s -type f' ]
+endif
+
+""""""""""""
+" END ctrl-p
+""""""""""""
 
 " vim-easymotion
 " Turn on case insensitive feature

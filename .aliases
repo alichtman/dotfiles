@@ -68,6 +68,10 @@ alias vimdiff="nvim -d"
 alias xcode='open -a Xcode'
 alias tags='ctags -R .'
 
+# Quick access to configs
+alias vimrc='vim ~/.vimrc'
+alias tmux.conf='vim ~/.tmux.conf'
+
 # vim habits
 alias :wq="exit"
 alias :q="exit"
