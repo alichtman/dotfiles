@@ -41,7 +41,7 @@ Plug 'mhinz/vim-startify'
 Plug 'ryanoasis/vim-devicons'
 
 " Themes
-Plug 'joshdick/onedark.vim'
+"Plug 'joshdick/onedark.vim'
 Plug 'morhetz/gruvbox'
 "Plug 'nightsense/snow'
 "Plug 'mhartington/oceanic-next'
@@ -73,7 +73,6 @@ call plug#end()
 " }}}
 
 " General Settings    {{{
-""""""""""""""""""
 
 set nocompatible
 set autochdir
@@ -155,7 +154,6 @@ let g:vim_markdown_toc_autofit = 1
 " END General Settings    }}}
 
 " AutoGroups {{{
-""""""""""""
 
 augroup AutoCloseVim
 	autocmd!
@@ -203,8 +201,7 @@ augroup END
 
 " END AutoGroups- }}}
 
-" Indentataion {{{
-""""""""""""""
+" Indentation {{{
 
 set autoindent
 set smartindent
@@ -265,19 +262,13 @@ command! Qa qa
 inoremap jk <Esc>
 inoremap kj <Esc>
 
-" Quoting Shortcuts
-" TODO: tpope/vim-surround instead?
-" nnoremap <leader>" viw<esc>bi"<esc>ea"<esc>lel
-" nnoremap <leader>' viw<esc>bi'<esc>ea'<esc>lel
-" nnoremap <leader>` viw<esc>bi`<esc>ea`<esc>lel
-
 " Make help always appear as a vertical split.
 cabbrev h vert h
 
 " Distraction Free Mode
 nnoremap <silent> <leader>z :Goyo<cr>
 
-"Traverse the buffer list more easily.
+" Traverse the buffer list more easily.
 nnoremap <silent> b[ :bprevious<CR>
 nnoremap <silent> b] :bnext<CR>
 nnoremap <silent> B[ :bfirst<CR>
@@ -333,6 +324,7 @@ function! ToggleNerdTree()
 endfunction
 nnoremap <Leader>n :call ToggleNerdTree()<CR>
 
+" Turn off search highlighting
 noremap <Leader>/ :noh<CR>
 
 " Toggle tagbar
@@ -519,6 +511,7 @@ let g:EasyMotion_smartcase = 1
 " END vim-easymotion }}}
 
 " Better Whitespace {{{
+"
 let g:better_whitespace_enabled=1
 let g:strip_whitespace_on_save=1
 let g:better_whitespace_skip_empty_lines=1
@@ -560,7 +553,7 @@ let g:bullets_enabled_file_types = [
 			\ 'scratch'
 			\]
 
-" Bullets.vim }}}
+" END Bullets.vim }}}
 
 " Syntastic {{{
 
@@ -571,11 +564,11 @@ let g:syntastic_check_on_wq = 1
 let g:syntastic_python_python_exec = 'python3'
 let g:syntastic_python_pylint_exe = 'python3 -m pylint'
 
-" Syntastic }}}
+" END Syntastic }}}
 
 " Python {{{
 
 let python_highlight_all=1
 let g:python3_host_prog = '/usr/local/bin/python3'
 
-" }}}
+" END Python }}}
