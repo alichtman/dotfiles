@@ -25,8 +25,38 @@ fman() {
 # git
 #####
 
+# gi [OS,LANGUAGE,ETC]
 function gi() {
 	curl -sLw "\n" https://www.gitignore.io/api/"$@" ;
+}
+
+
+#####
+# Backup Dotfiles
+#####
+
+# backup-dots [COMMIT MESSAGE]
+function backup-dots() {
+	# Make a new backup of the dotfiles
+	(shallow-backup -dotfiles;
+	# curr_dir=`pwd`;
+	cd "$HOME/shallow-backup/dotfiles/" || exit
+	git add .
+
+	commit_msg="$1"
+	if [ -z "$commit_msg" ] ; then
+		git diff --staged
+		echo "Enter a commit message...";
+		read -r commit_msg
+		if [ -z "$commit_msg" ]; then
+			echo "No commit message found. Exiting.";
+			exit;
+		fi
+	fi
+
+	git commit -m "$commit_msg" && git push;
+	# cd "$curr_dir";
+	)
 }
 
 ######
@@ -35,7 +65,7 @@ function gi() {
 
 # Make a directory and cd into it.
 mk() {
-	mkdir "$1" && cd "$1"
+	mkdir "$1" && cd "$1" || exit;
 }
 
 #  vim: set ts=4 sw=4 tw=0 syntax=zsh noet :

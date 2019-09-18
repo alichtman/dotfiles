@@ -15,6 +15,9 @@ alias color_ll='LC_COLLATE=cs_CZ.ISO8859-2 colorls -l -A --sd --gs'
 alias j='z'
 alias jj='zz'
 
+# Because I clearly can't fucking type
+alias cdd='cd'
+
 #########
 # Updates
 #########
@@ -60,7 +63,7 @@ alias please='sudo $(fc -ln -1)' # Rerun last command with sudo
 alias google="googler -l en"
 alias fuck='eval $(TF_ALIAS=fuck PYTHONIOENCODING=utf-8 thefuck $(fc -ln -1))'
 alias activate=". venv/bin/activate"
-alias backup-dots='(shallow-backup -dotfiles && cd ~/shallow-backup/dotfiles/ && ga . && gc -m "Update Dotfiles" && gp)'
+# alias backup-dots='(shallow-backup -dotfiles && cd ~/shallow-backup/dotfiles/ && ga . && gc -m "Update Dotfiles" && gp)'
 
 # Editing
 alias vim='nvim'
@@ -85,6 +88,7 @@ alias news='newsroom'
 alias matrix='unimatrix -s 93'
 alias pipes='pipes.sh -f 75 -t 3 -B'
 alias trip='yes "$(seq 231 -1 16)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
+alias spotify='(cd ~/.config/spotify-tui && spotify-tui)'
 
 ##################
 # macOS Management

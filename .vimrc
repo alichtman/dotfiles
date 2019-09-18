@@ -1,16 +1,14 @@
-" .vimrc for Neovim
+" .vimrc for Neovim on macOS
 " Aaron Lichtman
 
-"""""""
 " TODO
 " Wrap every autocommand in an augroup with multiple autocommands in the same group if it makes sense
 " Better logical organization of settings
 " Finish configuring coc.nvim
 " Figure out how to use tags
 
-"""""""""
-" Plugins
-"""""""""
+" Plugins {{{
+
 call plug#begin('~/.vim/plugged')
 
 Plug 'ntpeters/vim-better-whitespace'
@@ -19,12 +17,12 @@ Plug 'sheerun/vim-polyglot'
 
 " Automatic closing of quotes, parenthesis, brackets, etc
 Plug 'Raimondi/delimitMate'
+" Add quotes around text
+Plug 'tpope/vim-surround'
 
 " Linting and Completion
 Plug 'vim-syntastic/syntastic'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-"Plug 'davidhalter/jedi-vim'
-"Plug 'w0rp/ale'
 
 " File explorers
 Plug 'scrooloose/nerdtree'
@@ -32,7 +30,6 @@ Plug 'ctrlpvim/ctrlp.vim'
 
 " Tags
 Plug 'majutsushi/tagbar'
-"Plug 'ludovicchabant/vim-gutentags'
 
 Plug 'easymotion/vim-easymotion'
 
@@ -44,7 +41,7 @@ Plug 'mhinz/vim-startify'
 Plug 'ryanoasis/vim-devicons'
 
 " Themes
-"Plug 'joshdick/onedark.vim'
+Plug 'joshdick/onedark.vim'
 Plug 'morhetz/gruvbox'
 "Plug 'nightsense/snow'
 "Plug 'mhartington/oceanic-next'
@@ -52,7 +49,7 @@ Plug 'morhetz/gruvbox'
 " Status bar
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-
+"
 " Tables and alignment
 Plug 'godlygeek/tabular'
 
@@ -73,9 +70,9 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'wakatime/vim-wakatime'
 
 call plug#end()
+" }}}
 
-""""""""""""""""""
-" General Settings
+" General Settings    {{{
 """"""""""""""""""
 
 set nocompatible
@@ -90,7 +87,7 @@ set ruler
 set noshowmode
 set secure
 set spelllang=en
-set scrolloff=8
+set scrolloff=6
 syntax on
 
 " Tab completion menu
@@ -103,14 +100,7 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 set undolevels=1000  " store a bunch of undo history
 set undofile
 
-" Automatically use absolute line numbers when we’re in insert mode
-" and relative numbers when we’re in normal mode
 set number
-
-augroup lineNumbers
-	autocmd InsertEnter * :set number
-	autocmd InsertLeave * :set relativenumber
-augroup END
 
 " Use gtf to jump to files with these extensions
 set suffixesadd=.md,.c,.h,.cpp,.py,.tex
@@ -157,26 +147,63 @@ set cursorline
 set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
 set list
 
-" Restore cursor position when opening a file
-autocmd BufReadPost *
-			\ if line("'\"") > 1 && line("'\"") <= line("$") |
-			\   execute "normal! g`\"" |
-			\ endif
-
-" Close vim if the quickfix window is the only window visible (and only tab)
-" https://stackoverflow.com/a/7477056
-aug QFClose
-  au!
-  au WinEnter * if winnr('$') == 1 && &buftype == "quickfix"|q|endif
-aug END
-
 " Disable Markdown folding
 let g:vim_markdown_folding_disabled = 1
 " Autoresize TOC window
 let g:vim_markdown_toc_autofit = 1
 
-""""""""""""""
-" Indentataion
+" END General Settings    }}}
+
+" AutoGroups {{{
+""""""""""""
+
+augroup AutoCloseVim
+	autocmd!
+	" Close vim if the quickfix window is the only window visible (and only tab)
+	" https://stackoverflow.com/a/7477056
+	autocmd WinEnter * if winnr('$') == 1 && &buftype == "quickfix" | q | endif
+	" Close vim if only thing remaining is NERDTree
+	autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+augroup END
+
+" If opening vim without a file, open startify and NERDTree
+augroup OnOpenVim
+	autocmd!
+	autocmd VimEnter *
+				\   if !argc()
+				\ |   Startify
+				\ |   NERDTree
+				\ |   wincmd w
+				\ | endif
+augroup END
+
+
+" Restore cursor position when opening a file
+augroup OnOpenFile
+	autocmd!
+	autocmd BufReadPost *
+				\ if line("'\"") > 1 && line("'\"") <= line("$") |
+				\   execute "normal! g`\"" |
+				\ endif
+augroup END
+
+" Automatically use absolute line numbers when we’re in insert mode
+" and relative numbers when we’re in normal mode
+augroup lineNumbers
+	autocmd!
+	autocmd InsertEnter * :set number
+	autocmd InsertLeave * :set relativenumber
+augroup END
+
+" Auto folding in vimscript files with {{{ and }}}
+augroup filetype_vim
+	autocmd!
+	autocmd FileType vim setlocal foldmethod=marker
+augroup END
+
+" END AutoGroups- }}}
+
+" Indentataion {{{
 """"""""""""""
 
 set autoindent
@@ -192,10 +219,9 @@ set shiftwidth=4
 set tabstop=4
 filetype plugin indent on
 
+" END Indentation }}}
 
-""""""""""""
-" Appearance
-""""""""""""
+" Appearance {{{
 
 " Yep, shoulda been writing code instead of picking different colorscehemes.
 "colorscheme snow
@@ -208,9 +234,15 @@ let g:gruvbox_contrast_dark='dark'
 set background=dark
 "set background=light
 
-""""""""""""
-" Remappings
-""""""""""""
+" Vim Dev Icons
+let g:WebDevIconsUnicodeGlyphDoubleWidth = 0
+let g:WebDevIconsOS = 'Darwin'
+let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
+let g:webdevicons_conceal_nerdtree_brackets = 0
+
+" Appearance }}}
+
+" Remappings {{{
 
 " Set , as leader
 let mapleader = ","
@@ -218,7 +250,7 @@ let maplocalleader = "-"
 
 " Quickly edit dotfiles
 nnoremap <leader>ev :vsplit ~/.vimrc<cr>
-nnoremap <leader>sv :source ~/.vimrc<cr>
+nnoremap <leader>sv :source ~/.vimrc<cr>:AirlineRefresh<cr>
 nnoremap <leader>et :vsplit ~/.tmux.conf<cr>
 
 " Yeet those "Not an editor command" errors right out the fucking window
@@ -241,9 +273,6 @@ inoremap kj <Esc>
 
 " Make help always appear as a vertical split.
 cabbrev h vert h
-
-" Insert mdash
-iabbrev <buffer> --- &mdash
 
 " Distraction Free Mode
 nnoremap <silent> <leader>z :Goyo<cr>
@@ -324,10 +353,10 @@ function! CycleCasing(str)
 endfunction
 vnoremap <c-u> y:call setreg('', CycleCasing(@"), getregtype(''))<CR>gv""Pgv
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" coc.nvim
+" Remappings }}}
+
+" coc.nvim {{{
 " https://github.com/neoclide/coc.nvim#example-vim-configuration
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " if hidden is not set, TextEdit might fail.
 set hidden
@@ -423,13 +452,9 @@ command! -nargs=0 Format :call CocAction('format')
 " Use `:Fold` to fold current buffer
 command! -nargs=? Fold :call CocAction('fold', <f-args>)
 
-""""""""""""""
-" End coc.nvim
-""""""""""""""
+" End coc.nvim }}}
 
-""""""""""
-" Startify
-""""""""""
+" Startify {{{
 
 let g:startify_lists = [
 			\ { 'type': 'files',     'header': ['   MRU']            },
@@ -461,33 +486,16 @@ let g:startify_update_oldfiles = 0
 let g:startify_session_persistence = 1
 let g:startify_session_autoload = 1
 
-""""""""""
-" NERDTree
-""""""""""
+" END Startify }}}
 
-" On $ vim, open startify and NERDTree
-augroup nerdtree-open-close
-	autocmd VimEnter *
-				\   if !argc()
-				\ |   Startify
-				\ |   NERDTree
-				\ |   wincmd w
-				\ | endif
-
-	" Close vim if only thing remaining is NERDTree
-	autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-augroup END
+" NERDTree {{{
 
 let NERDTreeShowHidden = 1
 let NERDTreeStatusline = 0
 
-""""""""""""""
-" END NERDTree
-""""""""""""""
+" END NERDTree }}}
 
-""""""""
-" ctrl-p
-""""""""
+" ctrl-p {{{
 
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_working_path_mode = 'ra'
@@ -501,29 +509,24 @@ else
     \ 'find %s -type f' ]
 endif
 
-""""""""""""
-" END ctrl-p
-""""""""""""
+" END ctrl-p }}}
 
-" vim-easymotion
+" vim-easymotion {{{
+
 " Turn on case insensitive feature
 let g:EasyMotion_smartcase = 1
 
-" Vim Dev Icons
-let g:WebDevIconsUnicodeGlyphDoubleWidth = 0
-let g:WebDevIconsOS = 'Darwin'
-let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
-let g:webdevicons_conceal_nerdtree_brackets = 0
+" END vim-easymotion }}}
 
-" Better Whitespace
+" Better Whitespace {{{
 let g:better_whitespace_enabled=1
 let g:strip_whitespace_on_save=1
 let g:better_whitespace_skip_empty_lines=1
 let g:show_spaces_that_precede_tabs=1
 
-"""""""""""""
-" Status Line
-"""""""""""""
+" END Better Whitespace }}}
+
+" Status Line {{{
 
 let g:airline_theme='onedark'
 let g:airline_powerline_fonts = 1
@@ -535,9 +538,9 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-"""""""""""""""
-" NerdCommenter
-"""""""""""""""
+" Status Line }}}
+
+" NerdCommenter {{{
 
 " Add spaces after comment delimiters
 let g:NERDSpaceDelims = 1
@@ -546,9 +549,9 @@ let g:NERDCommentEmptyLines = 1
 " Trim trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
 
-"""""""""""""
-" Bullets.vim
-"""""""""""""
+" NerdCommenter }}}
+
+" Bullets.vim {{{
 
 let g:bullets_enabled_file_types = [
 			\ 'markdown',
@@ -557,9 +560,9 @@ let g:bullets_enabled_file_types = [
 			\ 'scratch'
 			\]
 
-"""""""""""
-" Syntastic
-"""""""""""
+" Bullets.vim }}}
+
+" Syntastic {{{
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
@@ -568,10 +571,11 @@ let g:syntastic_check_on_wq = 1
 let g:syntastic_python_python_exec = 'python3'
 let g:syntastic_python_pylint_exe = 'python3 -m pylint'
 
-""""""""
-" Python
-""""""""
+" Syntastic }}}
+
+" Python {{{
 
 let python_highlight_all=1
 let g:python3_host_prog = '/usr/local/bin/python3'
 
+" }}}
