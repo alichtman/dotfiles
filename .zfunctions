@@ -37,25 +37,20 @@ function gi() {
 
 # backup-dots [COMMIT MESSAGE]
 function backup-dots() {
-	# Make a new backup of the dotfiles
+	echo "Ignore the shallow-backup errors..."
 	(shallow-backup -dotfiles;
-	# curr_dir=`pwd`;
 	cd "$HOME/shallow-backup/dotfiles/" || exit
 	git add .
 
+	# If no commit message is provided, open vim.
+	# Otherwise, commit with the provided message
 	commit_msg="$1"
 	if [ -z "$commit_msg" ] ; then
-		git diff --staged
-		echo "Enter a commit message...";
-		read -r commit_msg
-		if [ -z "$commit_msg" ]; then
-			echo "No commit message found. Exiting.";
-			exit;
-		fi
+		git commit --verbose
+	else
+		git commit -m "$commit_msg"
 	fi
-
-	git commit -m "$commit_msg" && git push;
-	# cd "$curr_dir";
+	git push;
 	)
 }
 
