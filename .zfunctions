@@ -38,7 +38,8 @@ function gi() {
 # backup-dots [COMMIT MESSAGE]
 function backup-dots() {
 	echo "Ignore the shallow-backup errors..."
-	(shallow-backup -dotfiles;
+	(
+	shallow-backup -no_splash -dotfiles;
 	cd "$HOME/shallow-backup/dotfiles/" || exit
 	git add .
 
@@ -50,7 +51,7 @@ function backup-dots() {
 	else
 		git commit -m "$commit_msg"
 	fi
-	git push;
+	git push
 	)
 }
 
