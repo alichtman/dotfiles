@@ -81,6 +81,7 @@ set title        " Show the filename in the window titlebar
 set backspace=indent,eol,start " Allow backspace in insert mode
 set modeline
 set ruler
+set clipboard=unnamed
 
 " Showing mode under statusline with mode is redundant
 set noshowmode

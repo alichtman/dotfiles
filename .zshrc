@@ -65,6 +65,9 @@ export VISUAL='nvim'
 export ZSH=$HOME/.oh-my-zsh
 export NOTES=$HOME/Desktop/Development/notes
 
+export ZSH_STARTIFY_NO_SPLASH=true
+export ZSH_STARTIFY_NON_INTERACTIVE=true
+
 ###################
 # oh-my-zsh Plugins
 ###################

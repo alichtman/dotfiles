@@ -37,7 +37,7 @@ function gi() {
 
 # backup-dots [COMMIT MESSAGE]
 function backup-dots() {
-	echo "Ignore the shallow-backup errors..."
+	echo "Backing up..."
 	(
 	shallow-backup -no_splash -dotfiles;
 	cd "$HOME/shallow-backup/dotfiles/" || exit
