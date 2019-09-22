@@ -57,6 +57,7 @@ alias pypiup='python3 setup.py bdist_wheel; twine upload --repository pypi dist/
 alias pypibinary='python3 setup.py sdist'
 
 # Convenience
+alias help='navi'
 alias ip_en0='ipconfig getifaddr en0'
 alias ip_tun0='ipconfig getifaddr tun0'
 alias please='sudo $(fc -ln -1)' # Rerun last command with sudo
@@ -69,6 +70,7 @@ alias vim='nvim'
 alias vimdiff="nvim -d"
 alias xcode='open -a Xcode'
 alias tags='ctags -R .'
+alias sbtIDE='sbt launchIDE'
 
 # Quick access to configs
 alias vimrc='vim ~/.vimrc'

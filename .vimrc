@@ -75,12 +75,12 @@ call plug#end()
 " General Settings    {{{
 
 set nocompatible
-set autochdir
 set nostartofline  " Don’t reset cursor to start of line when moving around.
 set title        " Show the filename in the window titlebar
 set backspace=indent,eol,start " Allow backspace in insert mode
 set modeline
 set ruler
+" Copy to macOS clipboard
 set clipboard=unnamed
 
 " Showing mode under statusline with mode is redundant
@@ -176,6 +176,12 @@ augroup OnOpenVim
 				\ | endif
 augroup END
 
+" TODO: auto-save fold views
+" augroup AutoSaveFolds
+	" autocmd!
+	" autocmd BufWinLeave * mkview
+	" autocmd BufWinEnter * silent loadview
+" augroup END
 
 " Restore cursor position when opening a file
 augroup OnOpenFile
@@ -221,7 +227,7 @@ filetype plugin indent on
 
 " Appearance {{{
 
-" Yep, shoulda been writing code instead of picking different colorscehemes.
+" Yep, shoulda been writing code instead of picking different colorschemes.
 "colorscheme snow
 colorscheme gruvbox
 "colorscheme onedark
@@ -242,7 +248,7 @@ let g:webdevicons_conceal_nerdtree_brackets = 0
 
 " Remappings {{{
 
-" Set , as leader
+" Set , as leader and - as localleader
 let mapleader = ","
 let maplocalleader = "-"
 
@@ -251,7 +257,7 @@ nnoremap <leader>ev :vsplit ~/.vimrc<cr>
 nnoremap <leader>sv :source ~/.vimrc<cr>:AirlineRefresh<cr>
 nnoremap <leader>et :vsplit ~/.tmux.conf<cr>
 
-" Yeet those "Not an editor command" errors right out the fucking window
+" Yeet those 'Not an editor command' errors right out the fucking window
 " Or, defenestrate, as my Dad would say.
 command! WQ wq
 command! Wq wq
@@ -264,7 +270,7 @@ inoremap jk <Esc>
 inoremap kj <Esc>
 
 " Make help always appear as a vertical split.
-cabbrev h vert h
+cabbrev hv vert h
 
 " Distraction Free Mode
 nnoremap <silent> <leader>z :Goyo<cr>
