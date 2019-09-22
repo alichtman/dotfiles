@@ -176,12 +176,12 @@ augroup OnOpenVim
 				\ | endif
 augroup END
 
-" TODO: auto-save fold views
-" augroup AutoSaveFolds
-	" autocmd!
-	" autocmd BufWinLeave * mkview
-	" autocmd BufWinEnter * silent loadview
-" augroup END
+" auto-save fold views
+augroup AutoSaveFolds
+	autocmd!
+	autocmd BufWinLeave * mkview
+	autocmd BufWinEnter * silent! loadview
+augroup END
 
 " Restore cursor position when opening a file
 augroup OnOpenFile
