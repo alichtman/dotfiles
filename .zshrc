@@ -5,11 +5,13 @@
 # Prompt Styling
 ################
 
-ZSH_THEME="spaceship"
-#ZSH_THEME="agnoster"
+# ZSH_THEME="spaceship"
+# ZSH_THEME="agnoster"
+
+eval "$(starship init zsh)"
 
 # Spaceship Config
-if [ $ZSH_THEME = "spaceship" ]; then
+if [[ "$ZSH_THEME" = "spaceship" ]]; then
   SPACESHIP_TIME_SHOW=true
   SPACESHIP_TIME_12HR=true
   SPACESHIP_TIME_FORMAT=%@

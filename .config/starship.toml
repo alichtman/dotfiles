@@ -1,0 +1,36 @@
+# Replace the "❯" symbol in the prompt with "➜"
+[character]      # The name of the module we are configuring is "character"
+symbol = "➜"     # The "symbol" segment is being set to "➜"
+error_symbol = "✗"
+use_symbol_for_status = true
+
+[cmd_duration]
+min_time = 1
+
+[time]
+disabled = false
+12hr = true
+prefix = ""
+
+prompt_order = [
+    "username",
+    "hostname",
+    "directory",
+    "git_branch",
+    "git_state",
+    "git_status",
+    "package",
+    "nodejs",
+    "ruby",
+    "rust",
+    "python",
+    "golang",
+    "java",
+    "nix_shell",
+    "time",
+    "cmd_duration",
+    "line_break",
+    "jobs",
+    "battery",
+    "character",
+]

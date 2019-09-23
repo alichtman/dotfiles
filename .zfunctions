@@ -38,7 +38,7 @@ function gi() {
 function backup-dots() {
 	echo "Backing up..."
 	(
-	shallow-backup -no_splash -dotfiles;
+	shallow-backup -no_splash -dotfiles -separate_dotfiles_repo;
 	cd "$HOME/shallow-backup/dotfiles/" || exit
 	git add .
 

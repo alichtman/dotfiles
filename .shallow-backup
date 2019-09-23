@@ -3,6 +3,7 @@
     "dotfiles": [
         ".aliases",
         ".ctags",
+        ".config/starship.toml",
         ".gitconfig",
         ".pypirc",
         ".radare2rc",
