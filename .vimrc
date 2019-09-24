@@ -6,6 +6,7 @@
 " Better logical organization of settings
 " Finish configuring coc.nvim
 " Figure out how to use tags
+" set conceallevel=2 for markdown files?
 
 " Plugins {{{
 
@@ -252,8 +253,8 @@ let g:webdevicons_conceal_nerdtree_brackets = 0
 let mapleader = ","
 let maplocalleader = "-"
 
-" Quickly edit dotfiles
-nnoremap <leader>ev :vsplit ~/.vimrc<cr>
+" Quickly edit configs
+cnoremap <leader>ev :vsplit ~/.vimrc<cr>
 nnoremap <leader>sv :source ~/.vimrc<cr>:AirlineRefresh<cr>
 nnoremap <leader>et :vsplit ~/.tmux.conf<cr>
 
@@ -500,12 +501,12 @@ let g:ctrlp_map = '<c-p>'
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 if executable('ag')
-    set grepprg=ag\ --nogroup\ --nocolor
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+	set grepprg=ag\ --nogroup\ --nocolor
+	let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 else
   let g:ctrlp_user_command = ['.git',
-    \ 'cd %s && git ls-files . -co --exclude-standard',
-    \ 'find %s -type f' ]
+	\ 'cd %s && git ls-files . -co --exclude-standard',
+	\ 'find %s -type f' ]
 endif
 
 " END ctrl-p }}}

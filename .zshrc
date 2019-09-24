@@ -1,59 +1,12 @@
 # .zshrc for macOS
 # Aaron Lichtman
 
-################
-# Prompt Styling
-################
+########
+# Prompt
+########
 
-# ZSH_THEME="spaceship"
-# ZSH_THEME="agnoster"
-
+# Config in ~/.config/starship.toml
 eval "$(starship init zsh)"
-
-# Spaceship Config
-if [[ "$ZSH_THEME" = "spaceship" ]]; then
-  SPACESHIP_TIME_SHOW=true
-  SPACESHIP_TIME_12HR=true
-  SPACESHIP_TIME_FORMAT=%@
-  SPACESHIP_TIME_PREFIX="at"
-  SPACESHIP_DIR_TRUNC_PREFIX=""
-  SPACESHIP_DIR_COLOR="yellow"
-  SPACESHIP_GIT_BRANCH_COLOR="cyan"
-  SPACESHIP_CHAR_SYMBOL="➜ "
-  SPACESHIP_CHAR_SYMBOL_ROOT="# "
-  SPACESHIP_PROMPT_DEFAULT_PREFIX="with "
-  SPACESHIP_PROMPT_DEFAULT_SUFFIX=" "
-
-  SPACESHIP_PROMPT_ORDER=(
-    user          # Username section
-    dir           # Current directory section
-    host          # Hostname section
-    git           # Git section (git_branch + git_status)
-    exec_time     # Execution time
-    line_sep      # Line break
-    jobs          # Background jobs indicator
-    exit_code     # Exit code section
-    char          # Prompt character
-  )
-
-  SPACESHIP_RPROMPT_ORDER=(
-    package       # Package version
-    node          # Node.js section
-    ruby          # Ruby section
-    xcode         # Xcode section
-    swift         # Swift section
-    golang        # Go section
-    php           # PHP section
-    rust          # Rust section
-    haskell       # Haskell Stack section
-    docker        # Docker section
-    venv          # virtualenv section
-    conda         # conda virtualenv section
-    pyenv         # Pyenv section
-    time
-  )
-fi
-
 
 ##########
 # Env Vars
@@ -70,10 +23,11 @@ export NOTES=$HOME/Desktop/Development/notes
 export ZSH_STARTIFY_NO_SPLASH=true
 export ZSH_STARTIFY_NON_INTERACTIVE=true
 
-###################
-# oh-my-zsh Plugins
-###################
+#########
+# Plugins
+#########
 
+# oh-my-zsh
 # Plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 plugins=(
@@ -83,6 +37,20 @@ plugins=(
   zsh-autosuggestions
   zsh-completions
 )
+
+# zplug
+source ~/.zplug/init.zsh
+
+zplug "changyuheng/zsh-interactive-cd"
+zplug "changyuheng/fz", defer:1
+zplug "rupa/z", use:z.sh
+zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+
+# zplug check returns true if all packages are installed
+# Therefore, when it returns false, run zplug install
+if ! zplug check; then
+    zplug install
+fi
 
 ############
 # Completion
@@ -137,15 +105,6 @@ autoload -U compinit && compinit
 
 export ZSH_TMUX_AUTOQUIT=false
 
-# Always work in a tmux session if tmux is installed
-# https://github.com/chrishunt/dot-files/blob/master/.zshrc
-# TODO: Fix "duplicate session" bug
-#if which tmux 2>&1 >/dev/null; then
-#  if [ $TERM != "screen-256color" ] && [  $TERM != "screen" ]; then
-    # tmux attach -t carbon || tmux new -s carbon;
-  # fi
-# fi
-
 ######################
 # General zsh Behavior
 ######################
@@ -157,19 +116,6 @@ unsetopt nomatch
 
 # History date format
 HIST_STAMPS="mm/dd/yyyy"
-
-source ~/.zplug/init.zsh
-
-zplug "changyuheng/zsh-interactive-cd"
-zplug "changyuheng/fz", defer:1
-zplug "rupa/z", use:z.sh
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-
-# zplug check returns true if all packages are installed
-# Therefore, when it returns false, run zplug install
-if ! zplug check; then
-    zplug install
-fi
 
 # fz config
 FZ_CMD=j

@@ -70,9 +70,9 @@ alias vim='nvim'
 alias vimdiff="nvim -d"
 alias xcode='open -a Xcode'
 alias tags='ctags -R .'
-alias sbtIDE='sbt launchIDE'
 
 # Quick access to configs
+alias zshrc='vim ~/.zshrc'
 alias vimrc='vim ~/.vimrc'
 alias tmux.conf='vim ~/.tmux.conf'
 
@@ -84,7 +84,7 @@ alias :q="exit"
 # r/unixporn
 ############
 
-alias weather='curl "wttr.in/`CoreLocationCLI -format "%address" | tail -n+2 | head -n 1 | cut -d" " -f 1`?format=3&u"'
+alias weather='curl "wttr.in/`CoreLocationCLI -format "%address" | tail -n+2 | head -n 1 | cut -d" " -f 1`?&u"'
 alias news='newsroom'
 alias matrix='unimatrix -s 93'
 alias pipes='pipes.sh -f 75 -t 3 -B'
