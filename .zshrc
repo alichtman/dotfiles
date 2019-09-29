@@ -12,6 +12,7 @@ eval "$(starship init zsh)"
 # Env Vars
 ##########
 
+export PYLINTRC='~/.pylintrc'
 export BETTER_EXCEPTIONS=1 # Python Better Exceptions
 export HOMEBREW_NO_ANALYTICS=1
 export BAT_THEME="TwoDark"
@@ -72,6 +73,9 @@ if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 fi
 
+# My custom completions
+fpath=("~/.config/zsh/completions" $fpath)
+
 # pip zsh completion
 function _pip_completion {
   local words cword
@@ -97,7 +101,8 @@ bindkey . _rationalise-dot
 # without this, typing a . aborts incremental history search
 bindkey -M isearch . self-insert
 
-autoload -U compinit && compinit
+# TODO: Stop the creation of a bunch of zcompdump- files in ~
+autoload -U compinit && compinit -d ~/.oh-my-zsh/cache/zcompdump-"$ZSH_VERSION"
 
 ######
 # tmux

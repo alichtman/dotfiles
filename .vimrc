@@ -6,20 +6,10 @@
 " Better logical organization of settings
 " Finish configuring coc.nvim
 " Figure out how to use tags
-" set conceallevel=2 for markdown files?
 
 " Plugins {{{
 
 call plug#begin('~/.vim/plugged')
-
-Plug 'ntpeters/vim-better-whitespace'
-Plug 'jremmen/vim-ripgrep'
-Plug 'sheerun/vim-polyglot'
-
-" Automatic closing of quotes, parenthesis, brackets, etc
-Plug 'Raimondi/delimitMate'
-" Add quotes around text
-Plug 'tpope/vim-surround'
 
 " Linting and Completion
 Plug 'vim-syntastic/syntastic'
@@ -29,45 +19,35 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'scrooloose/nerdtree'
 Plug 'ctrlpvim/ctrlp.vim'
 
-" Tags
-Plug 'majutsushi/tagbar'
-
-Plug 'easymotion/vim-easymotion'
-
-" Git
-Plug 'tpope/vim-fugitive'
-
-" Prettify vim
-Plug 'mhinz/vim-startify'
-Plug 'ryanoasis/vim-devicons'
-
-" Themes
-"Plug 'joshdick/onedark.vim'
-Plug 'morhetz/gruvbox'
-"Plug 'nightsense/snow'
-"Plug 'mhartington/oceanic-next'
-
-" Status bar
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-"
-" Tables and alignment
-Plug 'godlygeek/tabular'
-
-" Markdown
-Plug 'plasticboy/vim-markdown'
-
-" Lists
-Plug 'dkarter/bullets.vim'
-
 " Distraction-Free Writing
 Plug 'junegunn/goyo.vim'
 Plug 'amix/vim-zenroom2'
 
-" Commenting
-Plug 'scrooloose/nerdcommenter'
+" Themes
+"Plug 'joshdick/onedark.vim'
+" Plug 'morhetz/gruvbox'
+Plug 'sainnhe/gruvbox-material'
+"Plug 'nightsense/snow'
+"Plug 'mhartington/oceanic-next'
 
-" Timetracking
+" General
+Plug 'majutsushi/tagbar'
+Plug 'plasticboy/vim-markdown'
+Plug 'Raimondi/delimitMate'
+Plug 'tpope/vim-surround'
+Plug 'mhinz/vim-startify'
+Plug 'ryanoasis/vim-devicons'
+Plug 'tpope/vim-fugitive'
+Plug 'vim-airline/vim-airline'
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'jremmen/vim-ripgrep'
+Plug 'sheerun/vim-polyglot'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'easymotion/vim-easymotion'
+Plug 'mtth/scratch.vim'
+Plug 'godlygeek/tabular'
+Plug 'dkarter/bullets.vim'
+Plug 'scrooloose/nerdcommenter'
 Plug 'wakatime/vim-wakatime'
 
 call plug#end()
@@ -230,7 +210,8 @@ filetype plugin indent on
 
 " Yep, shoulda been writing code instead of picking different colorschemes.
 "colorscheme snow
-colorscheme gruvbox
+"colorscheme gruvbox
+colorscheme gruvbox-material
 "colorscheme onedark
 "colorscheme OceanicNext
 
@@ -357,6 +338,9 @@ vnoremap <c-u> y:call setreg('', CycleCasing(@"), getregtype(''))<CR>gv""Pgv
 
 " coc.nvim {{{
 " https://github.com/neoclide/coc.nvim#example-vim-configuration
+ 
+" https://github.com/neoclide/coc.nvim/issues/856
+let g:coc_node_path = "/usr/local/bin/node"
 
 " if hidden is not set, TextEdit might fail.
 set hidden
@@ -529,7 +513,8 @@ let g:show_spaces_that_precede_tabs=1
 
 " Status Line {{{
 
-let g:airline_theme='onedark'
+let g:airline_theme='gruvbox_material'
+" let g:airline_theme='onedark'
 let g:airline_powerline_fonts = 1
 " Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 1
