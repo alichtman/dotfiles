@@ -49,6 +49,7 @@ Plug 'godlygeek/tabular'
 Plug 'dkarter/bullets.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'wakatime/vim-wakatime'
+Plug 'mbbill/undotree'
 
 call plug#end()
 " }}}
@@ -77,9 +78,10 @@ set wildmode=full
 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 
-" Undo
+" Undo and Undotree Settings
 set undolevels=1000  " store a bunch of undo history
 set undofile
+let g:undotree_SetFocusWhenToggle = 1
 
 set number
 
@@ -251,7 +253,7 @@ command! Qa qa
 inoremap jk <Esc>
 inoremap kj <Esc>
 
-" Make help always appear as a vertical split.
+" Make help appear as a vertical split
 cabbrev hv vert h
 
 " Distraction Free Mode
@@ -276,6 +278,9 @@ nnoremap k gk
 " Auto center on matched string.
 noremap n nzz
 noremap N Nzz
+
+"Open undotree
+nnoremap <leader>u :UndotreeToggle<cr>
 
 " Jump to anywhere you want with minimal keystrokes, with just one key binding.
 " `s{char}{char}{label}`
@@ -513,8 +518,8 @@ let g:show_spaces_that_precede_tabs=1
 
 " Status Line {{{
 
-let g:airline_theme='gruvbox_material'
-" let g:airline_theme='onedark'
+" let g:airline_theme='gruvbox_material'
+let g:airline_theme='onedark'
 let g:airline_powerline_fonts = 1
 " Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 1

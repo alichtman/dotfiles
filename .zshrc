@@ -35,6 +35,7 @@ plugins=(
   fzf
   git
   tmux
+  ssh-agent
   zsh-autosuggestions
   zsh-completions
 )
@@ -52,6 +53,12 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 if ! zplug check; then
     zplug install
 fi
+
+#####
+# ssh
+#####
+
+zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab rpi_hydrogen rpi_krypton
 
 ############
 # Completion
@@ -101,8 +108,8 @@ bindkey . _rationalise-dot
 # without this, typing a . aborts incremental history search
 bindkey -M isearch . self-insert
 
-# TODO: Stop the creation of a bunch of zcompdump- files in ~
-autoload -U compinit && compinit -d ~/.oh-my-zsh/cache/zcompdump-"$ZSH_VERSION"
+# Load completions
+autoload -U compinit && compinit
 
 ######
 # tmux
