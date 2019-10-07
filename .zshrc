@@ -21,6 +21,7 @@ export VISUAL='nvim'
 export ZSH=$HOME/.oh-my-zsh
 export NOTES=$HOME/Desktop/Development/notes
 
+# zsh-startify
 export ZSH_STARTIFY_NO_SPLASH=true
 export ZSH_STARTIFY_NON_INTERACTIVE=true
 
@@ -158,19 +159,12 @@ export FZF_DEFAULT_OPTS="--cycle"
 
 source $ZSH/oh-my-zsh.sh
 
-if [ -f ~/.aliases ]; then
-    source ~/.aliases
-fi
+# Load other dotfiles
+for file in ~/.{aliases,zfunctions,zprofile,secrets}; do
+  [ -r "$file" ] && [ -f "$file" ] && source "$file"
+done
+unset file
 
-if [ -f ~/.zfunctions ]; then
-	source ~/.zfunctions
-fi
-
-if [ -f ~/.secrets ]; then
-	source ~/.secrets
-fi
-
-source ~/.zprofile
 zplug load
 
 zsh-startify

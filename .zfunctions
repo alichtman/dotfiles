@@ -58,9 +58,97 @@ function backup-dots() {
 # Misc
 ######
 
+# cd on exit from fff
+f() {
+    fff "$@"
+    cd "$(cat "${XDG_CACHE_HOME:=${HOME}/.cache}/fff/.fff_d")"
+}
+
+# https://github.com/HarryCutts/.dot/blob/957ce25f9cb78c5facaafe57ba83e9b11d109481/.dot/up-function.sh
+# Changes to the ancestor directory with the given name. For example:
+#
+#	$ pwd
+#	/home/user/foo/bar/baz
+#	$ up foo
+#	/home/user/foo
+#	$ pwd
+#	/home/user/foo
+#
+# Subdirectories of the ancestor can also be specified. For example:
+#
+#	$ pwd
+#	/home/user/foo/bar/baz
+#	$ up foo/bees
+#	/home/user/foo/bees
+#
+# Also outputs the target path, for use in other commands. For example:
+#
+#	$ pwd
+#	/home/user/foo/bar/baz
+#	$ mv quuz.txt $(up foo)
+#
+up() {
+	local pathParts=()
+	local target="${1%%/*}"  # split $1 by the first slash
+	local tail="${1#*/}"
+	local targetPath=""
+
+	# ಠ_ಠ
+	local readDashASwitch
+	if [[ $ZSH_NAME ]]; then
+		readDashASwitch='-A'
+	else
+		readDashASwitch='-a'
+	fi
+
+	IFS='/' read -r $readDashASwitch pathParts <<< $(pwd)
+
+	local part
+	for part in ${pathParts[@]}; do
+		targetPath=$targetPath/$part
+		if [[ $part == $target ]]; then
+			break
+		fi
+	done
+
+	if [[ $1 == */* ]]; then
+		targetPath=$targetPath/$tail
+	fi
+	echo $targetPath
+	cd $targetPath
+}
+
 # Make a directory and cd into it.
 mk() {
 	mkdir "$1" && cd "$1" || exit;
+}
+
+# `o` with no arguments opens current directory, otherwise opens the given
+# location
+function o() {
+  if [ $# -eq 0 ]; then
+    open .
+  else
+    open "$@"
+  fi
+}
+
+
+######
+# tmux
+######
+
+
+# tm - create new tmux session, or switch to existing one. Works from within tmux too. (@bag-man)
+# `tm` will allow you to select your tmux session via fzf.
+# `tm irc` will attach to the irc session (if it exists), else it will create it.
+
+tm() {
+  [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
+  if [ $1 ]; then
+    tmux $change -t "$1" 2>/dev/null || (tmux new-session -d -s $1 && tmux $change -t "$1"); return
+  fi
+  session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
 }
 
 #  vim: set ts=4 sw=4 tw=0 syntax=zsh noet :

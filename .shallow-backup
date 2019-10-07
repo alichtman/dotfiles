@@ -20,6 +20,8 @@
     "dotfolders": [
         ".ssh",
         ".vim",
+        ".config/kitty",
+        ".config/ranger",
         ".tmux"
     ],
     "default-gitignore": [

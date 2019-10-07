@@ -57,6 +57,7 @@ alias pypiup='python3 setup.py bdist_wheel; twine upload --repository pypi dist/
 alias pypibinary='python3 setup.py sdist'
 
 # Convenience
+alias yank='pbcopy'
 alias help='navi'
 alias ip_en0='ipconfig getifaddr en0'
 alias ip_tun0='ipconfig getifaddr tun0'
@@ -90,6 +91,9 @@ alias kittyrc='vim ~/.config/kitty/kitty.conf'
 alias :wq="exit"
 alias :q="exit"
 
+
+alias stars='npx stargazed -u alichtman --sort'
+
 ############
 # r/unixporn
 ############
@@ -99,7 +103,7 @@ alias news='newsroom'
 alias matrix='unimatrix -s 93'
 alias pipes='pipes.sh -f 75 -t 3 -B'
 alias trip='yes "$(seq 231 -1 16)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
-alias spotify='(cd ~/.config/spotify-tui && spotify-tui)'
+alias spotify='spt'
 
 ##################
 # macOS Management

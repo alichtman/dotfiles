@@ -31,6 +31,7 @@ Plug 'sainnhe/gruvbox-material'
 "Plug 'mhartington/oceanic-next'
 
 " General
+Plug 'liuchengxu/vista.vim'
 Plug 'majutsushi/tagbar'
 Plug 'plasticboy/vim-markdown'
 Plug 'Raimondi/delimitMate'
@@ -50,11 +51,16 @@ Plug 'dkarter/bullets.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'wakatime/vim-wakatime'
 Plug 'mbbill/undotree'
+Plug 'gko/vim-coloresque'
 
 call plug#end()
 " }}}
 
 " General Settings    {{{
+
+" Use the mouse for pane selection, resizing, and cursor movement.
+" TODO: Figure out how to disable scrolling past the edge of the file.
+" set mouse=nv
 
 set nocompatible
 set nostartofline  " Don’t reset cursor to start of line when moving around.
@@ -197,14 +203,16 @@ set autoindent
 set smartindent
 set copyindent
 set preserveindent
-" Use tabs, not spaces. #TabsMasterRace
-set noexpandtab
+filetype plugin indent on
+
+" https://www.reddit.com/r/vim/wiki/tabstop
 set softtabstop=4
 " Control how many columns text is indented with the reindent operations (<< and >>)
 set shiftwidth=4
 " How many spaces a tab is
-set tabstop=4
-filetype plugin indent on
+set tabstop=8
+" set tabstop=4
+set noexpandtab
 
 " END Indentation }}}
 
@@ -220,7 +228,6 @@ colorscheme gruvbox-material
 let g:gruvbox_contrast_dark='dark'
 
 set background=dark
-"set background=light
 
 " Vim Dev Icons
 let g:WebDevIconsUnicodeGlyphDoubleWidth = 0
@@ -274,6 +281,10 @@ vnoremap j gj
 vnoremap k gk
 nnoremap j gj
 nnoremap k gk
+
+" Automatically jump to end of pasted text
+vnoremap <silent> p p`]
+nnoremap <silent> p p`]
 
 " Auto center on matched string.
 noremap n nzz

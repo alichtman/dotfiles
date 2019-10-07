@@ -22,7 +22,7 @@ export PATH="$PATH:/usr/local"
 export PATH="$PATH:/usr/sbin"
 export PATH="$PATH:/usr/local/sbin"
 export PATH="$PATH:/Applications/VMware Fusion.app/Contents/Library"
-export PATH="$PATH:/usr/local/Cellar/node/12.10.0/bin"
+export PATH="$PATH:/usr/local/Cellar/node/12.11.1/bin"
 
 # Splunk
 export SPLUNK_HOME=/Applications/Splunk
@@ -32,3 +32,4 @@ export PATH="$PATH:$SPLUNK_HOME/bin"
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$HOME/.rvm/bin:$PATH"
 
+export LSCOLORS=GxFxCxDxBxegedabagaced
