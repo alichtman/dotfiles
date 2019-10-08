@@ -1,11 +1,8 @@
 " .vimrc for Neovim on macOS
 " Aaron Lichtman
 
-" TODO
-" Wrap every autocommand in an augroup with multiple autocommands in the same group if it makes sense
-" Better logical organization of settings
-" Finish configuring coc.nvim
-" Figure out how to use tags
+" I've spent 10,000 fucking hours on this thing. I hope someone else gets some
+" use out of this.
 
 " Plugins {{{
 
@@ -32,7 +29,6 @@ Plug 'sainnhe/gruvbox-material'
 
 " General
 Plug 'liuchengxu/vista.vim'
-Plug 'majutsushi/tagbar'
 Plug 'plasticboy/vim-markdown'
 Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-surround'
@@ -47,7 +43,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'easymotion/vim-easymotion'
 Plug 'mtth/scratch.vim'
 Plug 'godlygeek/tabular'
-Plug 'dkarter/bullets.vim'
+" Plug 'dkarter/bullets.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'wakatime/vim-wakatime'
 Plug 'mbbill/undotree'
@@ -195,24 +191,29 @@ augroup filetype_vim
 	autocmd FileType vim setlocal foldmethod=marker
 augroup END
 
+augroup indentation
+	autocmd!
+	" configure expanding of tabs for various file types
+	au BufRead,BufNewFile *.py set expandtab
+	au BufRead,BufNewFile *.c set noexpandtab
+	au BufRead,BufNewFile *.h set noexpandtab
+	au BufRead,BufNewFile Makefile* set noexpandtab
+augroup END
+
 " END AutoGroups- }}}
 
 " Indentation {{{
 
-set autoindent
-set smartindent
 set copyindent
 set preserveindent
 filetype plugin indent on
 
-" https://www.reddit.com/r/vim/wiki/tabstop
+set expandtab           " enter spaces when tab is pressed
+" set textwidth=120     " TODO: break lines when line length increases only outside of markdown and text files
+set tabstop=4           " use 4 spaces to represent tab
 set softtabstop=4
-" Control how many columns text is indented with the reindent operations (<< and >>)
-set shiftwidth=4
-" How many spaces a tab is
-set tabstop=8
-" set tabstop=4
-set noexpandtab
+set shiftwidth=4        " number of spaces to use for auto indent
+set autoindent          " copy indent from current line when starting a new lineet noexpandtab
 
 " END Indentation }}}
 
@@ -234,6 +235,18 @@ let g:WebDevIconsUnicodeGlyphDoubleWidth = 0
 let g:WebDevIconsOS = 'Darwin'
 let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
 let g:webdevicons_conceal_nerdtree_brackets = 0
+
+" Vista
+
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+let g:vista#renderer#enable_icon = 1
+let g:vista_fzf_preview = ['right:50%']
+
+" The default icons can't be suitable for all the filetypes, you can extend it as you wish.
+" let g:vista#renderer#icons = {
+" \   "function": "\uf794",
+" \   "variable": "\uf71b",
+" \  }
 
 " Appearance }}}
 
@@ -271,6 +284,12 @@ nnoremap <silent> b[ :bprevious<CR>
 nnoremap <silent> b] :bnext<CR>
 nnoremap <silent> B[ :bfirst<CR>
 nnoremap <silent> B] :blast<CR>
+
+" Easily move between panes
+map <silent> <leader>h <C-w>h
+map <silent> <leader>j <C-w>j
+map <silent> <leader>k <C-w>k
+map <silent> <leader>l <C-w>l
 
 " Move the current line above or below with ALT + [j/k].
 noremap <A-j> ddjP
@@ -333,7 +352,7 @@ nnoremap <Leader>n :call ToggleNerdTree()<CR>
 noremap <Leader>/ :noh<CR>
 
 " Toggle tagbar
-nmap <Leader>tb :TagbarToggle<CR>
+nmap <Leader>v :Vista!!<CR>
 
 " Visually select text then press Ctrl-u to convert the text to UPPER CASE,
 " then to lower case, then to Title Case.
@@ -362,7 +381,6 @@ let g:coc_node_path = "/usr/local/bin/node"
 set hidden
 
 " Some servers have issues with backup files, see #649
-" Scary!
 set nobackup
 set nowritebackup
 
