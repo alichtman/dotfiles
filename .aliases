@@ -91,6 +91,8 @@ alias kittyrc='vim ~/.config/kitty/kitty.conf'
 alias :wq="exit"
 alias :q="exit"
 
+alias o='open'
+
 
 alias stars='npx stargazed -u alichtman --sort'
 

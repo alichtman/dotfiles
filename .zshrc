@@ -33,6 +33,7 @@ export ZSH_STARTIFY_NON_INTERACTIVE=true
 # Plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 plugins=(
+  fasd
   fzf
   git
   tmux

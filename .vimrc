@@ -8,6 +8,8 @@
 
 call plug#begin('~/.vim/plugged')
 
+Plug 'mattn/webapi-vim'
+
 " Syntax Highlighting, Linting and Completion
 Plug 'sheerun/vim-polyglot'
 Plug 'vim-syntastic/syntastic'
@@ -15,7 +17,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " File explorers
 Plug 'scrooloose/nerdtree'
-Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
 
 " Writing-related
 " Plug 'reedes/vim-wordy'
@@ -47,14 +49,17 @@ Plug 'junegunn/vim-peekaboo'
 " Markdown
 Plug 'plasticboy/vim-markdown'
 Plug 'godlygeek/tabular'
+" Plug 'dkarter/bullets.vim'
 
-" Delimeter Completions
-" TODO: Are these redundant?
+" Delimeters
 Plug 'Raimondi/delimitMate'
+
+" Surrounding text
 Plug 'tpope/vim-surround'
 
-" Git
+" Git and GitHub
 Plug 'tpope/vim-fugitive'
+Plug 'mattn/gist-vim'
 
 " Status Bar
 Plug 'vim-airline/vim-airline'
@@ -69,8 +74,6 @@ Plug 'easymotion/vim-easymotion'
 " Persistent Scratch Buffers
 Plug 'mtth/scratch.vim'
 
-" Plug 'dkarter/bullets.vim'
-
 " Commenting
 Plug 'scrooloose/nerdcommenter'
 
@@ -81,6 +84,9 @@ Plug 'wakatime/vim-wakatime'
 Plug 'mbbill/undotree'
 
 call plug#end()
+
+" Extended % matching
+runtime macros/matchit.vim
 " }}}
 
 " General Settings    {{{
@@ -91,7 +97,7 @@ call plug#end()
 
 set nocompatible
 set nostartofline  " Don’t reset cursor to start of line when moving around.
-set title        " Show the filename in the window titlebar
+set title          " Show the filename in the window titlebar
 set backspace=indent,eol,start " Allow backspace in insert mode
 set modeline
 set ruler
@@ -210,7 +216,7 @@ augroup END
 
 " Automatically use absolute line numbers when we’re in insert mode
 " and relative numbers when we’re in normal mode
-augroup lineNumbers
+augroup LineNumbers
 	autocmd!
 	autocmd InsertEnter * :set number
 	autocmd InsertLeave * :set relativenumber
@@ -265,21 +271,36 @@ set autoindent          " copy indent from current line when starting a new line
 
 set background=dark
 
-let g:thematic#theme_name = 'gruvbox-material'
+"colorscheme snow
+"colorscheme gruvbox
+colorscheme gruvbox-material
+"colorscheme onedark
+"colorscheme OceanicNext
 
-let g:thematic#defaults = {
-\ 'airline-theme': 'onedark',
-\ }
-
-let g:thematic#themes = {
-\ 'snow'  : {},
-\ 'gruvbox' : {
-\              'airline-theme': 'gruvbox_material'
-\             },
-\ 'gruvbox-material' : {},
-\ 'onedark' : {},
-\ 'OceanicNext' : {},
-\ }
+" let g:thematic#theme_name = 'gruvbox-material'
+"
+" let g:thematic#defaults = {
+" \ 'airline-theme': 'onedark',
+" \ }
+"
+" " TODO: Resolve airline-theme change bug on source vimrc
+" let g:thematic#themes = {
+" \ 'gruvbox-material' : {
+" \              "airline-theme": 'onedark',
+" \ },
+" \ }
+"
+" " let g:thematic#themes = {
+" " \ 'snow'  : {},
+" " \ 'gruvbox' : {
+" " \              'airline-theme': 'onedark',
+" " \ },
+" " \ 'gruvbox-material' : {
+" " \              "airline-theme": 'onedark',
+" " \ },
+" " \ 'onedark' : {},
+" " \ 'OceanicNext' : {},
+" " \ }
 
 let g:gruvbox_contrast_dark='dark'
 
@@ -380,8 +401,8 @@ nnoremap <leader>u :UndotreeToggle<cr>
 " `s{char}{char}{label}`
 nmap s <Plug>(easymotion-overwin-f2)
 
-" Toggle spell checking on and off with `,s`
-" nmap <silent> <leader>s :set spell!<CR>
+" Toggle spell check
+nmap <silent> <leader>s :set spell!<CR>
 
 " Append modeline after last line in buffer with <Leader>ml
 " Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
@@ -500,7 +521,7 @@ nmap <leader>rn <Plug>(coc-rename)
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
-augroup mygroup
+augroup itCameWithTheCOCnvimSuggestedSetupIDKHonestly
   autocmd!
   " Setup formatexpr specified filetype(s).
   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
@@ -598,8 +619,9 @@ let g:show_spaces_that_precede_tabs=1
 
 " END Better Whitespace }}}
 
-" Status Line {{{
+" Airline {{{
 
+let g:airline_theme='onedark'
 let g:airline_powerline_fonts = 1
 " Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 1
@@ -650,3 +672,10 @@ let python_highlight_all=1
 let g:python3_host_prog = '/usr/local/bin/python3'
 
 " END Python }}}
+
+" Gist {{{
+
+let g:gist_detect_filetype = 1
+let g:gist_clip_command = 'pbcopy'
+
+" END Gist }}}

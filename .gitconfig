@@ -39,3 +39,5 @@
     rebase = true
 [push]
     followTags = true
+[github]
+	user = alichtman
