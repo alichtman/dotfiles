@@ -158,15 +158,15 @@ set nolinebreak
 set breakindent
 set breakindentopt=min:40
 
-" TODO: 80, 120 character guidelines. Not sure why this doesn't work... classic.
-"set cc=81
-"hi ColorColumn ctermbg=lightgrey guibg=lightgrey
+" 80 and 120 character guidelines
+highlight ColorColumn ctermbg=lightgrey
+set cc=81,120
 
 " Highlight current line
 set cursorline
 
 " Show “invisible” characters
-set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
+set listchars=tab:▸\ ,trail:·,eol:¬,nbsp:_
 set list
 
 " Disable Markdown folding
@@ -334,6 +334,9 @@ let maplocalleader = "-"
 cnoremap <leader>ev :vsplit ~/.vimrc<cr>
 nnoremap <leader>sv :source ~/.vimrc<cr>:AirlineRefresh<cr>
 nnoremap <leader>et :vsplit ~/.tmux.conf<cr>
+
+" Make : commands easier
+nnoremap ; :
 
 " Yeet those 'Not an editor command' errors right out the fucking window
 " Or, defenestrate, as my Dad would say.
