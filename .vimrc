@@ -346,10 +346,14 @@ nnoremap <silent> B[ :bfirst<CR>
 nnoremap <silent> B] :blast<CR>
 
 " Easily move between panes
-map <silent> <leader>h <C-w>h
-map <silent> <leader>j <C-w>j
-map <silent> <leader>k <C-w>k
-map <silent> <leader>l <C-w>l
+nnoremap <silent> <leader>h <C-w>h
+nnoremap <silent> <leader>j <C-w>j
+nnoremap <silent> <leader>k <C-w>k
+nnoremap <silent> <leader>l <C-w>l
+vnoremap <silent> <leader>h <C-w>h
+vnoremap <silent> <leader>j <C-w>j
+vnoremap <silent> <leader>k <C-w>k
+vnoremap <silent> <leader>l <C-w>l
 
 " Move the current line above or below with ALT + [j/k].
 noremap <A-j> ddjP
