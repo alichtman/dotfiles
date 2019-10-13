@@ -4,14 +4,12 @@
 " I've spent 10,000 fucking hours on this thing. I hope someone else gets some
 " use out of this.
 
-" TODO: Plugins
-" https://github.com/reedes/vim-thematic
-
 " Plugins {{{
 
 call plug#begin('~/.vim/plugged')
 
-" Linting and Completion
+" Syntax Highlighting, Linting and Completion
+Plug 'sheerun/vim-polyglot'
 Plug 'vim-syntastic/syntastic'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
@@ -19,47 +17,68 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'scrooloose/nerdtree'
 Plug 'ctrlpvim/ctrlp.vim'
 
-" Distraction-Free Writing
-Plug 'junegunn/goyo.vim'
-Plug 'amix/vim-zenroom2'
-
 " Writing-related
 " Plug 'reedes/vim-wordy'
 Plug 'reedes/vim-litecorrect'
 Plug 'szw/vim-dict'
+Plug 'junegunn/goyo.vim'
+Plug 'amix/vim-zenroom2'
 
-" Themes and Appearance
-"Plug 'joshdick/onedark.vim'
-"Plug 'morhetz/gruvbox'
+" Themes
+Plug 'reedes/vim-thematic'
+Plug 'joshdick/onedark.vim'
+Plug 'morhetz/gruvbox'
 Plug 'sainnhe/gruvbox-material'
-"Plug 'nightsense/snow'
-"Plug 'mhartington/oceanic-next'
+Plug 'nightsense/snow'
+Plug 'mhartington/oceanic-next'
+
+" General Appearance
 Plug 'ryanoasis/vim-devicons'
+Plug 'mhinz/vim-startify'
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'gko/vim-coloresque'
 
 " Tagbar
 Plug 'liuchengxu/vista.vim'
 
+" Register Preview
 Plug 'junegunn/vim-peekaboo'
 
 " Markdown
 Plug 'plasticboy/vim-markdown'
+Plug 'godlygeek/tabular'
+
+" Delimeter Completions
+" TODO: Are these redundant?
 Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-surround'
-Plug 'mhinz/vim-startify'
+
+" Git
 Plug 'tpope/vim-fugitive'
+
+" Status Bar
 Plug 'vim-airline/vim-airline'
-Plug 'ntpeters/vim-better-whitespace'
-Plug 'jremmen/vim-ripgrep'
-Plug 'sheerun/vim-polyglot'
 Plug 'vim-airline/vim-airline-themes'
+
+" RipGrep
+Plug 'jremmen/vim-ripgrep'
+
+" Quick Jump
 Plug 'easymotion/vim-easymotion'
+
+" Persistent Scratch Buffers
 Plug 'mtth/scratch.vim'
-Plug 'godlygeek/tabular'
+
 " Plug 'dkarter/bullets.vim'
+
+" Commenting
 Plug 'scrooloose/nerdcommenter'
+
+" TimeTracking
 Plug 'wakatime/vim-wakatime'
+
+" Undo
 Plug 'mbbill/undotree'
-Plug 'gko/vim-coloresque'
 
 call plug#end()
 " }}}
@@ -244,16 +263,25 @@ set autoindent          " copy indent from current line when starting a new line
 
 " Appearance {{{
 
-" Yep, shoulda been writing code instead of picking different colorschemes.
-"colorscheme snow
-"colorscheme gruvbox
-colorscheme gruvbox-material
-"colorscheme onedark
-"colorscheme OceanicNext
+set background=dark
+
+let g:thematic#theme_name = 'gruvbox-material'
+
+let g:thematic#defaults = {
+\ 'airline-theme': 'onedark',
+\ }
+
+let g:thematic#themes = {
+\ 'snow'  : {},
+\ 'gruvbox' : {
+\              'airline-theme': 'gruvbox_material'
+\             },
+\ 'gruvbox-material' : {},
+\ 'onedark' : {},
+\ 'OceanicNext' : {},
+\ }
 
 let g:gruvbox_contrast_dark='dark'
-
-set background=dark
 
 " Vim Dev Icons
 let g:WebDevIconsUnicodeGlyphDoubleWidth = 0
@@ -568,8 +596,6 @@ let g:show_spaces_that_precede_tabs=1
 
 " Status Line {{{
 
-" let g:airline_theme='gruvbox_material'
-let g:airline_theme='onedark'
 let g:airline_powerline_fonts = 1
 " Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 1
