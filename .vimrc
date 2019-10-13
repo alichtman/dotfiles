@@ -4,6 +4,9 @@
 " I've spent 10,000 fucking hours on this thing. I hope someone else gets some
 " use out of this.
 
+" TODO: Plugins
+" https://github.com/reedes/vim-thematic
+
 " Plugins {{{
 
 call plug#begin('~/.vim/plugged')
@@ -20,20 +23,29 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'amix/vim-zenroom2'
 
-" Themes
+" Writing-related
+" Plug 'reedes/vim-wordy'
+Plug 'reedes/vim-litecorrect'
+Plug 'szw/vim-dict'
+
+" Themes and Appearance
 "Plug 'joshdick/onedark.vim'
-" Plug 'morhetz/gruvbox'
+"Plug 'morhetz/gruvbox'
 Plug 'sainnhe/gruvbox-material'
 "Plug 'nightsense/snow'
 "Plug 'mhartington/oceanic-next'
+Plug 'ryanoasis/vim-devicons'
 
-" General
+" Tagbar
 Plug 'liuchengxu/vista.vim'
+
+Plug 'junegunn/vim-peekaboo'
+
+" Markdown
 Plug 'plasticboy/vim-markdown'
 Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-surround'
 Plug 'mhinz/vim-startify'
-Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'ntpeters/vim-better-whitespace'
@@ -200,6 +212,19 @@ augroup indentation
 	au BufRead,BufNewFile Makefile* set noexpandtab
 augroup END
 
+" Enable spellcheck for markdown and txt files
+" TODO: Clean up
+augroup spellcheckAndLexicalThings
+    autocmd!
+    autocmd BufRead,BufNewFile *.md set filetype=markdown
+    autocmd BufRead,BufNewFile *.txt set filetype=text
+    autocmd FileType markdown setlocal spell
+    autocmd FileType text setlocal spell
+    autocmd FileType markdown call litecorrect#init()
+    autocmd FileType text call litecorrect#init()
+    hi SpellBad cterm=underline ctermfg=red
+augroup END
+"
 " END AutoGroups- }}}
 
 " Indentation {{{
@@ -273,8 +298,15 @@ command! Qa qa
 inoremap jk <Esc>
 inoremap kj <Esc>
 
+" Close buffers like closing a window in an IDE
+nnoremap <leader>q :clo<cr>
+
 " Make help appear as a vertical split
 cabbrev hv vert h
+
+" Dictionary lookup
+nnoremap <leader>D :Dict<cr>
+vnoremap <leader>D :Dict<cr>
 
 " Distraction Free Mode
 nnoremap <silent> <leader>z :Goyo<cr>
@@ -309,7 +341,7 @@ nnoremap <silent> p p`]
 noremap n nzz
 noremap N Nzz
 
-"Open undotree
+" Open undotree
 nnoremap <leader>u :UndotreeToggle<cr>
 
 " Jump to anywhere you want with minimal keystrokes, with just one key binding.
@@ -318,17 +350,6 @@ nmap s <Plug>(easymotion-overwin-f2)
 
 " Toggle spell checking on and off with `,s`
 " nmap <silent> <leader>s :set spell!<CR>
-
-" TODO: Enable spellcheck for markdown and txt files
-" TODO: Add autocorrect.vim
-" augroup spellcheck
-	" autocmd!
-	" autocmd BufRead,BufNewFile *.md set filetype=markdown
-	" autocmd BufRead,BufNewFile *.txt set filetype=text
-	" autocmd FileType markdown setlocal spell
-	" autocmd FileType text setlocal spell
-	" hi SpellBad cterm=underline ctermfg=red
-" augroup END
 
 " Append modeline after last line in buffer with <Leader>ml
 " Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
