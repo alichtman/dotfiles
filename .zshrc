@@ -111,6 +111,7 @@ bindkey . _rationalise-dot
 bindkey -M isearch . self-insert
 
 # Load completions
+fpath=(/usr/local/share/zsh-completions $fpath)
 autoload -U compinit && compinit
 
 ######

@@ -49,7 +49,7 @@ Plug 'junegunn/vim-peekaboo'
 " Markdown
 Plug 'plasticboy/vim-markdown'
 Plug 'godlygeek/tabular'
-" Plug 'dkarter/bullets.vim'
+Plug 'dkarter/bullets.vim'
 
 " Delimeters
 Plug 'Raimondi/delimitMate'
@@ -355,6 +355,9 @@ nnoremap <leader>q :clo<cr>
 
 " Make help appear as a vertical split
 cabbrev hv vert h
+
+" Markdown bold
+inoremap ,b ****<ESC>2ha
 
 " Dictionary lookup
 nnoremap <leader>D :Dict<cr>

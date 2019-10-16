@@ -24,7 +24,7 @@ alias cdd='cd'
 
 alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor'
 alias cargo-update='cargo install-update -a'
-alias update='cargo-update; brewup; apm upgrade --no-confirm; rustup update; op update; zplug update;'
+alias update='rustup update; cargo-update; brewup; apm upgrade --no-confirm; op update; zplug update;'
 
 ###########
 # 1Password
@@ -100,7 +100,7 @@ alias stars='npx stargazed -u alichtman --sort'
 # r/unixporn
 ############
 
-alias weather='curl "wttr.in/`CoreLocationCLI -format "%address" | tail -n+2 | head -n 1 | cut -d" " -f 1`?&u"'
+alias weather='curl "wttr.in/`CoreLocationCLI -format "%address" | tail -n+2 | head -n 1 | cut -d" " -f 2`?&u"'
 alias news='newsroom'
 alias matrix='unimatrix -s 93'
 alias pipes='pipes.sh -f 75 -t 3 -B'

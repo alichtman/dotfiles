@@ -20,6 +20,10 @@ fman() {
 	man -k . | fzf --prompt='Man> ' | awk '{print $1}' | cut -d "(" -f1 | xargs man
 }
 
+# macOS fuzzy app launcher
+launch() {
+	open -a "`find /Applications -name '*app' -maxdepth 1 | cut -d'/' -f 3 | cut -d'.' -f 1 | fzf --query=$1`"
+}
 
 #####
 # git
@@ -78,6 +82,10 @@ function ranger {
 # Make a directory and cd into it.
 mk() {
 	mkdir "$1" && cd "$1" || exit;
+}
+
+function cheat() {
+	curl cheat.sh/$1
 }
 
 ######
