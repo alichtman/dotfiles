@@ -38,6 +38,11 @@ function gi() {
 # Dotfiles
 #####
 
+# Grab dotfiles list from ~/.shallow-backup and throw it in a fzf selector for editing
+function dots() {
+	vim ~/$(cat ~/.shallow-backup | jq '.dotfiles' | jq -r '.[]' | fzf)
+}
+
 # backup-dots [COMMIT MESSAGE]
 function backup-dots() {
 	echo "Backing up..."
