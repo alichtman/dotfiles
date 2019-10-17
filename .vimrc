@@ -17,7 +17,10 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " File explorers
 Plug 'scrooloose/nerdtree'
-" Plug 'ctrlpvim/ctrlp.vim'
+
+" fzf
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
 
 " Writing-related
 " Plug 'reedes/vim-wordy'
@@ -201,7 +204,7 @@ augroup END
 " auto-save fold views
 augroup AutoSaveFolds
 	autocmd!
-	autocmd BufWinLeave * mkview
+	autocmd BufWinLeave * silent! mkview
 	autocmd BufWinEnter * silent! loadview
 augroup END
 
@@ -592,22 +595,6 @@ let NERDTreeShowHidden = 1
 let NERDTreeStatusline = 0
 
 " END NERDTree }}}
-
-" ctrl-p {{{
-
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-if executable('ag')
-	set grepprg=ag\ --nogroup\ --nocolor
-	let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-else
-  let g:ctrlp_user_command = ['.git',
-	\ 'cd %s && git ls-files . -co --exclude-standard',
-	\ 'find %s -type f' ]
-endif
-
-" END ctrl-p }}}
 
 " vim-easymotion {{{
 

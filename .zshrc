@@ -97,6 +97,8 @@ function _pip_completion {
 compctl -K _pip_completion pip
 
 # type '...' to get '../..'
+# Please don't ask me how this works. I have absolutely no idea.
+# Mikel Magnusson <mikachu@gmail.com> wrote this.
 function _rationalise-dot() {
   local MATCH MBEGIN MEND
   if [[ $LBUFFER =~ '(^|/| |    |'$'\n''|\||;|&)\.\.$' ]]; then
