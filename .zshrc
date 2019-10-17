@@ -33,7 +33,6 @@ export ZSH_STARTIFY_NON_INTERACTIVE=true
 # Plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 plugins=(
-  fasd
   fzf
   git
   tmux
@@ -55,6 +54,13 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 if ! zplug check; then
     zplug install
 fi
+
+##########
+# z and fz
+##########
+
+FZ_CMD=j
+FZ_SUBDIR_CMD=jj
 
 #####
 # ssh
@@ -117,6 +123,23 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 autoload -U compinit && compinit
 
 ######
+# Quick Ctrl-z swap in and out of vim
+######
+
+# https://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
+fancy-ctrl-z () {
+  if [[ $#BUFFER -eq 0 ]]; then
+    BUFFER="fg"
+    zle accept-line
+  else
+    zle push-input
+    zle clear-screen
+  fi
+}
+zle -N fancy-ctrl-z
+bindkey '^Z' fancy-ctrl-z
+
+######
 # tmux
 ######
 
@@ -131,12 +154,28 @@ set termguicolors
 # Fix $ git reset --soft HEAD^ error.
 unsetopt nomatch
 
-# History date format
-HIST_STAMPS="mm/dd/yyyy"
+# Append a trailing `/' to all directory names resulting from globbing
+setopt mark_dirs
 
-# fz config
-FZ_CMD=j
-FZ_SUBDIR_CMD=jj
+#########
+# History
+#########
+
+setopt inc_append_history   # append history list to the history file (important for multiple parallel zsh sessions!)
+setopt share_history        # import new commands from the history file also in other zsh-session
+setopt extended_history     # save each command's beginning timestamp and the duration to the history file
+setopt hist_ignore_space    # remove command lines from the history list when the first character on the line is a space
+
+# Date format
+HIST_STAMPS="mm/dd/yyyy"
+SAVEHIST=10000000
+
+#####
+# vim
+#####
+
+# Enable Ctrl-x-e to edit current command in vim
+autoload -U edit-command-line
 
 ###########################
 # Looking out for future me.

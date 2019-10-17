@@ -66,6 +66,13 @@ alias google="googler -l en"
 alias fuck='eval $(TF_ALIAS=fuck PYTHONIOENCODING=utf-8 thefuck $(fc -ln -1))'
 alias activate=". venv/bin/activate"
 
+# Copy the working dir to the clipboard
+alias cpwd='pwd | xargs echo -n | pbcopy'
+
+# Hashes
+alias sha1='openssl dgst -sha1'
+alias sha256='openssl dgst -sha256'
+
 # Tasks and Habits
 alias t='tb'
 alias tasks='tb'
@@ -111,10 +118,19 @@ alias spotify='spt'
 # macOS Management
 ##################
 
+# For murdering various things when they break
 alias kill-touchbar='sudo pkill "Touch Bar agent";sudo killall "ControlStrip";'
 alias kill-dock='killall Dock'
+
+# Time Machine Optimization
 alias unthrottle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=0;'
 alias throttle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=1;'
+
+# Desktop
 alias show-desktop='defaults write com.apple.finder CreateDesktop true; killall Finder'
 alias hide-desktop='defaults write com.apple.finder CreateDesktop false; killall Finder'
+
+# Quick way to rebuild the Launch Services database and get rid of duplicates in the Open With submenu.
+# via https://sixcolors.com/post/2015/10/clean-out-a-messy-open-with-menu-in-the-finder/
+alias reubild-launch-serivces-db='/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -r -domain local -domain user'
 

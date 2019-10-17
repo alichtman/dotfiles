@@ -8,6 +8,7 @@
 
 call plug#begin('~/.vim/plugged')
 
+" Dependency for gist-vim
 Plug 'mattn/webapi-vim'
 
 " Syntax Highlighting, Linting and Completion
@@ -30,7 +31,7 @@ Plug 'junegunn/goyo.vim'
 Plug 'amix/vim-zenroom2'
 
 " Themes
-Plug 'reedes/vim-thematic'
+"Plug 'reedes/vim-thematic'
 Plug 'joshdick/onedark.vim'
 Plug 'morhetz/gruvbox'
 Plug 'sainnhe/gruvbox-material'
@@ -41,7 +42,7 @@ Plug 'mhartington/oceanic-next'
 Plug 'ryanoasis/vim-devicons'
 Plug 'mhinz/vim-startify'
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'gko/vim-coloresque'
+"Plug 'gko/vim-coloresque'
 
 " Tagbar
 Plug 'liuchengxu/vista.vim'
@@ -90,6 +91,7 @@ call plug#end()
 
 " Extended % matching
 runtime macros/matchit.vim
+
 " }}}
 
 " General Settings    {{{
@@ -104,11 +106,11 @@ set title          " Show the filename in the window titlebar
 set backspace=indent,eol,start " Allow backspace in insert mode
 set modeline
 set ruler
+
 " Copy to macOS clipboard
 set clipboard=unnamed
 
-" Showing mode under statusline with mode is redundant
-set noshowmode
+set noshowmode  " Showing mode directly under a statusline with mode is redundant
 set secure
 set spelllang=en
 set scrolloff=6
@@ -117,8 +119,7 @@ syntax on
 " Tab completion menu
 set wildmenu
 set wildmode=full
-
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+set wildignore+=.svn,CVS,.git,*.pyc,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pdf,*.bak,*.beam,*/tmp/*,*.zip,log/**,node_modules/**,target/**,tmp/**,*.rbc
 
 " Undo and Undotree Settings
 set undolevels=1000  " store a bunch of undo history
@@ -137,13 +138,19 @@ set iskeyword+=-
 set iskeyword+=_
 
 " Search Config
-set showmatch   " Show matching brackets/parenthesis
-set matchtime=0 " Don't blink when matching
-set incsearch   " Find as you type search
-set hlsearch    " Highlight search terms
-set ignorecase  " Case insensitive search
-set inccommand=nosplit " Show regex replacement changes as you're typing
-set smartcase   " Case sensitive if we type an uppercase
+set showmatch             " Show matching brackets/parenthesis
+set matchtime=0           " Don't blink when matching
+set incsearch             " Find as you type search
+set hlsearch              " Highlight search terms
+set ignorecase            " Case insensitive search
+set inccommand=nosplit    " Show regex replacement changes as you're typing
+set smartcase             " Case sensitive if we type an uppercase
+
+set cmdheight=1           " Better display for messages
+set updatetime=300        " Smaller updatetime for CursorHold & CursorHoldI
+
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
 
 " Fix weird line tracers while scrolling bug
 if &term =~ '256color'
@@ -172,12 +179,89 @@ set cursorline
 set listchars=tab:▸\ ,trail:·,eol:¬,nbsp:_
 set list
 
-" Disable Markdown folding
-let g:vim_markdown_folding_disabled = 1
-" Autoresize TOC window
-let g:vim_markdown_toc_autofit = 1
+set hidden                      " Allow Vim to manage hidden buffers effectively
+set nobackup                    " Don't keep a backup file
+set nowritebackup
+
+" Open new split panes to right and bottom, which feels more natural
+set splitbelow
+set splitright
+
+set signcolumn=yes              " always show signcolumns
 
 " END General Settings    }}}
+
+" Indentation {{{
+
+set copyindent
+set preserveindent
+filetype plugin indent on
+
+set expandtab           " enter spaces when tab is pressed
+" set textwidth=120     " TODO: break lines when line length increases only outside of markdown and text files
+set tabstop=4           " use 4 spaces to represent tab
+set softtabstop=4
+set shiftwidth=4        " number of spaces to use for auto indent
+set autoindent          " copy indent from current line when starting a new lineet noexpandtab
+
+" END Indentation }}}
+
+" Appearance {{{
+
+set background=dark
+
+"colorscheme snow
+"colorscheme gruvbox
+colorscheme gruvbox-material
+"colorscheme onedark
+"colorscheme OceanicNext
+
+" let g:thematic#theme_name = 'gruvbox-material'
+"
+" let g:thematic#defaults = {
+" \ 'airline-theme': 'onedark',
+" \ }
+"
+" " TODO: Resolve airline-theme change bug on source vimrc
+" let g:thematic#themes = {
+" \ 'gruvbox-material' : {
+" \              "airline-theme": 'onedark',
+" \ },
+" \ }
+"
+" " let g:thematic#themes = {
+" " \ 'snow'  : {},
+" " \ 'gruvbox' : {
+" " \              'airline-theme': 'onedark',
+" " \ },
+" " \ 'gruvbox-material' : {
+" " \              "airline-theme": 'onedark',
+" " \ },
+" " \ 'onedark' : {},
+" " \ 'OceanicNext' : {},
+" " \ }
+
+let g:gruvbox_contrast_dark='dark'
+
+" Vim Dev Icons
+let g:WebDevIconsUnicodeGlyphDoubleWidth = 0
+let g:WebDevIconsOS = 'Darwin'
+let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
+let g:webdevicons_conceal_nerdtree_brackets = 0
+
+" Vista
+
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+let g:vista#renderer#enable_icon = 1
+let g:vista_fzf_preview = ['right:50%']
+
+" The default icons can't be suitable for all the filetypes, you can extend it as you wish.
+" let g:vista#renderer#icons = {
+" \   "function": "\uf794",
+" \   "variable": "\uf71b",
+" \  }
+
+" Appearance }}}
 
 " AutoGroups {{{
 
@@ -255,78 +339,6 @@ augroup END
 "
 " END AutoGroups- }}}
 
-" Indentation {{{
-
-set copyindent
-set preserveindent
-filetype plugin indent on
-
-set expandtab           " enter spaces when tab is pressed
-" set textwidth=120     " TODO: break lines when line length increases only outside of markdown and text files
-set tabstop=4           " use 4 spaces to represent tab
-set softtabstop=4
-set shiftwidth=4        " number of spaces to use for auto indent
-set autoindent          " copy indent from current line when starting a new lineet noexpandtab
-
-" END Indentation }}}
-
-" Appearance {{{
-
-set background=dark
-
-"colorscheme snow
-"colorscheme gruvbox
-colorscheme gruvbox-material
-"colorscheme onedark
-"colorscheme OceanicNext
-
-" let g:thematic#theme_name = 'gruvbox-material'
-"
-" let g:thematic#defaults = {
-" \ 'airline-theme': 'onedark',
-" \ }
-"
-" " TODO: Resolve airline-theme change bug on source vimrc
-" let g:thematic#themes = {
-" \ 'gruvbox-material' : {
-" \              "airline-theme": 'onedark',
-" \ },
-" \ }
-"
-" " let g:thematic#themes = {
-" " \ 'snow'  : {},
-" " \ 'gruvbox' : {
-" " \              'airline-theme': 'onedark',
-" " \ },
-" " \ 'gruvbox-material' : {
-" " \              "airline-theme": 'onedark',
-" " \ },
-" " \ 'onedark' : {},
-" " \ 'OceanicNext' : {},
-" " \ }
-
-let g:gruvbox_contrast_dark='dark'
-
-" Vim Dev Icons
-let g:WebDevIconsUnicodeGlyphDoubleWidth = 0
-let g:WebDevIconsOS = 'Darwin'
-let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
-let g:webdevicons_conceal_nerdtree_brackets = 0
-
-" Vista
-
-let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
-let g:vista#renderer#enable_icon = 1
-let g:vista_fzf_preview = ['right:50%']
-
-" The default icons can't be suitable for all the filetypes, you can extend it as you wish.
-" let g:vista#renderer#icons = {
-" \   "function": "\uf794",
-" \   "variable": "\uf71b",
-" \  }
-
-" Appearance }}}
-
 " Remappings {{{
 
 " Set , as leader and - as localleader
@@ -353,11 +365,23 @@ command! Qa qa
 inoremap jk <Esc>
 inoremap kj <Esc>
 
+" Write faster
+nnoremap <leader>w :w<CR>
+
+" Open files with fzf faster
+nnoremap <leader>o :FZF<CR>
+
 " Close buffers like closing a window in an IDE
 nnoremap <leader>q :clo<cr>
 
+" Quickly select the text you just pasted
+noremap gV `[v`]
+
 " Make help appear as a vertical split
 cabbrev hv vert h
+
+" Change word under cursor. Repeatable with . : https://youtu.be/7Bx_mLDBtRc?t=130
+nnoremap c* *Ncgn
 
 " Markdown bold
 inoremap ,b ****<ESC>2ha
@@ -460,25 +484,6 @@ vnoremap <c-u> y:call setreg('', CycleCasing(@"), getregtype(''))<CR>gv""Pgv
 " https://github.com/neoclide/coc.nvim/issues/856
 let g:coc_node_path = "/usr/local/bin/node"
 
-" if hidden is not set, TextEdit might fail.
-set hidden
-
-" Some servers have issues with backup files, see #649
-set nobackup
-set nowritebackup
-
-" Better display for messages
-set cmdheight=1
-
-" Smaller updatetime for CursorHold & CursorHoldI
-set updatetime=300
-
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
-
-" always show signcolumns
-set signcolumn=yes
-
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 inoremap <silent><expr> <TAB>
@@ -554,6 +559,17 @@ command! -nargs=0 Format :call CocAction('format')
 command! -nargs=? Fold :call CocAction('fold', <f-args>)
 
 " End coc.nvim }}}
+
+" vim-markdown {{{
+
+" Disable Markdown folding
+let g:vim_markdown_folding_disabled = 1
+" Autoresize TOC window
+let g:vim_markdown_toc_autofit = 1
+
+
+
+" }}}
 
 " Startify {{{
 

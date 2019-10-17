@@ -33,3 +33,7 @@ export PATH="$PATH:$SPLUNK_HOME/bin"
 export PATH="$HOME/.rvm/bin:$PATH"
 
 export LSCOLORS=GxFxCxDxBxegedabagaced
+
+# Deduplicate entries in PATH
+typeset -U PATH
+export PATH
