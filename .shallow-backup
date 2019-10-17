@@ -22,11 +22,12 @@
         ".vim",
         ".config/kitty",
         ".config/ranger",
-        ".tmux"
+        ".tmux/scripts"
     ],
     "default-gitignore": [
         "dotfiles/.ssh",
         "dotfiles/.pypirc",
+        "dotfiles/.config/ranger/plugins/ranger_devicons",
         ".DS_Store"
     ],
     "config_mapping": {

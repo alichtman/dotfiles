@@ -5,3 +5,4 @@
 .tmux/resurrect/
 .tmux/resurrect/last
 ranger/plugins/ranger_devicons
+.config/ranger/plugins/ranger_devicons
