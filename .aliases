@@ -65,6 +65,7 @@ alias please='sudo $(fc -ln -1)' # Rerun last command with sudo
 alias google="googler -l en"
 alias fuck='eval $(TF_ALIAS=fuck PYTHONIOENCODING=utf-8 thefuck $(fc -ln -1))'
 alias activate=". venv/bin/activate"
+alias imgcat='viu'
 
 # Copy the working dir to the clipboard
 alias cpwd='pwd | xargs echo -n | pbcopy'
@@ -100,9 +101,6 @@ alias :q="exit"
 
 alias o='open'
 
-
-alias stars='npx stargazed -u alichtman --sort'
-
 ############
 # r/unixporn
 ############
@@ -130,7 +128,4 @@ alias throttle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=1;'
 alias show-desktop='defaults write com.apple.finder CreateDesktop true; killall Finder'
 alias hide-desktop='defaults write com.apple.finder CreateDesktop false; killall Finder'
 
-# Quick way to rebuild the Launch Services database and get rid of duplicates in the Open With submenu.
-# via https://sixcolors.com/post/2015/10/clean-out-a-messy-open-with-menu-in-the-finder/
-alias reubild-launch-serivces-db='/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -r -domain local -domain user'
-
+#  vim: set filetype=zsh:

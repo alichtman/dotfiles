@@ -25,6 +25,10 @@ function launch() {
 	open -a "`find /Applications -name '*app' -maxdepth 1 | cut -d'/' -f 3 | cut -d'.' -f 1 | fzf --query=$1`"
 }
 
+tre() {
+	command tre "$@" -e && source "/tmp/tre_aliases_$USER" 2>/dev/null;
+}
+
 #####
 # git
 #####
@@ -40,7 +44,8 @@ function gi() {
 
 # Grab dotfiles list from ~/.shallow-backup and throw it in a fzf selector for editing
 function dots() {
-	vim ~/$(cat ~/.shallow-backup | jq '.dotfiles' | jq -r '.[]' | fzf)
+	# TODO: Autoquit fzf when done editing
+	cat ~/.shallow-backup | jq '.dotfiles' | jq -r '.[]' | fzf --bind "enter:execute(nvim ~/{})"
 }
 
 # backup-dots [COMMIT MESSAGE]
@@ -76,7 +81,7 @@ function ranger {
         ranger
         --cmd="map Q chain shell echo %d > "$tempfile"; quitall"
     )
-    
+
     ${ranger_cmd[@]} "$@"
     if [[ -f "$tempfile" ]] && [[ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]]; then
         cd -- "$(cat "$tempfile")" || return
@@ -110,4 +115,4 @@ tm() {
   session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
 }
 
-#  vim: set ts=4 sw=4 tw=0 syntax=zsh noet :
+#  vim: set filetype=zsh:

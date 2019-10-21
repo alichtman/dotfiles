@@ -365,6 +365,13 @@ command! Qa qa
 inoremap jk <Esc>
 inoremap kj <Esc>
 
+" Make ^e and ^y scroll 5 lines instead of 1
+nnoremap <C-e> 5<C-e>
+nnoremap <C-y> 5<C-y>
+
+" Switch between the last two files
+nnoremap <leader><leader> <c-^>
+
 " Write faster
 nnoremap <leader>w :w<CR>
 
@@ -400,24 +407,24 @@ nnoremap <silent> B[ :bfirst<CR>
 nnoremap <silent> B] :blast<CR>
 
 " Easily move between panes
-nnoremap <silent> <leader>h <C-w>h
-nnoremap <silent> <leader>j <C-w>j
-nnoremap <silent> <leader>k <C-w>k
-nnoremap <silent> <leader>l <C-w>l
-vnoremap <silent> <leader>h <C-w>h
-vnoremap <silent> <leader>j <C-w>j
-vnoremap <silent> <leader>k <C-w>k
-vnoremap <silent> <leader>l <C-w>l
+nnoremap <silent> <C-h> <C-w>h
+vnoremap <silent> <C-h> <C-w>h
+nnoremap <silent> <C-j> <C-w>j
+vnoremap <silent> <C-j> <C-w>j
+nnoremap <silent> <C-k> <C-w>k
+vnoremap <silent> <C-k> <C-w>k
+nnoremap <silent> <C-l> <C-w>l
+vnoremap <silent> <C-l> <C-w>l
 
 " Move the current line above or below with ALT + [j/k].
 noremap <A-j> ddjP
 noremap <A-k> ddkP
 
 " Make j and k operate on virtual lines, not real lines.
-vnoremap j gj
-vnoremap k gk
 nnoremap j gj
+vnoremap j gj
 nnoremap k gk
+vnoremap k gk
 
 " Automatically jump to end of pasted text
 vnoremap <silent> p p`]
@@ -475,6 +482,18 @@ function! CycleCasing(str)
   return result
 endfunction
 vnoremap <c-u> y:call setreg('', CycleCasing(@"), getregtype(''))<CR>gv""Pgv
+
+" Rename current file
+function! RenameFile()
+  let old_name = expand('%')
+  let new_name = input('New file name: ', expand('%'), 'file')
+  if new_name != '' && new_name != old_name
+    exec ':saveas ' . new_name
+    exec ':silent !rm ' . old_name
+    redraw!
+  endif
+endfunction
+map <leader>rn :call RenameFile()<cr>
 
 " Remappings }}}
 

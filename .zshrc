@@ -211,3 +211,4 @@ unset file
 zplug load
 
 zsh-startify
+
