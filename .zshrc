@@ -88,9 +88,6 @@ if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 fi
 
-# My custom completions
-fpath=("~/.config/zsh/completions" $fpath)
-
 # pip zsh completion
 function _pip_completion {
   local words cword
@@ -123,23 +120,6 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 autoload -U compinit && compinit
 
 ######
-# Quick Ctrl-z swap in and out of vim
-######
-
-# https://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
-fancy-ctrl-z () {
-  if [[ $#BUFFER -eq 0 ]]; then
-    BUFFER="fg"
-    zle accept-line
-  else
-    zle push-input
-    zle clear-screen
-  fi
-}
-zle -N fancy-ctrl-z
-bindkey '^Z' fancy-ctrl-z
-
-######
 # tmux
 ######
 
@@ -166,9 +146,9 @@ setopt share_history        # import new commands from the history file also in 
 setopt extended_history     # save each command's beginning timestamp and the duration to the history file
 setopt hist_ignore_space    # remove command lines from the history list when the first character on the line is a space
 
-# Date format
-HIST_STAMPS="mm/dd/yyyy"
-SAVEHIST=10000000
+export HIST_STAMPS="mm/dd/yyyy"
+export HISTSIZE=1000000000
+export SAVEHIST=$HISTSIZE
 
 #####
 # vim
@@ -176,6 +156,21 @@ SAVEHIST=10000000
 
 # Enable Ctrl-x-e to edit current command in vim
 autoload -U edit-command-line
+
+# TODO: Fix this
+# Use Ctrl-z swap in and out of vim
+# https://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
+fancy-ctrl-z () {
+  if [[ $#BUFFER -eq 0 ]]; then
+    BUFFER="fg"
+    zle accept-line
+  else
+    zle push-input
+    zle clear-screen
+  fi
+}
+zle -N fancy-ctrl-z
+bindkey '^Z' fancy-ctrl-z
 
 ###########################
 # Looking out for future me.

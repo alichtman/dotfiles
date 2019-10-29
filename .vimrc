@@ -42,7 +42,6 @@ Plug 'mhartington/oceanic-next'
 Plug 'ryanoasis/vim-devicons'
 Plug 'mhinz/vim-startify'
 Plug 'ntpeters/vim-better-whitespace'
-"Plug 'gko/vim-coloresque'
 
 " Tagbar
 Plug 'liuchengxu/vista.vim'
@@ -98,7 +97,8 @@ runtime macros/matchit.vim
 
 " Use the mouse for pane selection, resizing, and cursor movement.
 " TODO: Figure out how to disable scrolling past the edge of the file.
-" set mouse=nv
+" Doesn't happen in Terminal.app without this setting enabled.
+set mouse=nv
 
 set nocompatible
 set nostartofline  " Don’t reset cursor to start of line when moving around.
@@ -170,7 +170,7 @@ set breakindentopt=min:40
 
 " 80 and 120 character guidelines
 highlight ColorColumn ctermbg=lightgrey
-set cc=81,120
+set cc=80,120
 
 " Highlight current line
 set cursorline
@@ -266,62 +266,66 @@ let g:vista_fzf_preview = ['right:50%']
 " AutoGroups {{{
 
 augroup AutoCloseVim
-	autocmd!
-	" Close vim if the quickfix window is the only window visible (and only tab)
-	" https://stackoverflow.com/a/7477056
-	autocmd WinEnter * if winnr('$') == 1 && &buftype == "quickfix" | q | endif
-	" Close vim if only thing remaining is NERDTree
-	autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+    autocmd!
+    " Close vim if the quickfix window is the only window visible (and only tab)
+    " https://stackoverflow.com/a/7477056
+    autocmd WinEnter * if winnr('$') == 1 && &buftype == "quickfix" | q | endif
+    " Close vim if only thing remaining is NERDTree
+    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 augroup END
 
 " If opening vim without a file, open startify and NERDTree
 augroup OnOpenVim
-	autocmd!
-	autocmd VimEnter *
-				\   if !argc()
-				\ |   Startify
-				\ |   NERDTree
-				\ |   wincmd w
-				\ | endif
+    autocmd!
+    autocmd VimEnter *
+                \   if !argc()
+                \ |   Startify
+                \ |   NERDTree
+                \ |   wincmd w
+                \ | endif
+augroup END
+
+augroup setWorkingDir
+    autocmd BufEnter * silent! lcd %:p:h
 augroup END
 
 " auto-save fold views
 augroup AutoSaveFolds
-	autocmd!
-	autocmd BufWinLeave * silent! mkview
-	autocmd BufWinEnter * silent! loadview
+    autocmd!
+    autocmd BufWinLeave * silent! mkview
+    autocmd BufWinEnter * silent! loadview
 augroup END
 
 " Restore cursor position when opening a file
 augroup OnOpenFile
-	autocmd!
-	autocmd BufReadPost *
-				\ if line("'\"") > 1 && line("'\"") <= line("$") |
-				\   execute "normal! g`\"" |
-				\ endif
+    autocmd!
+    autocmd BufReadPost *
+                \ if line("'\"") > 1 && line("'\"") <= line("$") |
+                \   execute "normal! g`\"" |
+                \ endif
 augroup END
 
 " Automatically use absolute line numbers when we’re in insert mode
 " and relative numbers when we’re in normal mode
 augroup LineNumbers
-	autocmd!
-	autocmd InsertEnter * :set number
-	autocmd InsertLeave * :set relativenumber
+    autocmd!
+    autocmd InsertEnter * :set number
+    autocmd InsertLeave * :set relativenumber
 augroup END
 
 " Auto folding in vimscript files with {{{ and }}}
 augroup filetype_vim
-	autocmd!
-	autocmd FileType vim setlocal foldmethod=marker
+    autocmd!
+    autocmd FileType vim setlocal foldmethod=marker
 augroup END
 
 augroup indentation
-	autocmd!
-	" configure expanding of tabs for various file types
-	au BufRead,BufNewFile *.py set expandtab
-	au BufRead,BufNewFile *.c set noexpandtab
-	au BufRead,BufNewFile *.h set noexpandtab
-	au BufRead,BufNewFile Makefile* set noexpandtab
+    autocmd!
+    " configure expanding of tabs for various file types
+    au BufRead,BufNewFile *.py set expandtab
+    au BufRead,BufNewFile *.c set noexpandtab
+    au BufRead,BufNewFile *.h set noexpandtab
+    au BufRead,BufNewFile Makefile* set noexpandtab
 augroup END
 
 " Enable spellcheck for markdown and txt files
@@ -391,7 +395,7 @@ cabbrev hv vert h
 nnoremap c* *Ncgn
 
 " Markdown bold
-inoremap ,b ****<ESC>2ha
+inoremap <leader>b ****<ESC>2ha
 
 " Dictionary lookup
 nnoremap <leader>D :Dict<cr>
@@ -457,8 +461,8 @@ nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 
 " Toggle NERDTree
 function! ToggleNerdTree()
-	:NERDTreeToggle
-	:AirlineRefresh
+    :NERDTreeToggle
+    :AirlineRefresh
 endfunction
 nnoremap <Leader>n :call ToggleNerdTree()<CR>
 
@@ -499,7 +503,7 @@ map <leader>rn :call RenameFile()<cr>
 
 " coc.nvim {{{
 " https://github.com/neoclide/coc.nvim#example-vim-configuration
- 
+
 " https://github.com/neoclide/coc.nvim/issues/856
 let g:coc_node_path = "/usr/local/bin/node"
 
@@ -593,29 +597,29 @@ let g:vim_markdown_toc_autofit = 1
 " Startify {{{
 
 let g:startify_lists = [
-			\ { 'type': 'files',     'header': ['   MRU']            },
-			\ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
-			\ { 'type': 'sessions',  'header': ['   Sessions']       },
-			\ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
-			\ { 'type': 'commands',  'header': ['   Commands']       },
-			\ ]
+            \ { 'type': 'files',     'header': ['   MRU']            },
+            \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+            \ { 'type': 'sessions',  'header': ['   Sessions']       },
+            \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+            \ { 'type': 'commands',  'header': ['   Commands']       },
+            \ ]
 
 let g:startify_bookmarks = [
-			\ {'a': '~/.vimrc'},
-			\ {'b': '~/.zshrc'},
-			\ {'c': '~/.tmux.conf'},
-			\ {'d': '~/Desktop/personal/'},
-			\ {'e': '~/Desktop/Development/notes'} ]
+            \ {'a': '~/.vimrc'},
+            \ {'b': '~/.zshrc'},
+            \ {'c': '~/.tmux.conf'},
+            \ {'d': '~/Desktop/personal/'},
+            \ {'e': '~/Desktop/Development/notes'} ]
 
 let g:startify_custom_header = [
-			\ ' ',
-			\ '            __',
-			\ '    __  __ /\_\    ___ ___',
-			\ '   /\ \/\ \\/\ \ /'' __` __`\',
-			\ '   \ \ \_/ |\ \ \/\ \/\ \/\ \',
-			\ '    \ \___/  \ \_\ \_\ \_\ \_\',
-			\ '     \/__/    \/_/\/_/\/_/\/_/',
-			\ ]
+            \ ' ',
+            \ '            __',
+            \ '    __  __ /\_\    ___ ___',
+            \ '   /\ \/\ \\/\ \ /'' __` __`\',
+            \ '   \ \ \_/ |\ \ \/\ \/\ \/\ \',
+            \ '    \ \___/  \ \_\ \_\ \_\ \_\',
+            \ '     \/__/    \/_/\/_/\/_/\/_/',
+            \ ]
 
 let g:startify_files_number = 8
 let g:startify_update_oldfiles = 0
@@ -659,7 +663,7 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-" Status Line }}}
+" END Airline }}}
 
 " NerdCommenter {{{
 
@@ -675,11 +679,11 @@ let g:NERDTrimTrailingWhitespace = 1
 " Bullets.vim {{{
 
 let g:bullets_enabled_file_types = [
-			\ 'markdown',
-			\ 'text',
-			\ 'gitcommit',
-			\ 'scratch'
-			\]
+            \ 'markdown',
+            \ 'text',
+            \ 'gitcommit',
+            \ 'scratch'
+            \]
 
 " END Bullets.vim }}}
 

@@ -15,6 +15,7 @@
         ".zlogin",
         ".zfunctions",
         ".zprofile",
+        ".zshenv",
         ".zshrc"
     ],
     "dotfolders": [

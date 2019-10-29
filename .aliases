@@ -11,6 +11,8 @@ alias tree='ls --tree'
 alias gls='LC_COLLATE=cs_CZ.ISO8859-2 colorls -1A --sd --gs'
 alias color_ll='LC_COLLATE=cs_CZ.ISO8859-2 colorls -l -A --sd --gs'
 
+alias fd="fd --hidden --exclude '.git'"
+
 # Autojump with j and jj
 alias j='z'
 alias jj='zz'
@@ -23,8 +25,7 @@ alias cdd='cd'
 #########
 
 alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor'
-alias cargo-update='cargo install-update -a'
-alias update='rustup update; cargo-update; brewup; apm upgrade --no-confirm; op update; zplug update;'
+alias update='pip install --upgrade pip; rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "OnePassword: " && op update; zplug update;'
 
 ###########
 # 1Password

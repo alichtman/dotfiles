@@ -44,7 +44,6 @@ function gi() {
 
 # Grab dotfiles list from ~/.shallow-backup and throw it in a fzf selector for editing
 function dots() {
-	# TODO: Autoquit fzf when done editing
 	cat ~/.shallow-backup | jq '.dotfiles' | jq -r '.[]' | fzf --bind "enter:execute(nvim ~/{})"
 }
 

@@ -23,6 +23,7 @@ export PATH="$PATH:/usr/sbin"
 export PATH="$PATH:/usr/local/sbin"
 export PATH="$PATH:/Applications/VMware Fusion.app/Contents/Library"
 export PATH="$PATH:/usr/local/Cellar/node/12.12.0/bin"
+export PATH="$PATH:/Users/alichtman/Library/Python/3.7/bin"
 
 # Splunk
 export SPLUNK_HOME=/Applications/Splunk
@@ -37,3 +38,14 @@ export LSCOLORS=GxFxCxDxBxegedabagaced
 # Deduplicate entries in PATH
 typeset -U PATH
 export PATH
+
+#######
+# pyenv
+#######
+
+# export PYENV_ROOT="$HOME/.pyenv"
+# export PYENV_ROOT="$HOME/.pyenv"
+# eval "$(pyenv init -)"
+# pyenv shell 3.8.0
+
+
