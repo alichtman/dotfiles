@@ -16,6 +16,11 @@ export PATH="$PATH:/Users/alichtman/.local/share/radare2/prefix/bin"
 export GOPATH=$HOME/go
 export PATH="$PATH:$GOPATH/bin"
 
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ]; then
+  PATH="$HOME/bin:$PATH"
+fi
+
 export PATH="/usr/local/bin:$PATH"
 export PATH="$PATH:/sbin"
 export PATH="$PATH:/usr/local"

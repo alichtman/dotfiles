@@ -84,6 +84,8 @@ alias h='habitctl'
 alias habits='habitctl log && echo "\nTODO:\n" && habitctl todo'
 alias habitedit='habitctl edith'
 
+alias cal='calz'
+
 # Editor Shortcuts
 alias vim='nvim'
 alias vimdiff="nvim -d"

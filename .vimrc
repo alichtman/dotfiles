@@ -430,6 +430,12 @@ vnoremap j gj
 nnoremap k gk
 vnoremap k gk
 
+" Make arrow keys work on virtual lines
+noremap  <buffer> <silent> <Up>   gk
+noremap  <buffer> <silent> <Down> gj
+inoremap <buffer> <silent> <Up>   <C-o>gk
+inoremap <buffer> <silent> <Down> <C-o>gj
+
 " Automatically jump to end of pasted text
 vnoremap <silent> p p`]
 nnoremap <silent> p p`]
@@ -497,7 +503,6 @@ function! RenameFile()
     redraw!
   endif
 endfunction
-map <leader>rn :call RenameFile()<cr>
 
 " Remappings }}}
 
