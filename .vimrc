@@ -357,6 +357,10 @@ nnoremap <leader>et :vsplit ~/.tmux.conf<cr>
 " Make : commands easier
 nnoremap ; :
 
+" Don't overwrite registers when deleting with x or X
+nnoremap x "_x
+nnoremap X "_X
+
 " Yeet those 'Not an editor command' errors right out the fucking window
 " Or, defenestrate, as my Dad would say.
 command! WQ wq
@@ -377,21 +381,22 @@ nnoremap <C-y> 5<C-y>
 nnoremap <leader><leader> <c-^>
 
 " Write faster
-nnoremap <leader>w :w<CR>
+nnoremap <leader>w :up<CR>
 
-" Open files with fzf faster
+" Open files with fzf
 nnoremap <leader>o :FZF<CR>
 
 " Close buffers like closing a window in an IDE
+" TODO: Super fucking slow for some reason
 nnoremap <leader>q :clo<cr>
 
 " Quickly select the text you just pasted
 noremap gV `[v`]
 
-" Make help appear as a vertical split
+" Create vertical split for help
 cabbrev hv vert h
 
-" Change word under cursor. Repeatable with . : https://youtu.be/7Bx_mLDBtRc?t=130
+" Change word under cursor. Repeatable with . https://youtu.be/7Bx_mLDBtRc?t=130
 nnoremap c* *Ncgn
 
 " Markdown bold
@@ -430,7 +435,7 @@ vnoremap j gj
 nnoremap k gk
 vnoremap k gk
 
-" Make arrow keys work on virtual lines
+" Make arrow keys also work on virtual lines
 noremap  <buffer> <silent> <Up>   gk
 noremap  <buffer> <silent> <Down> gj
 inoremap <buffer> <silent> <Up>   <C-o>gk

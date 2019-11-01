@@ -157,16 +157,15 @@ export SAVEHIST=$HISTSIZE
 # Enable Ctrl-x-e to edit current command in vim
 autoload -U edit-command-line
 
-# TODO: Fix this
-# Use Ctrl-z swap in and out of vim
+# Use Ctrl-z swap in and out of vim (or any other process)
 # https://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
 fancy-ctrl-z () {
   if [[ $#BUFFER -eq 0 ]]; then
-    BUFFER="fg"
-    zle accept-line
+	BUFFER="setopt monitor && fg"
+	zle accept-line
   else
-    zle push-input
-    zle clear-screen
+	zle push-input
+	zle clear-screen
   fi
 }
 zle -N fancy-ctrl-z
@@ -206,4 +205,3 @@ unset file
 zplug load
 
 zsh-startify
-
