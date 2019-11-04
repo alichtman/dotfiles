@@ -399,6 +399,9 @@ cabbrev hv vert h
 " Change word under cursor. Repeatable with . https://youtu.be/7Bx_mLDBtRc?t=130
 nnoremap c* *Ncgn
 
+" Quickly tabularize selected block
+vnoremap <leader>t :Tabularize / \|<cr>
+
 " Markdown bold
 inoremap <leader>b ****<ESC>2ha
 
