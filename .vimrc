@@ -93,11 +93,9 @@ runtime macros/matchit.vim
 
 " }}}
 
-" General Settings    {{{
+" General Settings  {{{
 
 " Use the mouse for pane selection, resizing, and cursor movement.
-" TODO: Figure out how to disable scrolling past the edge of the file.
-" Doesn't happen in Terminal.app without this setting enabled.
 set mouse=nv
 
 set nocompatible
@@ -179,9 +177,8 @@ set cursorline
 set listchars=tab:▸\ ,trail:·,eol:¬,nbsp:_
 set list
 
-set hidden                      " Allow Vim to manage hidden buffers effectively
-set nobackup                    " Don't keep a backup file
-set nowritebackup
+set hidden          " Enable buffers to exist in the background
+set nobackup        " Don't keep a backup file. writebackup is enough for my purposes.
 
 " Open new split panes to right and bottom, which feels more natural
 set splitbelow
@@ -272,6 +269,8 @@ augroup AutoCloseVim
     autocmd WinEnter * if winnr('$') == 1 && &buftype == "quickfix" | q | endif
     " Close vim if only thing remaining is NERDTree
     autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+    " Close vim if we just deleted the last buffer
+    autocmd BufDelete * if len(filter(range(1, bufnr('$')), '! empty(bufname(v:val)) && buflisted(v:val)')) == 1 | quit | endif
 augroup END
 
 " If opening vim without a file, open startify and NERDTree
@@ -373,9 +372,13 @@ command! Qa qa
 inoremap jk <Esc>
 inoremap kj <Esc>
 
+" ---- Scrolling -----
+
 " Make ^e and ^y scroll 5 lines instead of 1
 nnoremap <C-e> 5<C-e>
 nnoremap <C-y> 5<C-y>
+
+" END Scrolling
 
 " Switch between the last two files
 nnoremap <leader><leader> <c-^>
@@ -386,9 +389,9 @@ nnoremap <leader>w :up<CR>
 " Open files with fzf
 nnoremap <leader>o :FZF<CR>
 
-" Close buffers like closing a window in an IDE
-" TODO: Super fucking slow for some reason
-nnoremap <leader>q :clo<cr>
+" Close buffers and windows more easily
+nnoremap <leader>q :bdelete<cr>
+nnoremap <leader>q! :bdelete!<cr>
 
 " Quickly select the text you just pasted
 noremap gV `[v`]
@@ -602,8 +605,6 @@ command! -nargs=? Fold :call CocAction('fold', <f-args>)
 let g:vim_markdown_folding_disabled = 1
 " Autoresize TOC window
 let g:vim_markdown_toc_autofit = 1
-
-
 
 " }}}
 

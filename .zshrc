@@ -18,6 +18,7 @@ export HOMEBREW_NO_ANALYTICS=1
 export BAT_THEME="TwoDark"
 export EDITOR='nvim'
 export VISUAL='nvim'
+export HOMEBREW_NO_ANALYTICS=1
 export ZSH=$HOME/.oh-my-zsh
 export NOTES=$HOME/Desktop/Development/notes
 
@@ -205,3 +206,11 @@ unset file
 zplug load
 
 zsh-startify
+
+# pyenv
+export PYENV_ROOT=/usr/local/var/pyenv
+
+if [[ -z "$VIRTUAL_ENV" ]]; then
+    eval "$(pyenv init -)"
+    # eval "$(pyenv virtualenv-init -)"
+fi
