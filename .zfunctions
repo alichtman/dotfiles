@@ -25,9 +25,16 @@ function launch() {
 	open -a "`find /Applications -name '*app' -maxdepth 1 | cut -d'/' -f 3 | cut -d'.' -f 1 | fzf --query=$1`"
 }
 
-tre() {
+# tree command with "quick jump" ability
+function tre() {
 	command tre "$@" -e && source "/tmp/tre_aliases_$USER" 2>/dev/null;
 }
+
+# Prettier diffs
+function pdiff() {
+	diff -u $1 $2 | diff-so-fancy
+}
+
 
 #####
 # git
