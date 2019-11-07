@@ -34,6 +34,7 @@ alias update='pip install --upgrade pip; rustup update; cargo install-update -a;
 
 alias 1p_signin='eval $(op signin my)'
 alias op_signin='1p_signin'
+alias spotify_pass="op get item Spotify | jq -r '.details.fields[1].value'"
 
 ##################################
 # Binary Analysis / RE / Forensics

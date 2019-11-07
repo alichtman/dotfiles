@@ -101,7 +101,6 @@ runtime macros/matchit.vim
 " Use the mouse for pane selection, resizing, and cursor movement.
 set mouse=nv
 
-set nocompatible
 set nostartofline  " Don’t reset cursor to start of line when moving around.
 set title          " Show the filename in the window titlebar
 set backspace=indent,eol,start " Allow backspace in insert mode
@@ -166,6 +165,7 @@ set switchbuf=usetab
 " Line breaking
 set wrap
 set nolinebreak
+" set textwidth=120     " TODO: break lines when line length increases only outside of markdown and text files
 set breakindent
 set breakindentopt=min:40
 
@@ -173,8 +173,7 @@ set breakindentopt=min:40
 highlight ColorColumn ctermbg=lightgrey
 set cc=80,120
 
-" Highlight current line
-set cursorline
+set cursorline      " Highlight current line
 
 " Show “invisible” characters
 set listchars=tab:▸\ ,trail:·,eol:¬,nbsp:_
@@ -183,11 +182,11 @@ set list
 set hidden          " Enable buffers to exist in the background
 set nobackup        " Don't keep a backup file. writebackup is enough for my purposes.
 
-" Open new split panes to right and bottom, which feels more natural
+" Open new split panes to right and bottom
 set splitbelow
 set splitright
 
-set signcolumn=yes              " always show signcolumns
+set signcolumn=yes  " always show signcolumns
 
 " END General Settings    }}}
 
@@ -198,7 +197,6 @@ set preserveindent
 filetype plugin indent on
 
 set expandtab           " enter spaces when tab is pressed
-" set textwidth=120     " TODO: break lines when line length increases only outside of markdown and text files
 set tabstop=4           " use 4 spaces to represent tab
 set softtabstop=4
 set shiftwidth=4        " number of spaces to use for auto indent
@@ -284,7 +282,6 @@ augroup OnOpenVim
                 \ |   NERDTree
                 \ |   wincmd w
                 \ | endif
-
     " Automatically install missing plugins
     autocmd VimEnter *
                 \   if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
@@ -292,7 +289,9 @@ augroup OnOpenVim
                 \ | endif
 augroup END
 
-" Although... Do I really want this behavior? It sucks sometimes
+" After opening a file, set working dir to the same as that file so relative
+" paths will work nicely. Pairs with the set of :FZF mappings below to allow
+" you to access files in the parent directories.
 augroup setWorkingDirForCurrentWindow
     autocmd BufEnter * silent! lcd %:p:h
 augroup END
@@ -350,16 +349,60 @@ augroup END
 
 " END AutoGroups- }}}
 
+" Functions {{{
+
+" Append modeline after last line in buffer
+" Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
+" files.
+function! AppendModeline()
+  let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set :",
+        \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
+  let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
+  call append(line("$"), l:modeline)
+endfunction
+
+" Rename current file (mirrors $ mv)
+function! RenameFile()
+  let old_name = expand('%')
+  let new_name = input('New file name: ', expand('%'), 'file')
+  if new_name != '' && new_name != old_name
+    exec ':saveas ' . new_name
+    exec ':silent !rm ' . old_name
+    redraw!
+  endif
+endfunction
+
+function! ToggleNerdTree()
+    :NERDTreeToggle
+    :AirlineRefresh
+endfunction
+
+" Cycle casing of selected text from upper to lower to title
+" https://vim.fandom.com/wiki/Switching_case_of_characters
+function! CycleCasing(str)
+  if a:str ==# toupper(a:str)
+    let result = tolower(a:str)
+  elseif a:str ==# tolower(a:str)
+    let result = substitute(a:str,'\(\<\w\+\>\)', '\u\1', 'g')
+  else
+    let result = toupper(a:str)
+  endif
+  return result
+endfunction
+
+" END Functions }}}
+
 " Remappings {{{
 
 " Set , as leader and - as localleader
 let mapleader = ","
 let maplocalleader = "-"
 
-" Quickly edit configs
-cnoremap <leader>ev :vsplit ~/.vimrc<cr>
+" Quickly edit important configs
+nnoremap <leader>ev :drop ~/.vimrc<cr>
 nnoremap <leader>sv :source ~/.vimrc<cr>:AirlineRefresh<cr>
-nnoremap <leader>et :vsplit ~/.tmux.conf<cr>
+nnoremap <leader>et :drop ~/.tmux.conf<cr>
+nnoremap <leader>ez :drop ~/.zshrc<cr>
 
 " Make : commands easier
 nnoremap ; :
@@ -380,22 +423,14 @@ command! Qa qa
 inoremap jk <Esc>
 inoremap kj <Esc>
 
-" ---- Scrolling -----
-
-" Make ^e and ^y scroll 5 lines instead of 1
-nnoremap <C-e> 5<C-e>
-nnoremap <C-y> 5<C-y>
-
-" END Scrolling
-
-" Switch between the last two files
-nnoremap <leader><leader> <c-^>
-
-" Write faster
+" Save one chracter when saving, and only write if there are changes
 nnoremap <leader>w :up<CR>
 
-" Open files with fzf
+" Open files with fzf. Little hack to make this play nicely with setWorkingDirForCurrentWindow
 nnoremap <leader>o :FZF<CR>
+nnoremap <leader>o. :FZF ..<CR>
+nnoremap <leader>o.. :FZF ../..<CR>
+nnoremap <leader>o... :FZF ../../..<CR>
 
 " Close buffers and windows more easily
 nnoremap <leader>q :bdelete<cr>
@@ -403,6 +438,10 @@ nnoremap <leader>q! :bdelete!<cr>
 
 " Quickly select the text you just pasted
 noremap gV `[v`]
+
+" Automatically jump to end of pasted text
+vnoremap <silent> p p`]
+nnoremap <silent> p p`]
 
 " Create vertical split for help
 cabbrev hv vert h
@@ -439,6 +478,9 @@ vnoremap <silent> <C-k> <C-w>k
 nnoremap <silent> <C-l> <C-w>l
 vnoremap <silent> <C-l> <C-w>l
 
+" Switch between the last two files
+nnoremap <leader><leader> <c-^>
+
 " Move the current line above or below with ALT + [j/k].
 noremap <A-j> ddjP
 noremap <A-k> ddkP
@@ -455,10 +497,6 @@ noremap  <buffer> <silent> <Down> gj
 inoremap <buffer> <silent> <Up>   <C-o>gk
 inoremap <buffer> <silent> <Down> <C-o>gj
 
-" Automatically jump to end of pasted text
-vnoremap <silent> p p`]
-nnoremap <silent> p p`]
-
 " Auto center on matched string.
 noremap n nzz
 noremap N Nzz
@@ -470,30 +508,14 @@ nnoremap <leader>u :UndotreeToggle<cr>
 nmap <script> <silent> <leader>tl :call ToggleLocationList()<CR>
 nmap <script> <silent> <leader>tq :call ToggleQuickfixList()<CR>
 
-" Jump to anywhere you want with minimal keystrokes, with just one key binding.
-" `s{char}{char}{label}`
+" Jump to anywhere on screen with minimal keystrokes `s{char}{char}{label}`
 nmap s <Plug>(easymotion-overwin-f2)
 
 " Toggle spell check
 nmap <silent> <leader>s :set spell!<CR>
 
-" Append modeline after last line in buffer with <Leader>ml
-" Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
-" files.
-function! AppendModeline()
-  let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set :",
-        \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
-  let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
-  call append(line("$"), l:modeline)
-endfunction
-nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
-
-" Toggle NERDTree
-function! ToggleNerdTree()
-    :NERDTreeToggle
-    :AirlineRefresh
-endfunction
-nnoremap <Leader>n :call ToggleNerdTree()<CR>
+" Toggle file browser
+nnoremap <Leader>ob :call ToggleNerdTree()<CR>
 
 " Turn off search highlighting
 noremap <Leader>/ :noh<CR>
@@ -501,36 +523,13 @@ noremap <Leader>/ :noh<CR>
 " Toggle tagbar
 nmap <Leader>v :Vista!!<CR>
 
-" Visually select text then press Ctrl-u to convert the text to UPPER CASE,
-" then to lower case, then to Title Case.
-" https://vim.fandom.com/wiki/Switching_case_of_characters
-function! CycleCasing(str)
-  if a:str ==# toupper(a:str)
-    let result = tolower(a:str)
-  elseif a:str ==# tolower(a:str)
-    let result = substitute(a:str,'\(\<\w\+\>\)', '\u\1', 'g')
-  else
-    let result = toupper(a:str)
-  endif
-  return result
-endfunction
+" Cycle casing of selected text
 vnoremap <c-u> y:call setreg('', CycleCasing(@"), getregtype(''))<CR>gv""Pgv
-
-" Rename current file
-function! RenameFile()
-  let old_name = expand('%')
-  let new_name = input('New file name: ', expand('%'), 'file')
-  if new_name != '' && new_name != old_name
-    exec ':saveas ' . new_name
-    exec ':silent !rm ' . old_name
-    redraw!
-  endif
-endfunction
 
 " Remappings }}}
 
 " coc.nvim {{{
-" https://github.com/neoclide/coc.nvim#example-vim-configuration
+" Stolen mainly from: https://github.com/neoclide/coc.nvim#example-vim-configuration
 
 " https://github.com/neoclide/coc.nvim/issues/856
 let g:coc_node_path = "/usr/local/bin/node"
@@ -586,7 +585,7 @@ nmap <leader>rn <Plug>(coc-rename)
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
-augroup itCameWithTheCOCnvimSuggestedSetupIDKHonestly
+augroup somethingWithFormattingAndJumpingCoC
   autocmd!
   " Setup formatexpr specified filetype(s).
   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
@@ -609,7 +608,7 @@ command! -nargs=0 Format :call CocAction('format')
 " Use `:Fold` to fold current buffer
 command! -nargs=? Fold :call CocAction('fold', <f-args>)
 
-" End coc.nvim }}}
+" END coc.nvim }}}
 
 " vim-markdown {{{
 
@@ -677,7 +676,7 @@ let g:show_spaces_that_precede_tabs=1
 
 " END Better Whitespace }}}
 
-" Airline {{{
+" Airline / Statusline {{{
 
 let g:airline_theme='onedark'
 let g:airline_powerline_fonts = 1
