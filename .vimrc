@@ -1,5 +1,5 @@
 " .vimrc for Neovim on macOS
-" Aaron Lichtman
+" Written by: Aaron Lichtman (and the internet)
 
 " I've spent 10,000 fucking hours on this thing. I hope someone else gets some
 " use out of this.
@@ -15,6 +15,10 @@ Plug 'mattn/webapi-vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'vim-syntastic/syntastic'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'davidhalter/jedi-vim'
+
+" Toggle Quick and Location Lists
+Plug 'milkypostman/vim-togglelist'
 
 " File explorers
 Plug 'scrooloose/nerdtree'
@@ -24,7 +28,6 @@ Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 
 " Writing-related
-" Plug 'reedes/vim-wordy'
 Plug 'reedes/vim-litecorrect'
 Plug 'szw/vim-dict'
 Plug 'junegunn/goyo.vim'
@@ -266,11 +269,10 @@ augroup AutoCloseVim
     autocmd!
     " Close vim if the quickfix window is the only window visible (and only tab)
     " https://stackoverflow.com/a/7477056
-    autocmd WinEnter * if winnr('$') == 1 && &buftype == "quickfix" | q | endif
+    autocmd WinEnter * if winnr('$') == 1 && &buftype == "quickfix" | quit | endif
     " Close vim if only thing remaining is NERDTree
-    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-    " Close vim if we just deleted the last buffer
-    autocmd BufDelete * if len(filter(range(1, bufnr('$')), '! empty(bufname(v:val)) && buflisted(v:val)')) == 1 | quit | endif
+    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | quit | endif
+    " TODO: Close vim if all that remains is a no-name buffer
 augroup END
 
 " If opening vim without a file, open startify and NERDTree
@@ -284,12 +286,12 @@ augroup OnOpenVim
                 \ | endif
 augroup END
 
+" Although... Do I really want this behavior? It sucks sometimes
 augroup setWorkingDir
     autocmd BufEnter * silent! lcd %:p:h
 augroup END
 
-" auto-save fold views
-augroup AutoSaveFolds
+augroup MakeFoldsPersistent
     autocmd!
     autocmd BufWinLeave * silent! mkview
     autocmd BufWinEnter * silent! loadview
@@ -313,12 +315,12 @@ augroup LineNumbers
 augroup END
 
 " Auto folding in vimscript files with {{{ and }}}
-augroup filetype_vim
+augroup Filetype_Vim
     autocmd!
     autocmd FileType vim setlocal foldmethod=marker
 augroup END
 
-augroup indentation
+augroup Indentation
     autocmd!
     " configure expanding of tabs for various file types
     au BufRead,BufNewFile *.py set expandtab
@@ -339,7 +341,7 @@ augroup spellcheckAndLexicalThings
     autocmd FileType text call litecorrect#init()
     hi SpellBad cterm=underline ctermfg=red
 augroup END
-"
+
 " END AutoGroups- }}}
 
 " Remappings {{{
@@ -457,6 +459,10 @@ noremap N Nzz
 
 " Open undotree
 nnoremap <leader>u :UndotreeToggle<cr>
+
+" Toggle Quick and Location lists
+nmap <script> <silent> <leader>tl :call ToggleLocationList()<CR>
+nmap <script> <silent> <leader>tq :call ToggleQuickfixList()<CR>
 
 " Jump to anywhere you want with minimal keystrokes, with just one key binding.
 " `s{char}{char}{label}`
@@ -718,6 +724,12 @@ let python_highlight_all=1
 let g:python3_host_prog = '/usr/local/bin/python3'
 
 " END Python }}}
+
+" vim-togglelist {{{
+
+let g:toggle_list_no_mappings=1
+
+" }}}
 
 " Gist {{{
 

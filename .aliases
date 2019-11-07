@@ -24,8 +24,9 @@ alias cdd='cd'
 # Updates
 #########
 
+alias vimup="nvim '+PlugUpdate' '+PlugUpgrade' '+qall'"
 alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor'
-alias update='pip install --upgrade pip; rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "OnePassword: " && op update; zplug update;'
+alias update='pip install --upgrade pip; rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\nOnePassword: $(op update)\n"; zplug update; vimup;'
 
 ###########
 # 1Password
@@ -85,6 +86,7 @@ alias habits='habitctl log && echo "\nTODO:\n" && habitctl todo'
 alias habitedit='habitctl edith'
 
 alias cal='calz'
+alias fg='setopt monitor && fg'
 
 # Editor Shortcuts
 alias vim='nvim'
