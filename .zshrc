@@ -209,8 +209,4 @@ zsh-startify
 
 # pyenv
 export PYENV_ROOT=/usr/local/var/pyenv
-
-if [[ -z "$VIRTUAL_ENV" ]]; then
-    eval "$(pyenv init -)"
-    # eval "$(pyenv virtualenv-init -)"
-fi
+eval "$(pyenv init -)"

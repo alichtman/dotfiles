@@ -1,4 +1,4 @@
-" .vimrc for Neovim on macOS
+" .vimrc for Neovim on macOS using iTerm2
 " Written by: Aaron Lichtman (and the internet)
 
 " I've spent 10,000 fucking hours on this thing. I hope someone else gets some
@@ -528,6 +528,15 @@ vnoremap <c-u> y:call setreg('', CycleCasing(@"), getregtype(''))<CR>gv""Pgv
 
 " Remappings }}}
 
+" Writing {{{
+
+" Note that this dictionary is purely for spelling correction and does not
+" allow you to look up definitions. That's why I have the vim-dict plugin.
+set dictionary+=/usr/share/dict/words
+set thesaurus+=~/.vim/thesaurus/mthesaur.txt
+
+" END Writing }}}
+
 " coc.nvim {{{
 " Stolen mainly from: https://github.com/neoclide/coc.nvim#example-vim-configuration
 
@@ -617,9 +626,9 @@ let g:vim_markdown_folding_disabled = 1
 " Autoresize TOC window
 let g:vim_markdown_toc_autofit = 1
 
-" }}}
+" END vim-markdown }}}
 
-" Startify {{{
+" vim-startify {{{
 
 let g:startify_lists = [
             \ { 'type': 'files',     'header': ['   MRU']            },
@@ -734,7 +743,7 @@ let g:python3_host_prog = '/usr/local/bin/python3'
 
 let g:toggle_list_no_mappings=1
 
-" }}}
+" END vim-togglelist }}}
 
 " Gist {{{
 
