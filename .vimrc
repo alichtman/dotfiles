@@ -275,19 +275,25 @@ augroup AutoCloseVim
     " TODO: Close vim if all that remains is a no-name buffer
 augroup END
 
-" If opening vim without a file, open startify and NERDTree
 augroup OnOpenVim
     autocmd!
+    " If opening vim without a file arg, open startify and NERDTree
     autocmd VimEnter *
                 \   if !argc()
                 \ |   Startify
                 \ |   NERDTree
                 \ |   wincmd w
                 \ | endif
+
+    " Automatically install missing plugins
+    autocmd VimEnter *
+                \   if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+                \ |   PlugInstall --sync | q
+                \ | endif
 augroup END
 
 " Although... Do I really want this behavior? It sucks sometimes
-augroup setWorkingDir
+augroup setWorkingDirForCurrentWindow
     autocmd BufEnter * silent! lcd %:p:h
 augroup END
 
@@ -314,7 +320,7 @@ augroup LineNumbers
     autocmd InsertLeave * :set relativenumber
 augroup END
 
-" Auto folding in vimscript files with {{{ and }}}
+" Auto-folding in vimscript files with {{{ and }}}
 augroup Filetype_Vim
     autocmd!
     autocmd FileType vim setlocal foldmethod=marker
