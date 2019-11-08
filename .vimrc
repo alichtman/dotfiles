@@ -372,6 +372,18 @@ function! CycleCasing(str)
   return result
 endfunction
 
+" Open Markdown preview using grip
+" https://www.reddit.com/r/vim/comments/8asgjj/topnotch_vim_markdown_live_previews_with_no/
+function! OpenMarkdownPreview() abort
+  if exists('s:markdown_job_id') && s:markdown_job_id > 0
+    call jobstop(s:markdown_job_id)
+    unlet s:markdown_job_id
+  endif
+  let s:markdown_job_id = jobstart('grip ' . shellescape(expand('%:p')))
+  if s:markdown_job_id <= 0 | return | endif
+  call system('open http://localhost:6419')
+endfunction
+
 " END Functions }}}
 
 " Remappings {{{
@@ -437,7 +449,7 @@ vnoremap <leader>t :Tabularize / \|<cr>
 " Markdown bold
 inoremap <leader>b ****<ESC>2ha
 
-" Dictionary lookup
+" Dictionary (definition) lookup
 nnoremap <leader>D :Dict<cr>
 vnoremap <leader>D :Dict<cr>
 
@@ -504,6 +516,9 @@ noremap <Leader>/ :noh<CR>
 
 " Toggle tagbar
 nmap <Leader>v :Vista!!<CR>
+
+" Live Markdown Preview
+noremap <silent> <leader>mp :call OpenMarkdownPreview()<cr>
 
 " Cycle casing of selected text
 vnoremap <c-u> y:call setreg('', CycleCasing(@"), getregtype(''))<CR>gv""Pgv
@@ -673,7 +688,7 @@ let g:show_spaces_that_precede_tabs=1
 
 " END Better Whitespace }}}
 
-" Airline / Statusline {{{
+" vim-airline {{{
 
 let g:airline_theme='onedark'
 let g:airline_powerline_fonts = 1
@@ -681,9 +696,6 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 " Show just the filename
 let g:airline#extensions#tabline#fnamemod = ':t'
-
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
 
 " END Airline }}}
 
@@ -717,6 +729,9 @@ let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 1
 let g:syntastic_python_python_exec = 'python3'
 let g:syntastic_python_pylint_exe = 'python3 -m pylint'
+
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
 " END Syntastic }}}
 
