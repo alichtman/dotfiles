@@ -53,6 +53,8 @@ alias vol='volatility --plugins=/Users/alichtman/volatility-plugins'
 eval "$(hub alias -s)"
 alias changelog='github_changelog_generator'
 
+alias mdpreview='grip -b'
+
 # Pypi
 alias pypitestup='python3 setup.py bdist_wheel; twine upload --repository testpypi dist/*'
 alias pip3test='pip3 install --index-url https://test.pypi.org/simple/'

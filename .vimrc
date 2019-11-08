@@ -98,35 +98,42 @@ runtime macros/matchit.vim
 
 " General Settings  {{{
 
-" Use the mouse for pane selection, resizing, and cursor movement.
-set mouse=nv
-
-set nostartofline  " Don’t reset cursor to start of line when moving around.
-set title          " Show the filename in the window titlebar
-set backspace=indent,eol,start " Allow backspace in insert mode
+set mouse=nv                    " Use mouse for pane selection, resizing, and cursor movement.
+set nostartofline               " Don’t reset cursor to start of line when moving around.
+set title                       " Show the filename in the window titlebar
+set backspace=indent,eol,start  " Make delete in insert mode behave as expected.
 set modeline
 set ruler
-
-" Copy to macOS clipboard
-set clipboard=unnamed
-
-set noshowmode  " Showing mode directly under a statusline with mode is redundant
+set autoread               " Autoread changed file
+set clipboard=unnamed      " Enable copying to macOS clipboard
+set noshowmode             " Don't show mode under statusline w/ mode
 set secure
 set spelllang=en
-set scrolloff=6
-syntax on
+set scrolloff=6            " Keep 6 lines between cursor and top/bottom of page when scrolling
+set number                 " Having line numbers is nice
+syntax on                  " So is syntax-awareness
+set cmdheight=1            " Better display for messages
+set updatetime=300         " Smaller updatetime for CursorHold & CursorHoldI
+set cursorline             " Highlight current line
+set hidden                 " Enable buffers to exist in the background
+set nobackup               " Don't keep a backup file. writebackup is enough for my purposes.
+set splitbelow             " Open new horizontal splits to the bottom
+set splitright             " And vertical splits to the right
+set signcolumn=yes         " Always show signcolumns
+set switchbuf=usetab       " Search first in opened windows if opening buffer
+set shortmess+=c          " Don't give ins-completion-menu messages
 
 " Tab completion menu
 set wildmenu
 set wildmode=full
 set wildignore+=.svn,CVS,.git,*.pyc,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pdf,*.bak,*.beam,*/tmp/*,*.zip,log/**,node_modules/**,target/**,tmp/**,*.rbc
 
-" Undo and Undotree Settings
+" Undo {{{
+
 set undolevels=1000  " store a bunch of undo history
 set undofile
-let g:undotree_SetFocusWhenToggle = 1
 
-set number
+" END Undo }}}
 
 " Use gtf to jump to files with these extensions
 set suffixesadd=.md,.c,.h,.cpp,.py,.tex
@@ -137,7 +144,8 @@ set tags=tags
 set iskeyword+=-
 set iskeyword+=_
 
-" Search Config
+" Search {{{
+
 set showmatch             " Show matching brackets/parenthesis
 set matchtime=0           " Don't blink when matching
 set incsearch             " Find as you type search
@@ -146,49 +154,26 @@ set ignorecase            " Case insensitive search
 set inccommand=nosplit    " Show regex replacement changes as you're typing
 set smartcase             " Case sensitive if we type an uppercase
 
-set cmdheight=1           " Better display for messages
-set updatetime=300        " Smaller updatetime for CursorHold & CursorHoldI
+" END Search }}}
 
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
+" Line breaking {{{
 
-" Fix weird line tracers while scrolling bug
-if &term =~ '256color'
-    " Disable Background Color Erase (BCE) so that color schemes
-    " work properly when Vim is used inside tmux and GNU screen.
-    set t_ut=
-endif
-
-" If opening buffer, search first in opened windows.
-set switchbuf=usetab
-
-" Line breaking
 set wrap
 set nolinebreak
 " set textwidth=120     " TODO: break lines when line length increases only outside of markdown and text files
 set breakindent
 set breakindentopt=min:40
-
 " 80 and 120 character guidelines
 highlight ColorColumn ctermbg=lightgrey
-set cc=80,120
+set colorcolumn=80,120
 
-set cursorline      " Highlight current line
+" END Line breaking }}}
 
 " Show “invisible” characters
-set listchars=tab:▸\ ,trail:·,eol:¬,nbsp:_
+" TODO: Show leading spaces.
 set list
-
-set hidden          " Enable buffers to exist in the background
-set nobackup        " Don't keep a backup file. writebackup is enough for my purposes.
-
-" Open new split panes to right and bottom
-set splitbelow
-set splitright
-
-set signcolumn=yes  " always show signcolumns
-
-" END General Settings    }}}
+set listchars=tab:▸\ ,trail:·,eol:¬,nbsp:_
+" set listchars=tab:→\ ,trail:·,eol:¬,nbsp:_
 
 " Indentation {{{
 
@@ -204,6 +189,8 @@ set autoindent          " copy indent from current line when starting a new line
 
 " END Indentation }}}
 
+" END General Settings }}}
+
 " Appearance {{{
 
 set background=dark
@@ -213,6 +200,8 @@ set background=dark
 colorscheme gruvbox-material
 "colorscheme onedark
 "colorscheme OceanicNext
+
+let g:gruvbox_contrast_dark='dark'
 
 " let g:thematic#theme_name = 'gruvbox-material'
 "
@@ -239,8 +228,6 @@ colorscheme gruvbox-material
 " " \ 'OceanicNext' : {},
 " " \ }
 
-let g:gruvbox_contrast_dark='dark'
-
 " Vim Dev Icons
 let g:WebDevIconsUnicodeGlyphDoubleWidth = 0
 let g:WebDevIconsOS = 'Darwin'
@@ -252,12 +239,6 @@ let g:webdevicons_conceal_nerdtree_brackets = 0
 let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
 let g:vista#renderer#enable_icon = 1
 let g:vista_fzf_preview = ['right:50%']
-
-" The default icons can't be suitable for all the filetypes, you can extend it as you wish.
-" let g:vista#renderer#icons = {
-" \   "function": "\uf794",
-" \   "variable": "\uf71b",
-" \  }
 
 " Appearance }}}
 
@@ -293,6 +274,7 @@ augroup END
 " paths will work nicely. Pairs with the set of :FZF mappings below to allow
 " you to access files in the parent directories.
 augroup setWorkingDirForCurrentWindow
+    autocmd!
     autocmd BufEnter * silent! lcd %:p:h
 augroup END
 
@@ -661,6 +643,12 @@ let g:startify_session_persistence = 1
 let g:startify_session_autoload = 1
 
 " END Startify }}}
+
+" Undotree {{{
+
+let g:undotree_SetFocusWhenToggle = 1
+
+" END Undotree }}}
 
 " NERDTree {{{
 
