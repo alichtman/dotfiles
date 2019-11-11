@@ -57,7 +57,6 @@ Plug 'liuchengxu/vista.vim'
 Plug 'junegunn/vim-peekaboo'
 
 " Markdown
-Plug 'plasticboy/vim-markdown'
 Plug 'godlygeek/tabular'
 Plug 'dkarter/bullets.vim'
 Plug 'vim-pandoc/vim-pandoc'
@@ -104,30 +103,29 @@ runtime macros/matchit.vim
 
 " General Settings  {{{
 
+set secure
+set modeline
+set spelllang=en
 set mouse=nv                    " Use mouse for pane selection, resizing, and cursor movement.
 set nostartofline               " Don’t reset cursor to start of line when moving around.
 set title                       " Show the filename in the window titlebar
+set autoread                    " Autoread changed files
+set clipboard=unnamed           " Enable copying to macOS clipboard
+set noshowmode                  " Don't show mode under statusline w/ mode
+set scrolloff=6                 " Minimal num of lines to keep above/below cursor
+set number                      " Enable line numbers
+set cmdheight=1                 " Better display for messages
+set updatetime=300              " Smaller updatetime for CursorHold & CursorHoldI
+set cursorline                  " Highlight current line
+set hidden                      " Enable buffers to exist in the background
+set nobackup                    " Don't keep a backup file. writebackup is enough for my purposes.
+set splitbelow                  " Open new horizontal splits to the bottom
+set splitright                  " And vertical splits to the right
+set signcolumn=yes              " Always show signcolumns
+set switchbuf=usetab            " Search first in opened windows if opening buffer
+set shortmess+=c                " Don't give ins-completion-menu messages
 set backspace=indent,eol,start  " Make delete in insert mode behave as expected.
-set modeline
-set ruler
-set autoread               " Autoread changed file
-set clipboard=unnamed      " Enable copying to macOS clipboard
-set noshowmode             " Don't show mode under statusline w/ mode
-set secure
-set spelllang=en
-set scrolloff=6            " Keep 6 lines between cursor and top/bottom of page when scrolling
-set number                 " Having line numbers is nice
-syntax on                  " So is syntax-awareness
-set cmdheight=1            " Better display for messages
-set updatetime=300         " Smaller updatetime for CursorHold & CursorHoldI
-set cursorline             " Highlight current line
-set hidden                 " Enable buffers to exist in the background
-set nobackup               " Don't keep a backup file. writebackup is enough for my purposes.
-set splitbelow             " Open new horizontal splits to the bottom
-set splitright             " And vertical splits to the right
-set signcolumn=yes         " Always show signcolumns
-set switchbuf=usetab       " Search first in opened windows if opening buffer
-set shortmess+=c          " Don't give ins-completion-menu messages
+syntax on
 
 " Tab completion menu
 set wildmenu
@@ -301,6 +299,7 @@ augroup END
 augroup Folding
     autocmd!
     autocmd FileType vim,tmux setlocal foldmethod=marker
+    autocmd FileType python,c,sh setlocal foldmethod=indent
 augroup END
 
 " END Folding }}}
@@ -331,6 +330,7 @@ augroup Indentation
 augroup END
 
 augroup SetCorrectFiletype
+    autocmd!
     autocmd BufRead,BufNewFile *.md set filetype=markdown
     autocmd BufRead,BufNewFile *.txt set filetype=text
 augroup END
@@ -342,8 +342,13 @@ augroup SpellcheckAndWritingTools
     hi SpellBad cterm=underline ctermfg=red
 augroup END
 
-" At least, I think this is autoformatting. Not really sure.
-augroup AutoFormatting
+augroup NoPasteAfterLeavingInsertMode
+    autocmd!
+    au InsertLeave * silent! set nopaste
+augroup END
+
+" tbh not sure if this should stay
+augroup coc-config
   autocmd!
   " Setup formatexpr specified filetype(s).
   autocmd FileType typescript,json setlocal formatexpr=CocAction('formatSelected')
@@ -579,7 +584,6 @@ inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 " TODO: Use tab to trigger completion with support for snippets.
 " inoremap <silent><expr> <TAB>
@@ -587,6 +591,8 @@ inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
       " \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
       " \ <SID>check_back_space() ? "\<TAB>" :
       " \ coc#refresh()
+
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -610,7 +616,7 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-" Snippets {{{
+" TODO: Snippets {{{
 
 " " Use <C-l> to trigger snippet expand.
 " imap <C-l> <Plug>(coc-snippets-expand)
@@ -667,7 +673,7 @@ command! -nargs=? Fold :call CocAction('fold', <f-args>)
 
 " END coc.nvim }}}
 
-" Ultisnips {{{
+" TODO: Ultisnips {{{
 
 " https://github.com/SirVer/ultisnips/issues/1052#issuecomment-504719268
 " let g:UltiSnipsExpandTrigger = "<nop>"
@@ -676,14 +682,24 @@ command! -nargs=? Fold :call CocAction('fold', <f-args>)
 
 " END Ultisnips }}}
 
-" vim-markdown {{{
+" Pandoc {{{
 
-" Disable Markdown folding
-let g:vim_markdown_folding_disabled = 1
-" Autoresize TOC window
-let g:vim_markdown_toc_autofit = 1
+" vim-pandoc {{{
 
-" END vim-markdown }}}
+let g:pandoc#filetypes#handled = ["pandoc", "markdown"]
+let g:pandoc#filetypes#pandoc_markdown = 0
+
+" END vim-pandoc }}}
+
+" vim-pandoc-syntax {{{
+
+let g:pandoc#syntax#conceal#urls = 0
+let g:pandoc#syntax#conceal#blacklist = [ "codeblock_start", "codeblock_delim", "image", "block" ]
+let g:pandoc#syntax#codeblocks#embeds#langs = [ "python", "ruby", "c", "bash=sh" ]
+
+" END vim-pandoc-syntax }}}
+
+" END pandoc }}}
 
 " vim-startify {{{
 
