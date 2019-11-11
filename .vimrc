@@ -331,7 +331,7 @@ augroup END
 
 augroup SetCorrectFiletype
     autocmd!
-    autocmd BufRead,BufNewFile *.md set filetype=markdown
+    autocmd BufRead,BufNewFile *.md set filetype=pandoc
     autocmd BufRead,BufNewFile *.txt set filetype=text
 augroup END
 
@@ -682,6 +682,17 @@ command! -nargs=? Fold :call CocAction('fold', <f-args>)
 
 " END Ultisnips }}}
 
+" Markdown {{{
+
+" vim-markdown {{{
+
+" Disable Markdown folding
+let g:vim_markdown_folding_disabled = 1
+" Autoresize TOC window
+let g:vim_markdown_toc_autofit = 1
+
+" END vim-markdown }}}
+
 " Pandoc {{{
 
 " vim-pandoc {{{
@@ -695,11 +706,14 @@ let g:pandoc#filetypes#pandoc_markdown = 0
 
 let g:pandoc#syntax#conceal#urls = 0
 let g:pandoc#syntax#conceal#blacklist = [ "codeblock_start", "codeblock_delim", "image", "block" ]
+let g:pandoc#modules#disabled = ["folding"]
 let g:pandoc#syntax#codeblocks#embeds#langs = [ "python", "ruby", "c", "bash=sh" ]
 
 " END vim-pandoc-syntax }}}
 
 " END pandoc }}}
+
+" END Markdown }}}
 
 " vim-startify {{{
 
