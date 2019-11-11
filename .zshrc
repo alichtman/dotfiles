@@ -12,14 +12,9 @@ eval "$(starship init zsh)"
 # Env Vars
 ##########
 
-export PYLINTRC='~/.pylintrc'
-export BETTER_EXCEPTIONS=1 # Python Better Exceptions
+export BETTER_EXCEPTIONS=1     # Python Better Exceptions
 export HOMEBREW_NO_ANALYTICS=1
 export BAT_THEME="TwoDark"
-export EDITOR='nvim'
-export VISUAL='nvim'
-export HOMEBREW_NO_ANALYTICS=1
-export ZSH=$HOME/.oh-my-zsh
 export NOTES=$HOME/Desktop/Development/notes
 
 # zsh-startify
@@ -160,7 +155,7 @@ autoload -U edit-command-line
 
 # Use Ctrl-z swap in and out of vim (or any other process)
 # https://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
-fancy-ctrl-z () {
+function ctrl-z-toggle () {
   if [[ $#BUFFER -eq 0 ]]; then
 	BUFFER="setopt monitor && fg"
 	zle accept-line
@@ -169,8 +164,8 @@ fancy-ctrl-z () {
 	zle clear-screen
   fi
 }
-zle -N fancy-ctrl-z
-bindkey '^Z' fancy-ctrl-z
+zle -N ctrl-z-toggle
+bindkey '^Z' ctrl-z-toggle
 
 ###########################
 # Looking out for future me.
@@ -203,10 +198,12 @@ for file in ~/.{aliases,zfunctions,zprofile,secrets}; do
 done
 unset file
 
+# Must be at the end
 zplug load
 
-zsh-startify
+####################
+# Bells and Whistles
+####################
 
-# pyenv
-export PYENV_ROOT=/usr/local/var/pyenv
-# eval "$(pyenv init -)"
+year-progress
+zsh-startify

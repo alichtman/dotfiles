@@ -26,7 +26,7 @@ alias cdd='cd'
 
 alias vimup="nvim '+PlugUpdate' '+PlugUpgrade' '+qall'"
 alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor'
-alias update='pip install --upgrade pip; rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\nOnePassword: $(op update)\n"; zplug update; vimup;'
+alias update='rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\nOnePassword: $(op update)\n"; zplug update; vimup;'
 
 ###########
 # 1Password
@@ -70,7 +70,7 @@ alias please='sudo $(fc -ln -1)' # Rerun last command with sudo
 alias google="googler -l en"
 alias fuck='eval $(TF_ALIAS=fuck PYTHONIOENCODING=utf-8 thefuck $(fc -ln -1))'
 alias activate=". venv/bin/activate"
-alias imgcat='viu'
+alias batp='bat --paging=always'
 
 # Copy the working dir to the clipboard
 alias cpwd='pwd | xargs echo -n | pbcopy'
@@ -118,6 +118,7 @@ alias news='newsroom'
 alias matrix='unimatrix -s 93'
 alias pipes='pipes.sh -f 75 -t 3 -B'
 alias trip='yes "$(seq 231 -1 16)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
+alias mandelbrot='bash ~/bin/mandelbrot.sh'
 alias spotify='spt'
 
 ##################

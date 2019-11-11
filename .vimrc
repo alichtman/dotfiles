@@ -17,6 +17,10 @@ Plug 'vim-syntastic/syntastic'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'davidhalter/jedi-vim'
 
+" Snippets
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
 " Toggle Quick and Location Lists
 Plug 'milkypostman/vim-togglelist'
 
@@ -56,8 +60,10 @@ Plug 'junegunn/vim-peekaboo'
 Plug 'plasticboy/vim-markdown'
 Plug 'godlygeek/tabular'
 Plug 'dkarter/bullets.vim'
+Plug 'vim-pandoc/vim-pandoc'
+Plug 'vim-pandoc/vim-pandoc-syntax'
 
-" Delimeters
+" Delimiters
 Plug 'Raimondi/delimitMate'
 
 " Surrounding text
@@ -203,6 +209,7 @@ colorscheme gruvbox-material
 
 let g:gruvbox_contrast_dark='dark'
 
+" TODO: Fix this mess
 " let g:thematic#theme_name = 'gruvbox-material'
 "
 " let g:thematic#defaults = {
@@ -222,23 +229,28 @@ let g:gruvbox_contrast_dark='dark'
 " " \              'airline-theme': 'onedark',
 " " \ },
 " " \ 'gruvbox-material' : {
-" " \              "airline-theme": 'onedark',
+" " \              'airline-theme': 'onedark',
 " " \ },
 " " \ 'onedark' : {},
 " " \ 'OceanicNext' : {},
 " " \ }
 
-" Vim Dev Icons
+" Vim Dev Icons {{{
+
 let g:WebDevIconsUnicodeGlyphDoubleWidth = 0
 let g:WebDevIconsOS = 'Darwin'
 let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
 let g:webdevicons_conceal_nerdtree_brackets = 0
 
-" Vista
+" END Vim Dev Icons }}}
+
+" Vista {{{
 
 let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
 let g:vista#renderer#enable_icon = 1
 let g:vista_fzf_preview = ['right:50%']
+
+" END Vista }}}
 
 " Appearance }}}
 
@@ -254,7 +266,7 @@ augroup AutoCloseVim
     " TODO: Close vim if all that remains is a no-name buffer
 augroup END
 
-augroup OnOpenVim
+augroup VimStartupSequence
     autocmd!
     " If opening vim without a file arg, open startify and NERDTree
     autocmd VimEnter *
@@ -271,9 +283,9 @@ augroup OnOpenVim
 augroup END
 
 " After opening a file, set working dir to the same as that file so relative
-" paths will work nicely. Pairs with the set of :FZF mappings below to allow
+" paths will work nicely. Pairs with the set of FZF mappings below to allow
 " you to access files in the parent directories.
-augroup setWorkingDirForCurrentWindow
+augroup SetWorkingDirForCurrentWindow
     autocmd!
     autocmd BufEnter * silent! lcd %:p:h
 augroup END
@@ -284,8 +296,7 @@ augroup MakeFoldsPersistent
     autocmd BufWinEnter * silent! loadview
 augroup END
 
-" Restore cursor position when opening a file
-augroup OnOpenFile
+augroup RestoreCursorPositionWhenOpeningFile
     autocmd!
     autocmd BufReadPost *
                 \ if line("'\"") > 1 && line("'\"") <= line("$") |
@@ -294,17 +305,17 @@ augroup OnOpenFile
 augroup END
 
 " Automatically use absolute line numbers when we’re in insert mode
-" and relative numbers when we’re in normal mode
+" and relative numbers when we’re in normal mode.
 augroup LineNumbers
     autocmd!
     autocmd InsertEnter * :set number
     autocmd InsertLeave * :set relativenumber
 augroup END
 
-" Auto-folding in vimscript files with {{{ and }}}
-augroup Filetype_Vim
+" Auto-folding with {{{ and }}}
+augroup Folding
     autocmd!
-    autocmd FileType vim setlocal foldmethod=marker
+    autocmd FileType vim,tmux setlocal foldmethod=marker
 augroup END
 
 augroup Indentation
@@ -316,16 +327,15 @@ augroup Indentation
     au BufRead,BufNewFile Makefile* set noexpandtab
 augroup END
 
-" Enable spellcheck for markdown and txt files
-" TODO: Clean up
-augroup spellcheckAndLexicalThings
-    autocmd!
+augroup SetCorrectFiletype
     autocmd BufRead,BufNewFile *.md set filetype=markdown
     autocmd BufRead,BufNewFile *.txt set filetype=text
-    autocmd FileType markdown setlocal spell
-    autocmd FileType text setlocal spell
-    autocmd FileType markdown call litecorrect#init()
-    autocmd FileType text call litecorrect#init()
+augroup END
+
+augroup SpellcheckAndWritingTools
+    autocmd!
+    autocmd FileType markdown setlocal spell | call litecorrect#init()
+    autocmd FileType text setlocal spell | call litecorrect#init()
     hi SpellBad cterm=underline ctermfg=red
 augroup END
 
@@ -384,6 +394,12 @@ function! OpenMarkdownPreview() abort
   call system('open http://localhost:6419')
 endfunction
 
+" https://github.com/stoeffel/.dotfiles/blob/master/vim/visual-at.vim
+function! ExecuteMacroOverVisualRange()
+  echo "@".getcmdline()
+  execute ":'<,'>normal @".nr2char(getchar())
+endfunction
+
 " END Functions }}}
 
 " Remappings {{{
@@ -420,11 +436,13 @@ inoremap kj <Esc>
 " Save one chracter when saving, and only write if there are changes
 nnoremap <leader>w :up<CR>
 
-" Open files with fzf. Little hack to make this play nicely with setWorkingDirForCurrentWindow
-nnoremap <leader>o :FZF<CR>
-nnoremap <leader>o. :FZF ..<CR>
-nnoremap <leader>o.. :FZF ../..<CR>
-nnoremap <leader>o... :FZF ../../..<CR>
+" FZF mappings
+" Little hack to make this play nicely with setWorkingDirForCurrentWindow
+nnoremap <C-p> :Files<CR>
+nnoremap <C-p>. :Files ..<CR>
+nnoremap <C-p>.. :Files ../..<CR>
+nnoremap <C-p>... :Files ../../..<CR>
+nnoremap <leader>b :Buffers<CR>
 
 " Close buffers and windows more easily
 nnoremap <leader>q :bdelete<cr>
@@ -446,9 +464,6 @@ nnoremap c* *Ncgn
 " Quickly tabularize selected block
 vnoremap <leader>t :Tabularize / \|<cr>
 
-" Markdown bold
-inoremap <leader>b ****<ESC>2ha
-
 " Dictionary (definition) lookup
 nnoremap <leader>D :Dict<cr>
 vnoremap <leader>D :Dict<cr>
@@ -456,11 +471,12 @@ vnoremap <leader>D :Dict<cr>
 " Distraction Free Mode
 nnoremap <silent> <leader>z :Goyo<cr>
 
-" Traverse the buffer list more easily.
-nnoremap <silent> b[ :bprevious<CR>
-nnoremap <silent> b] :bnext<CR>
-nnoremap <silent> B[ :bfirst<CR>
-nnoremap <silent> B] :blast<CR>
+" Traverse buffer list more easily.
+nnoremap <leader>h :bprevious<CR>
+nnoremap <leader>l :bnext<CR>
+
+" Switch between the last two files
+nnoremap <leader><leader> <c-^>
 
 " Easily move between panes
 nnoremap <silent> <C-h> <C-w>h
@@ -471,9 +487,6 @@ nnoremap <silent> <C-k> <C-w>k
 vnoremap <silent> <C-k> <C-w>k
 nnoremap <silent> <C-l> <C-w>l
 vnoremap <silent> <C-l> <C-w>l
-
-" Switch between the last two files
-nnoremap <leader><leader> <c-^>
 
 " Move the current line above or below with ALT + [j/k].
 noremap <A-j> ddjP
@@ -509,7 +522,7 @@ nmap s <Plug>(easymotion-overwin-f2)
 nmap <silent> <leader>s :set spell!<CR>
 
 " Toggle file browser
-nnoremap <Leader>ob :call ToggleNerdTree()<CR>
+nnoremap <C-n> :call ToggleNerdTree()<CR>
 
 " Turn off search highlighting
 noremap <Leader>/ :noh<CR>
@@ -517,11 +530,15 @@ noremap <Leader>/ :noh<CR>
 " Toggle tagbar
 nmap <Leader>v :Vista!!<CR>
 
-" Live Markdown Preview
-noremap <silent> <leader>mp :call OpenMarkdownPreview()<cr>
+" Markdown Preview
+nnoremap <silent> <leader>mpg :call OpenMarkdownPreview()<cr>
+nnoremap <silent> <leader>mpp :Pandoc pdf<cr>
 
 " Cycle casing of selected text
 vnoremap <c-u> y:call setreg('', CycleCasing(@"), getregtype(''))<CR>gv""Pgv
+
+" Run macro over visual range with @REG
+xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
 
 " Remappings }}}
 
@@ -535,7 +552,7 @@ set thesaurus+=~/.vim/thesaurus/mthesaur.txt
 " END Writing }}}
 
 " coc.nvim {{{
-" Stolen mainly from: https://github.com/neoclide/coc.nvim#example-vim-configuration
+" Heavily based on: https://github.com/neoclide/coc.nvim#example-vim-configuration
 
 " https://github.com/neoclide/coc.nvim/issues/856
 let g:coc_node_path = "/usr/local/bin/node"
@@ -570,6 +587,25 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
+" Snippets {{{
+
+" Use <C-l> to trigger snippet expand.
+imap <C-l> <Plug>(coc-snippets-expand)
+
+" Use <C-j> to select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+
+" Use <C-j> to jump to next placeholder.
+let g:coc_snippet_next = '<c-j>'
+
+" Use <C-k> to jump to previous placeholder.
+let g:coc_snippet_prev = '<c-k>'
+
+" Use <C-j> to both expand and jump (make expand higher priority.)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
+
+" END Snippets }}}
+
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
@@ -584,14 +620,14 @@ endfunction
 " Highlight symbol under cursor on CursorHold
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
-" Remap for rename current word
+" Mapping for rename current word
 nmap <leader>rn <Plug>(coc-rename)
 
-" Remap for format selected region
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+" Mapping for format selected region
+xmap <leader>f <Plug>(coc-format-selected)
+nmap <leader>f <Plug>(coc-format-selected)
 
-augroup somethingWithFormattingAndJumpingCoC
+augroup SomethingWithFormattingAndJumpingCoC
   autocmd!
   " Setup formatexpr specified filetype(s).
   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
@@ -599,14 +635,14 @@ augroup somethingWithFormattingAndJumpingCoC
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
-" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
+" Mapping for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+xmap <leader>a <Plug>(coc-codeaction-selected)
+nmap <leader>a <Plug>(coc-codeaction-selected)
 
-" Remap for do codeAction of current line
-nmap <leader>ac  <Plug>(coc-codeaction)
+" Mapping for do codeAction of current line
+nmap <leader>ac <Plug>(coc-codeaction)
 " Fix autofix problem of current line
-nmap <leader>qf  <Plug>(coc-fix-current)
+nmap <leader>qf <Plug>(coc-fix-current)
 
 " Use `:Format` to format current buffer
 command! -nargs=0 Format :call CocAction('format')
@@ -643,14 +679,19 @@ let g:startify_bookmarks = [
             \ {'e': '~/Desktop/Development/notes'} ]
 
 let g:startify_custom_header = [
-            \ ' ',
-            \ '            __',
-            \ '    __  __ /\_\    ___ ___',
-            \ '   /\ \/\ \\/\ \ /'' __` __`\',
-            \ '   \ \ \_/ |\ \ \/\ \/\ \/\ \',
-            \ '    \ \___/  \ \_\ \_\ \_\ \_\',
-            \ '     \/__/    \/_/\/_/\/_/\/_/',
-            \ ]
+              \ '                  _            .',
+              \ '                 u            @88>',
+              \ '    u.    u.    88Nu.   u.    %8P      ..    .     :',
+              \ '  x@88k ,@88c, ‘88888 ,888c    .     .888: x888  x888.',
+              \ ' ^`8888""8888“  ^8888  8888  .@88u  ~`8888~‘888X`?888f`',
+              \ '   8888  888R    8888  8888 ‘‘888E`   X888  888X ‘888>',
+              \ '   8888  888R   .8888b.888P   888E    X888  888X ‘888>',
+              \ '  “*88*“ 8888“   ^Y8888*““    888&   “*88% “*88“ ‘888!`',
+              \ '    ““   ‘Y“       `Y“        R888“    `~    “    `“`',
+              \ '                               ““',
+              \ '',
+              \ '         And down the rabbit hole we go...',
+              \ ]
 
 let g:startify_files_number = 8
 let g:startify_update_oldfiles = 0
