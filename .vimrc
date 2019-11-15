@@ -4,6 +4,13 @@
 " I've spent 10,000 fucking hours on this thing. I hope someone else gets some
 " use out of this.
 
+" TODO {{{
+
+" 1. Remove vim-togglelist and replace with more comprehensive keymaps
+" 2. Make fzf file browsing open in a floating preview window
+
+" END TODO }}}
+
 " Plugins {{{
 
 call plug#begin('~/.vim/plugged')
@@ -20,9 +27,6 @@ Plug 'davidhalter/jedi-vim'
 " Snippets
 " Plug 'SirVer/ultisnips'
 " Plug 'honza/vim-snippets'
-
-" Toggle Quick and Location Lists
-Plug 'milkypostman/vim-togglelist'
 
 " File explorers
 Plug 'scrooloose/nerdtree'
@@ -361,12 +365,9 @@ augroup end
 " Functions {{{
 
 " Append modeline after last line in buffer
-" Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
-" files.
 function! AppendModeline()
-  let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set :",
+  let l:modeline = printf("# vim: ts=%d sw=%d tw=%d %set:",
         \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
-  let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
   call append(line("$"), l:modeline)
 endfunction
 
@@ -528,15 +529,15 @@ noremap N Nzz
 " Open undotree
 nnoremap <leader>u :UndotreeToggle<cr>
 
-" Toggle Quick and Location lists
-nmap <script> <silent> <leader>tl :call ToggleLocationList()<CR>
-nmap <script> <silent> <leader>tq :call ToggleQuickfixList()<CR>
+" Quickly close Quickfix and Location Windows
+nnoremap <script> <silent> <leader>tl :lclose<CR>
+nnoremap <script> <silent> <leader>tq :cclose<CR>
 
 " Jump to anywhere on screen with minimal keystrokes `s{char}{char}{label}`
-nmap s <Plug>(easymotion-overwin-f2)
+nnoremap s <Plug>(easymotion-overwin-f2)
 
 " Toggle spell check
-nmap <silent> <leader>s :set spell!<CR>
+nnoremap <silent> <leader>s :set spell!<CR>
 
 " Toggle file browser
 nnoremap <C-n> :call ToggleNerdTree()<CR>
@@ -715,6 +716,40 @@ let g:pandoc#syntax#codeblocks#embeds#langs = [ "python", "ruby", "c", "bash=sh"
 
 " END Markdown }}}
 
+" fzf {{{
+
+" https://github.com/neovim/neovim/issues/9718#issuecomment-546603628
+" function! Create_centered_floating_window(border)
+    " let width = min([&columns - 4, max([80, &columns - 20])])
+    " let height = min([&lines - 4, max([20, &lines - 10])])
+    " let top = ((&lines - height) / 2) - 1
+    " let left = (&columns - width) / 2
+    " let opts = {'relative': 'editor', 'row': top, 'col': left, 'width': width, 'height': height, 'style': 'minimal'}
+"
+    " if a:border == v:true
+        " let top = "╭" . repeat("─", width - 2) . "╮"
+        " let mid = "│" . repeat(" ", width - 2) . "│"
+        " let bot = "╰" . repeat("─", width - 2) . "╯"
+        " let lines = [top] + repeat([mid], height - 2) + [bot]
+        " let s:buf = nvim_create_buf(v:false, v:true)
+        " call nvim_buf_set_lines(s:buf, 0, -1, v:true, lines)
+        " call nvim_open_win(s:buf, v:true, opts)
+        " set winhl=Normal:Floating
+        " let opts.row += 1
+        " let opts.height -= 2
+        " let opts.col += 2
+        " let opts.width -= 4
+        " call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
+        " au BufWipeout <buffer> exe 'bw '.s:buf
+    " else
+        " call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
+    " endif
+" endfunction
+
+" let g:fzf_layout = { 'window': 'call Create_centered_floating_window(v:true)' }
+
+" END fzf }}}
+
 " vim-startify {{{
 
 let g:startify_lists = [
@@ -744,7 +779,7 @@ let g:startify_custom_header = [
               \ '    ““   ‘Y“       `Y“        R888“    `~    “    `“`',
               \ '                               ““',
               \ '',
-              \ '         And down the rabbit hole we go...',
+              \ '            And down the rabbit hole we go...',
               \ ]
 
 let g:startify_files_number = 8
@@ -809,6 +844,7 @@ let g:NERDTrimTrailingWhitespace = 1
 
 let g:bullets_enabled_file_types = [
             \ 'markdown',
+            \ 'pandoc',
             \ 'text',
             \ 'gitcommit',
             \ 'scratch'
@@ -834,14 +870,9 @@ set statusline+=%*
 
 let python_highlight_all=1
 let g:python3_host_prog = '/usr/local/bin/python3'
+let g:python_host_prog = '/usr/local/bin/python2'
 
 " END Python }}}
-
-" vim-togglelist {{{
-
-let g:toggle_list_no_mappings=1
-
-" END vim-togglelist }}}
 
 " Gist {{{
 

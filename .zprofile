@@ -23,9 +23,7 @@ export PYENV_ROOT=/usr/local/var/pyenv
 # PATH
 ######
 
-# Setting PATH for Python 3.7
-export PATH="$PATH:/usr/local/Cellar/python3/3.7.3/Frameworks/Python.framework/Versions/3.7/bin"
-export PATH="$PATH:/usr/local/Cellar/python3/3.7.3/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages"
+export PATH="/usr/local/opt/gnu-getopt/bin:$PATH"
 export PATH="/usr/local/opt/openssl/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
@@ -42,6 +40,15 @@ export PATH="$PATH:/Users/alichtman/Library/Python/3.7/bin"
 export PATH="$PATH:$SPLUNK_HOME/bin"
 export PATH="$PATH:$GOPATH/bin"
 
+#######
+# pyenv
+#######
+
+eval "$(pyenv init -)"
+pyenv global 3.8.0
+
+export PATH="$HOME/.poetry/bin:$PATH"
+
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ]; then
   PATH="$HOME/bin:$PATH"
@@ -56,10 +63,3 @@ export LSCOLORS=GxFxCxDxBxegedabagaced
 # Deduplicate entries in PATH
 typeset -U PATH
 export PATH
-
-#######
-# pyenv
-#######
-
-eval "$(pyenv init -)"
-pyenv global 3.8.0

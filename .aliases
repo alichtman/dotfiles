@@ -51,15 +51,17 @@ alias vol='volatility --plugins=/Users/alichtman/volatility-plugins'
 
 # github CLI integration
 eval "$(hub alias -s)"
+alias pr='hub pull-request'
 alias changelog='github_changelog_generator'
 
 alias mdpreview='grip -b'
 
 # Pypi
-alias pypitestup='python3 setup.py bdist_wheel; twine upload --repository testpypi dist/*'
+alias pypitestup='python3 setup.py sdist; twine upload --repository testpypi dist/*'
 alias pip3test='pip3 install --index-url https://test.pypi.org/simple/'
-alias pypiup='python3 setup.py bdist_wheel; twine upload --repository pypi dist/*'
+alias pypiup='python3 setup.py sdist; twine upload --repository pypi dist/*'
 alias pypibinary='python3 setup.py sdist'
+alias poetry-publish='poetry publish --user $PYPI_USERNAME --password $PYPI_PASSWORD'
 
 # Convenience
 alias yank='pbcopy'
@@ -87,6 +89,8 @@ alias task='tb --task'
 alias h='habitctl'
 alias habits='habitctl log && echo "\nTODO:\n" && habitctl todo'
 alias habitedit='habitctl edith'
+
+alias notes='fzf-notes'
 
 alias cal='calz'
 alias fg='setopt monitor && fg'
