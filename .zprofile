@@ -19,6 +19,13 @@ export GOPATH=$HOME/go
 export SPLUNK_HOME=/Applications/Splunk
 export PYENV_ROOT=/usr/local/var/pyenv
 
+#######
+# pyenv
+#######
+
+eval "$(pyenv init -)"
+pyenv global 3.7.5
+
 ######
 # PATH
 ######
@@ -39,16 +46,8 @@ export PATH="$PATH:/usr/local/Cellar/node/12.12.0/bin"
 export PATH="$PATH:/Users/alichtman/Library/Python/3.7/bin"
 export PATH="$PATH:$SPLUNK_HOME/bin"
 export PATH="$PATH:$GOPATH/bin"
-
-#######
-# pyenv
-#######
-
-eval "$(pyenv init -)"
-pyenv global 3.8.0
-
 export PATH="$HOME/.poetry/bin:$PATH"
-
+#
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ]; then
   PATH="$HOME/bin:$PATH"
@@ -57,8 +56,6 @@ fi
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$HOME/.rvm/bin:$PATH"
-
-export LSCOLORS=GxFxCxDxBxegedabagaced
 
 # Deduplicate entries in PATH
 typeset -U PATH
