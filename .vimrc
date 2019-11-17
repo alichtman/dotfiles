@@ -6,8 +6,8 @@
 
 " TODO {{{
 
-" 1. Remove vim-togglelist and replace with more comprehensive keymaps
-" 2. Make fzf file browsing open in a floating preview window
+" 1. Make fzf file browsing open in a floating preview window
+" 2. Syntastic -> ALE
 
 " END TODO }}}
 
@@ -21,6 +21,7 @@ Plug 'mattn/webapi-vim'
 " Syntax Highlighting, Linting and Completion
 Plug 'sheerun/vim-polyglot'
 Plug 'vim-syntastic/syntastic'
+" Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'davidhalter/jedi-vim'
 
@@ -129,6 +130,7 @@ set signcolumn=yes              " Always show signcolumns
 set switchbuf=usetab            " Search first in opened windows if opening buffer
 set shortmess+=c                " Don't give ins-completion-menu messages
 set backspace=indent,eol,start  " Make delete in insert mode behave as expected.
+set fillchars+=fold:. " for folds
 syntax on
 
 " Tab completion menu
@@ -210,6 +212,11 @@ colorscheme gruvbox-material
 "colorscheme OceanicNext
 
 let g:gruvbox_contrast_dark='dark'
+
+" Make vertical splits prettier
+set fillchars+=vert:┃  " for vsplits
+hi VertSplit ctermfg=9
+
 
 " TODO: Fix this mess
 " let g:thematic#theme_name = 'gruvbox-material'
@@ -370,7 +377,7 @@ augroup end
 " Functions {{{
 
 " Append modeline after last line in buffer
-function! AppendModeline()
+function! AppendModeline() abort
   let l:modeline = printf("# vim: set ts=%d sw=%d tw=%d %set :",
         \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
   call append(line("$"), l:modeline)
@@ -378,7 +385,7 @@ function! AppendModeline()
 endfunction
 
 " Modeline for nasm files
-function! AppendASMModeline()
+function! AppendASMModeline() abort
 let l:modeline = printf("; vim: set ft=nasm ts=%d sw=%d tw=%d et :",
         \ &tabstop, &shiftwidth, &textwidth)
   call append(line("$"), l:modeline)
@@ -386,7 +393,7 @@ let l:modeline = printf("; vim: set ft=nasm ts=%d sw=%d tw=%d et :",
 endfunction
 
 " Rename current file (mirrors $ mv)
-function! RenameFile()
+function! RenameFile() abort
   let old_name = expand('%')
   let new_name = input('New file name: ', expand('%'), 'file')
   if new_name != '' && new_name != old_name
@@ -396,14 +403,14 @@ function! RenameFile()
   endif
 endfunction
 
-function! ToggleNerdTree()
+function! ToggleNerdTree() abort
     :NERDTreeToggle
     :AirlineRefresh
 endfunction
 
 " Cycle casing of selected text from upper to lower to title
 " https://vim.fandom.com/wiki/Switching_case_of_characters
-function! CycleCasing(str)
+function! CycleCasing(str) abort
   if a:str ==# toupper(a:str)
     let result = tolower(a:str)
   elseif a:str ==# tolower(a:str)
@@ -427,7 +434,7 @@ function! OpenMarkdownPreview() abort
 endfunction
 
 " https://github.com/stoeffel/.dotfiles/blob/master/vim/visual-at.vim
-function! ExecuteMacroOverVisualRange()
+function! ExecuteMacroOverVisualRange() abort
   echo "@".getcmdline()
   execute ":'<,'>normal @".nr2char(getchar())
 endfunction
@@ -882,6 +889,22 @@ set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 " END Syntastic }}}
+
+" ALE {{{
+
+" " TODO: Dedup with better_whitespace
+" let g:ale_fixers = {
+" \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+" \}
+" let g:ale_linters = {
+" \   'python': ['flake8', 'mypy'],
+" \}
+"
+" let g:ale_fix_on_save = 1
+" let g:ale_python_flake8_options='--ignore=E225,E402,E501'
+" let g:ale_python_mypy_options='--ignore-missing-imports'
+
+" END ALE }}}
 
 " Python {{{
 

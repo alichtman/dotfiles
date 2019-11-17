@@ -139,7 +139,7 @@ setopt mark_dirs
 
 setopt inc_append_history   # append history list to the history file (important for multiple parallel zsh sessions!)
 setopt share_history        # import new commands from the history file also in other zsh-session
-setopt extended_history     # save each command's beginning timestamp and the duration to the history file
+setopt extended_history     # save each command beginning timestamp and the duration to the history file
 setopt hist_ignore_space    # remove command lines from the history list when the first character on the line is a space
 
 export HIST_STAMPS="mm/dd/yyyy"
