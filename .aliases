@@ -3,10 +3,11 @@
 ###########
 
 # $ ls and Friends
-alias l='lsd -1A --group-dirs first'
-alias ls='lsd -1A --group-dirs first --prefix-indent'
+alias l='lsd -1A --group-dirs first -I=.DS_Store'
+alias ls='lsd -1A --group-dirs first --prefix-indent -I=.DS_Store'
+alias LS='ls'
 alias ll='lsd -1Al --group-dirs first'
-alias tree='ls --tree'
+alias tree='ls --tree -I=.DS_Store'
 # git ls (until lsd incorporates git status)
 alias gls='LC_COLLATE=cs_CZ.ISO8859-2 colorls -1A --sd --gs'
 alias color_ll='LC_COLLATE=cs_CZ.ISO8859-2 colorls -l -A --sd --gs'

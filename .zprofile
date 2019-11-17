@@ -13,11 +13,12 @@ export VIMCONFIG='$HOME/.config/nvim'
 # Directories and Files
 #######################
 
-export PYLINTRC='~/.pylintrc'
+export PYLINTRC=$HOME/.pylintrc
 export ZSH=$HOME/.oh-my-zsh
 export GOPATH=$HOME/go
 export SPLUNK_HOME=/Applications/Splunk
 export PYENV_ROOT=/usr/local/var/pyenv
+export LESSHISTFILE=$HOME/.cache/lesshst
 
 #######
 # pyenv

@@ -49,9 +49,9 @@ function gi() {
 # Dotfiles
 #####
 
-# Grab dotfiles list from ~/.shallow-backup and throw it in a fzf selector for editing
+# Grab dotfiles list from shallow-backup config and throw it in a fzf selector for editing
 function dots() {
-	cat ~/.config/shallow-backup/shallow-backup.conf | jq '.dotfiles' | jq -r '.[]' | fzf --bind "enter:execute(nvim ~/{})"
+	cat ~/.config/shallow-backup.conf | jq '.dotfiles' | jq -r '.[]' | fzf --bind "enter:execute(nvim ~/{})"
 }
 
 # backup-dots [COMMIT MESSAGE]

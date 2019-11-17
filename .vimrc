@@ -339,6 +339,11 @@ augroup SetCorrectFiletype
     autocmd BufRead,BufNewFile *.txt set filetype=text
 augroup END
 
+augroup MarkdownConceling
+    autocmd!
+    autocmd FileType markdown set conceallevel=0
+augroup END
+
 augroup SpellcheckAndWritingTools
     autocmd!
     autocmd FileType markdown setlocal spell | call litecorrect#init()
@@ -366,9 +371,18 @@ augroup end
 
 " Append modeline after last line in buffer
 function! AppendModeline()
-  let l:modeline = printf("# vim: ts=%d sw=%d tw=%d %set:",
+  let l:modeline = printf("# vim: set ts=%d sw=%d tw=%d %set :",
         \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
   call append(line("$"), l:modeline)
+  doautocmd BufRead
+endfunction
+
+" Modeline for nasm files
+function! AppendASMModeline()
+let l:modeline = printf("; vim: set ft=nasm ts=%d sw=%d tw=%d et :",
+        \ &tabstop, &shiftwidth, &textwidth)
+  call append(line("$"), l:modeline)
+  doautocmd BufRead
 endfunction
 
 " Rename current file (mirrors $ mv)
@@ -435,9 +449,12 @@ nnoremap <leader>ez :drop ~/.zshrc<cr>
 " Make : commands easier
 nnoremap ; :
 
-" Don't overwrite registers when deleting with x or X
+" Don't overwrite copy register when deleting with x or X
 nnoremap x "_x
 nnoremap X "_X
+
+" Read modline
+nnoremap <leader>mr :doautocmd BufRead<Cr>
 
 " Yeet those 'Not an editor command' errors right out the fucking window
 " Or, defenestrate, as my Dad would say.
@@ -446,6 +463,12 @@ command! Wq wq
 command! W w
 command! Q q
 command! Qa qa
+
+" Make Y behave like C and D
+nnoremap Y y$
+
+" Make U do the opposite of u (redo)
+nnoremap U <C-r>
 
 " Use jk or kj for Escape
 inoremap jk <Esc>
@@ -470,8 +493,8 @@ nnoremap <leader>q! :bdelete!<cr>
 noremap gV `[v`]
 
 " Automatically jump to end of pasted text
-vnoremap <silent> p p`]
-nnoremap <silent> p p`]
+" noremap <silent> p p`]
+" nnoremap <silent> p p`]
 
 " Create vertical split for help
 cabbrev hv vert h
@@ -522,6 +545,9 @@ noremap  <buffer> <silent> <Down> gj
 inoremap <buffer> <silent> <Up>   <C-o>gk
 inoremap <buffer> <silent> <Down> <C-o>gj
 
+" Make K split the current line at the cursor (the opposite of J)
+nnoremap K i<CR><Esc>
+
 " Auto center on matched string.
 noremap n nzz
 noremap N Nzz
@@ -534,7 +560,7 @@ nnoremap <script> <silent> <leader>tl :lclose<CR>
 nnoremap <script> <silent> <leader>tq :cclose<CR>
 
 " Jump to anywhere on screen with minimal keystrokes `s{char}{char}{label}`
-nnoremap s <Plug>(easymotion-overwin-f2)
+nmap s <Plug>(easymotion-overwin-f2)
 
 " Toggle spell check
 nnoremap <silent> <leader>s :set spell!<CR>
@@ -543,7 +569,7 @@ nnoremap <silent> <leader>s :set spell!<CR>
 nnoremap <C-n> :call ToggleNerdTree()<CR>
 
 " Turn off search highlighting
-noremap <Leader>/ :noh<CR>
+nnoremap <Leader>/ :noh<CR>
 
 " Toggle tagbar
 nmap <Leader>v :Vista!!<CR>
@@ -636,8 +662,8 @@ nmap <silent> gr <Plug>(coc-references)
 
 " END Snippets }}}
 
-" Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+" Use H to show documentation in preview window
+nnoremap <silent> H :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -684,15 +710,6 @@ command! -nargs=? Fold :call CocAction('fold', <f-args>)
 " END Ultisnips }}}
 
 " Markdown {{{
-
-" vim-markdown {{{
-
-" Disable Markdown folding
-let g:vim_markdown_folding_disabled = 1
-" Autoresize TOC window
-let g:vim_markdown_toc_autofit = 1
-
-" END vim-markdown }}}
 
 " Pandoc {{{
 

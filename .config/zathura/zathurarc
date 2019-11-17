@@ -1,0 +1,9 @@
+set selection-clipboard clipboard
+
+set incremental-search true
+
+# zoom
+map <C-i> zoom in
+map <C-o> zoom out
+
+" vim: set ft=conf ts=4 sw=4 tw=0 et : */
