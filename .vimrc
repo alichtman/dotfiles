@@ -346,6 +346,16 @@ augroup SetCorrectFiletype
     autocmd BufRead,BufNewFile *.txt set filetype=text
 augroup END
 
+augroup GitCommitFormat
+    autocmd!
+    " Force the cursor onto a new line after 72 characters
+    autocmd FileType gitcommit set textwidth=72
+    " Colour the 73rd column so that we don’t type over our limit
+    set colorcolumn=+1
+    " Also colour the 51st column (for titles)
+    autocmd FileType gitcommit set colorcolumn+=51
+augroup END
+
 augroup MarkdownConceling
     autocmd!
     autocmd FileType markdown set conceallevel=0
