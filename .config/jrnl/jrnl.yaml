@@ -1,0 +1,20 @@
+colors:
+  body: white
+  date: red
+  tags: yellow
+  title: blue
+default_hour: 9
+default_minute: 0
+editor: nvim
+encrypt: false
+highlight: true
+indent_character: '|'
+journals:
+  default: /Users/alichtman/journals/journal.txt
+  tech: /Users/alichtman/journals/tech.txt
+  test: /Users/alichtman/journals/test.txt
+linewrap: 79
+tagsymbols: '@'
+template: false
+timeformat: '%Y-%m-%d %H:%M'
+version: 2.0.3

@@ -30,7 +30,7 @@
 	whitespace = red reverse
 [commit]
 	gpgsign = true
-	template = /Users/alichtman/.stCommitMsg
+	template = /Users/alichtman/.config/git/commit-template
 [merge]
 	tool = meld
 [diff]

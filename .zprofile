@@ -19,6 +19,7 @@ export GOPATH=$HOME/go
 export SPLUNK_HOME=/Applications/Splunk
 export PYENV_ROOT=/usr/local/var/pyenv
 export LESSHISTFILE=$HOME/.cache/lesshst
+export NODE_REPL_HISTORY=$HOME/.cache/node_repl_history
 
 #######
 # pyenv
