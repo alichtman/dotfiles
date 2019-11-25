@@ -77,6 +77,9 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'mattn/gist-vim'
 
+" Scrolling
+Plug 'psliwka/vim-smoothie'
+
 " Status Bar
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -170,12 +173,11 @@ set smartcase             " Case sensitive if we type an uppercase
 
 set wrap
 set nolinebreak
-" set textwidth=120     " TODO: break lines when line length increases only outside of markdown and text files
+" set textwidth=120       " TODO: break lines when line length increases only outside of markdown and text files
 set breakindent
 set breakindentopt=min:40
-" 80 and 120 character guidelines
-highlight ColorColumn ctermbg=lightgrey
-set colorcolumn=80,120
+highlight ColorColumn ctermbg=237
+set colorcolumn=81,121   " 80 and 120 character guidelines
 
 " END Line breaking }}}
 
@@ -356,7 +358,7 @@ augroup GitCommitFormat
     autocmd FileType gitcommit set colorcolumn+=51
 augroup END
 
-augroup MarkdownConceling
+augroup MarkdownConcealing
     autocmd!
     autocmd FileType markdown set conceallevel=0
 augroup END
@@ -470,7 +472,7 @@ nnoremap ; :
 nnoremap x "_x
 nnoremap X "_X
 
-" Read modline
+" Read modeline
 nnoremap <leader>mr :doautocmd BufRead<Cr>
 
 " Yeet those 'Not an editor command' errors right out the fucking window
@@ -486,6 +488,9 @@ nnoremap Y y$
 
 " Make U do the opposite of u (redo)
 nnoremap U <C-r>
+
+" Make K split the current line at the cursor (the opposite of J)
+nnoremap K i<CR><Esc>
 
 " Use jk or kj for Escape
 inoremap jk <Esc>
@@ -547,6 +552,7 @@ nnoremap <silent> <C-l> <C-w>l
 vnoremap <silent> <C-l> <C-w>l
 
 " Move the current line above or below with ALT + [j/k].
+" TODO: Make this not fail on top or bottom of file
 noremap <A-j> ddjP
 noremap <A-k> ddkP
 
@@ -562,15 +568,9 @@ noremap  <buffer> <silent> <Down> gj
 inoremap <buffer> <silent> <Up>   <C-o>gk
 inoremap <buffer> <silent> <Down> <C-o>gj
 
-" Make K split the current line at the cursor (the opposite of J)
-nnoremap K i<CR><Esc>
-
 " Auto center on matched string.
 noremap n nzz
 noremap N Nzz
-
-" Open undotree
-nnoremap <leader>u :UndotreeToggle<cr>
 
 " Quickly close Quickfix and Location Windows
 nnoremap <script> <silent> <leader>tl :lclose<CR>
@@ -582,14 +582,13 @@ nmap s <Plug>(easymotion-overwin-f2)
 " Toggle spell check
 nnoremap <silent> <leader>s :set spell!<CR>
 
-" Toggle file browser
+" Toggle file browser, undotree and Vista tagbar
+nnoremap <leader>u :UndotreeToggle<cr>
 nnoremap <C-n> :call ToggleNerdTree()<CR>
+nnoremap <Leader>v :Vista!!<CR>
 
 " Turn off search highlighting
 nnoremap <Leader>/ :noh<CR>
-
-" Toggle tagbar
-nmap <Leader>v :Vista!!<CR>
 
 " Markdown Preview
 nnoremap <silent> <leader>mpg :call OpenMarkdownPreview()<cr>

@@ -21,6 +21,17 @@ export PYENV_ROOT=/usr/local/var/pyenv
 export LESSHISTFILE=$HOME/.cache/lesshst
 export NODE_REPL_HISTORY=$HOME/.cache/node_repl_history
 
+##############
+# gcc / OS-Dev
+##############
+
+export CC=/usr/local/Cellar/gcc/9.2.0_1/bin/gcc-9
+export LD=/usr/local/Cellar/gcc/9.2.0_1/bin/gcc-9
+
+export OS_DEV_PREFIX="/Users/alichtman/bin/i386elfgcc"
+export TARGET=i386-elf
+export PATH="$OS_DEV_PREFIX/bin:$PATH"
+
 #######
 # pyenv
 #######

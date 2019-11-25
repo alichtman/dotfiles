@@ -2,9 +2,7 @@
 # zsh Functions #
 #################
 
-#####
-# fzf
-#####
+# fzf Integrations {{{
 
 # fo [FUZZY PATTERN] - Open the selected file with the default editor
 #   - Bypass fuzzy finder if there's only one match (--select-1)
@@ -25,9 +23,13 @@ function launch() {
 	open -a "`find /Applications -name '*app' -maxdepth 1 | cut -d'/' -f 3 | cut -d'.' -f 1 | fzf --query=$1`"
 }
 
-# tree command with "quick jump" ability
-function tre() {
-	command tre "$@" -e && source "/tmp/tre_aliases_$USER" 2>/dev/null;
+# END fzf integrations }}}
+
+# git {{{
+
+# gi [OS,LANGUAGE,ETC]
+function gi() {
+	curl -sLw "\n" https://www.gitignore.io/api/"$@" ;
 }
 
 # Prettier diffs
@@ -35,19 +37,9 @@ function pdiff() {
 	diff -u $1 $2 | diff-so-fancy
 }
 
+# END git }}}
 
-#####
-# git
-#####
-
-# gi [OS,LANGUAGE,ETC]
-function gi() {
-	curl -sLw "\n" https://www.gitignore.io/api/"$@" ;
-}
-
-#####
-# Dotfiles
-#####
+# Dotfiles {{{
 
 # Grab dotfiles list from shallow-backup config and throw it in a fzf selector for editing
 function dots() {
@@ -74,9 +66,9 @@ function backup-dots() {
 	)
 }
 
-######
-# Misc
-######
+# END Dotfiles }}}
+
+# Ranger {{{
 
 # cd on exit from ranger with Q
 function ranger {
@@ -95,18 +87,36 @@ function ranger {
     command rm -f -- "$tempfile" 2>/dev/null
 }
 
-# Make a directory and cd into it.
-mk() {
-	mkdir "$1" && cd "$1" || exit;
-}
+# END Ranger }}}
+
+# Misc {{{
 
 function cheat() {
 	curl cheat.sh/$1
 }
 
-######
-# tmux
-######
+# END Misc }}}
+
+# Unix Shortcuts {{{
+
+# tree command with "quick jump" ability
+function tre() {
+	command tre "$@" -e && source "/tmp/tre_aliases_$USER" 2>/dev/null;
+}
+
+# Make a directory and cd into it.
+function mk() {
+	mkdir "$1" && cd "$1" || exit;
+}
+
+# Copy file contents to clipboard
+function copy() {
+	pbcopy < "$1"
+}
+
+# END Unix Shortcuts }}}
+
+# tmux {{{
 
 
 # tm - create new tmux session, or switch to existing one. Works from within tmux too. (@bag-man)
@@ -121,4 +131,6 @@ tm() {
   session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
 }
 
-#  vim: set filetype=zsh:
+# END tmux }}}
+
+# vim: set filetype=zsh foldmethod=marker:

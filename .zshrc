@@ -180,8 +180,6 @@ setopt RM_STAR_WAIT
 # FZF Config
 ############
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh;
-
 # Show hidden files in search and ignore .git directory
 export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -l -g ""'
 export FZF_DEFAULT_OPTS="--cycle"

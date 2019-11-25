@@ -1,8 +1,16 @@
-###########
-# Aliases #
-###########
+#####################################################
+#
+#  █████╗ ██╗     ██╗ █████╗ ███████╗███████╗███████╗
+# ██╔══██╗██║     ██║██╔══██╗██╔════╝██╔════╝██╔════╝
+# ███████║██║     ██║███████║███████╗█████╗  ███████╗
+# ██╔══██║██║     ██║██╔══██║╚════██║██╔══╝  ╚════██║
+# ██║  ██║███████╗██║██║  ██║███████║███████╗███████║
+# ╚═╝  ╚═╝╚══════╝╚═╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝
+#
+#####################################################
 
-# $ ls and Friends
+# $ ls and Friends {{{
+
 alias l='lsd -1A --group-dirs first -I=.DS_Store'
 alias ls='lsd -1A --group-dirs first --prefix-indent -I=.DS_Store'
 alias LS='ls'
@@ -21,50 +29,58 @@ alias jj='zz'
 # Because I clearly can't fucking type
 alias cdd='cd'
 
-#########
-# Updates
-#########
+# END $ ls and Friends }}}
+
+# Updates {{{
 
 alias vimup="nvim '+PlugUpdate' '+PlugUpgrade' '+qall'"
 alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor'
 alias update='rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\nOnePassword: $(op update)\n"; zplug update; vimup;'
 
-###########
-# 1Password
-###########
+# END Updates }}}
+
+# 1Password {{{
 
 alias 1p_signin='eval $(op signin my)'
 alias op_signin='1p_signin'
-alias spotify_pass="op get item Spotify | jq -r '.details.fields[1].value'"
 
-##################################
-# Binary Analysis / RE / Forensics
-##################################
+# END 1Password }}}
+
+# Binary Analysis / RE / Forensics {{{
 
 alias objdumpd='objdump -x86-asm-syntax=intel -d' # Disassemble with Intel syntax
-alias rc='radix-calc'
-alias rcc='radix-calc --all'
 alias vol='volatility --plugins=/Users/alichtman/volatility-plugins'
 
-#############
-# Development
-#############
+# END Binary Analysis / RE / Forensics }}}
 
-# github CLI integration
-eval "$(hub alias -s)"
+# Base conversion {{{
+
+alias rc='radix-calc'
+alias rcc='radix-calc --all'
+
+# END Base conversion }}}
+
+# git / GitHub {{{
+
+alias git=hub
 alias pr='hub pull-request'
 alias changelog='github_changelog_generator'
-
 alias mdpreview='grip -b'
 
-# Pypi
+# END git / GitHub }}}
+
+# Pypi {{{
+
 alias pypitestup='python3 setup.py sdist; twine upload --repository testpypi dist/*'
 alias pip3test='pip3 install --index-url https://test.pypi.org/simple/'
 alias pypiup='python3 setup.py sdist; twine upload --repository pypi dist/*'
 alias pypibinary='python3 setup.py sdist'
 alias poetry-publish='poetry publish --user $PYPI_USERNAME --password $PYPI_PASSWORD'
 
-# Convenience
+# END Pypi }}}
+
+# Convenience {{{
+
 alias yank='pbcopy'
 alias help='navi'
 alias ip_en0='ipconfig getifaddr en0'
@@ -72,63 +88,68 @@ alias ip_tun0='ipconfig getifaddr tun0'
 alias please='sudo $(fc -ln -1)' # Rerun last command with sudo
 alias google="googler -l en"
 alias fuck='eval $(TF_ALIAS=fuck PYTHONIOENCODING=utf-8 thefuck $(fc -ln -1))'
-alias activate=". venv/bin/activate"
 alias batp='bat --paging=always'
+alias notes='fzf-notes'
+alias cal='calz'
+alias fg='setopt monitor && fg'
+alias tags='ctags -R .'
+alias o='open'
+alias cpwd='pwd | xargs echo -n | pbcopy' # Copy the working dir to the clipboard
 
-# Copy the working dir to the clipboard
-alias cpwd='pwd | xargs echo -n | pbcopy'
+# END Convenience }}}
 
-# Hashes
+# Hashes {{{
+
 alias sha1='openssl dgst -sha1'
 alias sha256='openssl dgst -sha256'
 
-# Tasks and Habits
+# END Hashes }}}
+
+# Tasks and Habits {{{
+
 alias t='tb'
 alias tasks='tb'
-alias taskbook='tb'
 alias task='tb --task'
 alias h='habitctl'
 alias habits='habitctl log && echo "\nTODO:\n" && habitctl todo'
 alias habitedit='habitctl edith'
 
-alias notes='fzf-notes'
+# END Tasks and Habits }}}
 
-alias cal='calz'
-alias fg='setopt monitor && fg'
+# Editors {{{
 
-# Editor Shortcuts
 alias vim='nvim'
 alias vimdiff="nvim -d"
 alias xcode='open -a Xcode'
-alias tags='ctags -R .'
-
-# Quick access to configs
-alias zshrc='vim ~/.zshrc'
-alias vimrc='vim ~/.vimrc'
-alias tmux.conf='vim ~/.tmux.conf'
-alias kittyrc='vim ~/.config/kitty/kitty.conf'
 
 # vim habits
 alias :wq="exit"
 alias :q="exit"
 
-alias o='open'
+# END Editors }}}
 
-############
-# r/unixporn
-############
+# Configs {{{
+
+alias zshrc='vim ~/.zshrc'
+alias vimrc='vim ~/.vimrc'
+alias tmux.conf='vim ~/.tmux.conf'
+
+# END Configs }}}
+
+# r/unixporn {{{
 
 alias weather='curl "wttr.in/`CoreLocationCLI -format "%address" | tail -n+2 | head -n 1 | cut -d" " -f 2`?&u"'
 alias news='newsroom'
 alias matrix='unimatrix -s 93'
 alias pipes='pipes.sh -f 75 -t 3 -B'
 alias trip='yes "$(seq 231 -1 16)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
-alias mandelbrot='bash ~/bin/mandelbrot.sh'
+alias mandelbrot='bash ~/bin/mandelbrot'
 alias spotify='spt'
+alias reddit='tuir'
 
-##################
-# macOS Management
-##################
+# END r/unixporn }}}
+
+# macOS Management {{{
 
 # For murdering various things when they break
 alias kill-touchbar='sudo pkill "Touch Bar agent";sudo killall "ControlStrip";'
@@ -142,4 +163,6 @@ alias throttle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=1;'
 alias show-desktop='defaults write com.apple.finder CreateDesktop true; killall Finder'
 alias hide-desktop='defaults write com.apple.finder CreateDesktop false; killall Finder'
 
-#  vim: set filetype=zsh:
+# END macOS Management }}}
+
+#  vim: set filetype=zsh foldmethod=marker:
