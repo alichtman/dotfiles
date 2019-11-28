@@ -8,6 +8,9 @@
 
 " 1. Make fzf file browsing open in a floating preview window
 " 2. Syntastic -> ALE
+" 3. Figure out how to properly configure C and C++ formatting.
+" 4. Show leading spaces with the bullet character.
+" 5. Snippets
 
 " END TODO }}}
 
@@ -293,13 +296,13 @@ augroup VimStartupSequence
                 \ | endif
 augroup END
 
-" After opening a file, set working dir to the same as that file so relative
-" paths will work nicely. Pairs with the set of FZF mappings below to allow
-" you to access files in the parent directories.
-augroup SetWorkingDirForCurrentWindow
-    autocmd!
-    autocmd BufEnter * silent! lcd %:p:h
-augroup END
+" " After opening a file, set working dir to the same as that file so relative
+" " paths will work nicely. Pairs with the set of FZF mappings below to allow
+" " you to access files in the parent directories.
+" augroup SetWorkingDirForCurrentWindow
+    " autocmd!
+    " autocmd BufEnter * silent! lcd %:p:h
+" augroup END
 
 " Folding {{{
 
@@ -312,7 +315,7 @@ augroup END
 augroup Folding
     autocmd!
     autocmd FileType vim,tmux setlocal foldmethod=marker
-    autocmd FileType python,c,sh setlocal foldmethod=indent
+    autocmd FileType python setlocal foldmethod=indent
 augroup END
 
 " END Folding }}}
@@ -467,6 +470,9 @@ nnoremap <leader>ez :drop ~/.zshrc<cr>
 
 " Make : commands easier
 nnoremap ; :
+
+" Insert timestamp
+iabbrev <expr> dts strftime("%a, %b %d, %Y -- %X")
 
 " Don't overwrite copy register when deleting with x or X
 nnoremap x "_x
@@ -752,34 +758,30 @@ let g:pandoc#syntax#codeblocks#embeds#langs = [ "python", "ruby", "c", "bash=sh"
 " fzf {{{
 
 " https://github.com/neovim/neovim/issues/9718#issuecomment-546603628
-" function! Create_centered_floating_window(border)
-    " let width = min([&columns - 4, max([80, &columns - 20])])
-    " let height = min([&lines - 4, max([20, &lines - 10])])
-    " let top = ((&lines - height) / 2) - 1
-    " let left = (&columns - width) / 2
-    " let opts = {'relative': 'editor', 'row': top, 'col': left, 'width': width, 'height': height, 'style': 'minimal'}
-"
-    " if a:border == v:true
-        " let top = "╭" . repeat("─", width - 2) . "╮"
-        " let mid = "│" . repeat(" ", width - 2) . "│"
-        " let bot = "╰" . repeat("─", width - 2) . "╯"
-        " let lines = [top] + repeat([mid], height - 2) + [bot]
-        " let s:buf = nvim_create_buf(v:false, v:true)
-        " call nvim_buf_set_lines(s:buf, 0, -1, v:true, lines)
-        " call nvim_open_win(s:buf, v:true, opts)
-        " set winhl=Normal:Floating
-        " let opts.row += 1
-        " let opts.height -= 2
-        " let opts.col += 2
-        " let opts.width -= 4
-        " call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
-        " au BufWipeout <buffer> exe 'bw '.s:buf
-    " else
-        " call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
-    " endif
-" endfunction
+function! CreateCenteredFloatingWindow()
+    let width = min([&columns - 4, max([80, &columns - 20])])
+    let height = min([&lines - 4, max([20, &lines - 10])])
+    let top = ((&lines - height) / 2) - 1
+    let left = (&columns - width) / 2
+    let opts = {'relative': 'editor', 'row': top, 'col': left, 'width': width, 'height': height, 'style': 'minimal'}
 
-" let g:fzf_layout = { 'window': 'call Create_centered_floating_window(v:true)' }
+    let top = "╭" . repeat("─", width - 2) . "╮"
+    let mid = "│" . repeat(" ", width - 2) . "│"
+    let bot = "╰" . repeat("─", width - 2) . "╯"
+    let lines = [top] + repeat([mid], height - 2) + [bot]
+    let s:buf = nvim_create_buf(v:false, v:true)
+    call nvim_buf_set_lines(s:buf, 0, -1, v:true, lines)
+    call nvim_open_win(s:buf, v:true, opts)
+    set winhl=Normal:Floating
+    let opts.row += 1
+    let opts.height -= 2
+    let opts.col += 2
+    let opts.width -= 4
+    call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
+    au BufWipeout <buffer> exe 'bw '.s:buf
+endfunction
+
+let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
 
 " END fzf }}}
 

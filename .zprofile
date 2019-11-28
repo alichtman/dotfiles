@@ -60,7 +60,9 @@ export PATH="$PATH:/Users/alichtman/Library/Python/3.7/bin"
 export PATH="$PATH:$SPLUNK_HOME/bin"
 export PATH="$PATH:$GOPATH/bin"
 export PATH="$HOME/.poetry/bin:$PATH"
-#
+
+export PATH="/usr/local/opt/llvm/bin:$PATH"
+
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ]; then
   PATH="$HOME/bin:$PATH"
