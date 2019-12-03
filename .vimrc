@@ -208,20 +208,19 @@ set autoindent          " copy indent from current line when starting a new line
 
 " Appearance {{{
 
+set termguicolors
 set background=dark
+let g:gruvbox_contrast_dark='dark'
+colorscheme gruvbox-material
 
 "colorscheme snow
 "colorscheme gruvbox
-colorscheme gruvbox-material
 "colorscheme onedark
 "colorscheme OceanicNext
 
-let g:gruvbox_contrast_dark='dark'
-
 " Make vertical splits prettier
-set fillchars+=vert:┃  " for vsplits
-hi VertSplit ctermfg=9
-
+set fillchars+=vert:┃
+highlight VertSplit guifg=9
 
 " TODO: Fix this mess
 " let g:thematic#theme_name = 'gruvbox-material'
@@ -856,6 +855,7 @@ let g:show_spaces_that_precede_tabs=1
 " vim-airline {{{
 
 let g:airline_theme='onedark'
+" let g:airline_theme='gruvbox_material'
 let g:airline_powerline_fonts = 1
 " Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 1

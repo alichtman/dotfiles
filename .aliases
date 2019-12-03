@@ -33,7 +33,7 @@ alias cdd='cd'
 
 # Updates {{{
 
-alias vimup="nvim '+PlugUpdate' '+PlugUpgrade' '+qall'"
+alias vimup="nvim '+PlugUpdate' '+PlugUpgrade' '+CocUpdate' '+qall'"
 alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor'
 alias update='rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\nOnePassword: $(op update)\n"; zplug update; vimup;'
 
@@ -95,6 +95,8 @@ alias fg='setopt monitor && fg'
 alias tags='ctags -R .'
 alias o='open'
 alias cpwd='pwd | xargs echo -n | pbcopy' # Copy the working dir to the clipboard
+alias tls='zsh-startify'
+alias b64='base64'
 
 # END Convenience }}}
 
