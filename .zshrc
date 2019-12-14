@@ -1,16 +1,14 @@
 # .zshrc for macOS
 # Aaron Lichtman
 
-########
-# Prompt
-########
+# Prompt {{{
 
 # Config in ~/.config/starship.toml
 eval "$(starship init zsh)"
 
-##########
-# Env Vars
-##########
+# END Prompt }}}
+
+# Env Vars {{{
 
 export BETTER_EXCEPTIONS=1     # Python Better Exceptions
 export HOMEBREW_NO_ANALYTICS=1
@@ -21,9 +19,9 @@ export NOTES=$HOME/Desktop/Development/notes
 export ZSH_STARTIFY_NO_SPLASH=true
 export ZSH_STARTIFY_NON_INTERACTIVE=true
 
-#########
-# Plugins
-#########
+# END Env Vars }}}
+
+# Plugins {{{
 
 # oh-my-zsh
 # Plugins can be found in ~/.oh-my-zsh/plugins/*
@@ -37,36 +35,34 @@ plugins=(
   zsh-completions
 )
 
-# zplug
-source ~/.zplug/init.zsh
+# zplugin
+source $HOME/.zplugin/bin/zplugin.zsh
+autoload -Uz _zplugin
+(( ${+_comps} )) && _comps[zplugin]=_zplugin
 
-zplug "changyuheng/zsh-interactive-cd"
-zplug "changyuheng/fz", defer:1
-zplug "rupa/z", use:z.sh
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+# Enable turbo mode
+# zplugin ice wait
+zplugin light "changyuheng/zsh-interactive-cd"
+zplugin light "changyuheng/fz"
+zplugin ice src"z.sh"
+zplugin light "rupa/z"
 
-# zplug check returns true if all packages are installed
-# Therefore, when it returns false, run zplug install
-if ! zplug check; then
-    zplug install
-fi
+# END Plugins }}}
 
-##########
-# z and fz
-##########
+# z and fz {{{
 
 FZ_CMD=j
 FZ_SUBDIR_CMD=jj
 
-#####
-# ssh
-#####
+# END z and fz }}}
+
+# ssh {{{
 
 zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab rpi_hydrogen rpi_krypton
 
-############
-# Completion
-############
+# END ssh }}}
+
+# Completion {{{
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
 
@@ -115,15 +111,15 @@ bindkey -M isearch . self-insert
 fpath=(/usr/local/share/zsh-completions $fpath)
 autoload -U compinit && compinit
 
-######
-# tmux
-######
+# END Completion }}}
+
+# tmux {{{
 
 export ZSH_TMUX_AUTOQUIT=false
 
-######################
-# General zsh Behavior
-######################
+# END tmux }}}
+
+# General zsh Behavior {{{
 
 set termguicolors
 
@@ -133,9 +129,9 @@ unsetopt nomatch
 # Append a trailing `/' to all directory names resulting from globbing
 setopt mark_dirs
 
-#########
-# History
-#########
+# END General zsh Behavior }}}
+
+# History {{{
 
 setopt inc_append_history   # append history list to the history file (important for multiple parallel zsh sessions!)
 setopt share_history        # import new commands from the history file also in other zsh-session
@@ -146,9 +142,9 @@ export HIST_STAMPS="mm/dd/yyyy"
 export HISTSIZE=1000000000
 export SAVEHIST=$HISTSIZE
 
-#####
-# vim
-#####
+# END History }}}
+
+# vim {{{
 
 # Enable Ctrl-x-e to edit current command in vim
 autoload -U edit-command-line
@@ -167,26 +163,27 @@ function ctrl-z-toggle () {
 zle -N ctrl-z-toggle
 bindkey '^Z' ctrl-z-toggle
 
-###########################
-# Looking out for future me.
-###########################
+# END vim }}}
 
-alias rm="safe-rm"
+# Disarm rm {{{
+
+# rm aliased to safe-rm in ~/.aliases
+
 # Prompt to confirm rm DIR/*
 unsetopt RM_STAR_SILENT
 setopt RM_STAR_WAIT
 
-############
-# FZF Config
-############
+# END Disarm rm }}}
+
+# FZF {{{
 
 # Show hidden files in search and ignore .git directory
 export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -l -g ""'
 export FZF_DEFAULT_OPTS="--cycle"
 
-######################
-# Sourcing Other Files
-######################
+# END FZF }}}
+
+# Sourcing Other Files {{{
 
 source $ZSH/oh-my-zsh.sh
 
@@ -196,12 +193,11 @@ for file in ~/.{aliases,zfunctions,zprofile,secrets}; do
 done
 unset file
 
-# Must be at the end
-zplug load
+# END Sourcing Other Files }}}
 
-####################
-# Bells and Whistles
-####################
+# Startup Tools {{{
 
 year-progress
 zsh-startify
+
+# END Startup Tools }}}

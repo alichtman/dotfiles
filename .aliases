@@ -33,9 +33,10 @@ alias cdd='cd'
 
 # Updates {{{
 
+alias zplugin-update='zplugin self-update'
 alias vimup="nvim '+PlugUpdate' '+PlugUpgrade' '+CocUpdate' '+qall'"
 alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor'
-alias update='rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\nOnePassword: $(op update)\n"; zplug update; vimup;'
+alias update='rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\nOnePassword: $(op update)\n"; zplug update; vimup; zplugin-update;'
 
 # END Updates }}}
 
@@ -97,6 +98,9 @@ alias o='open'
 alias cpwd='pwd | xargs echo -n | pbcopy' # Copy the working dir to the clipboard
 alias tls='zsh-startify'
 alias b64='base64'
+alias server='echo "Server IP Address: `ip_en0`:8000" && python3 -m http.server'
+alias rm="safe-rm"
+alias trash='trash -F'
 
 # END Convenience }}}
 
@@ -164,6 +168,9 @@ alias throttle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=1;'
 # Desktop
 alias show-desktop='defaults write com.apple.finder CreateDesktop true; killall Finder'
 alias hide-desktop='defaults write com.apple.finder CreateDesktop false; killall Finder'
+
+# Updates
+alias reset-ignored-updates='sudo softwareupdate --reset-ignored'
 
 # END macOS Management }}}
 

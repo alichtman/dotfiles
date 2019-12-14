@@ -9,6 +9,14 @@ export EDITOR='nvim'
 export VISUAL='nvim'
 export VIMCONFIG='$HOME/.config/nvim'
 
+
+#####
+# XDG
+#####
+
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CONFIG_HOME="$HOME/.config"
+
 #######################
 # Directories and Files
 #######################

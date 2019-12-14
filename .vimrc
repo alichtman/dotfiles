@@ -222,6 +222,10 @@ colorscheme gruvbox-material
 set fillchars+=vert:┃
 highlight VertSplit guifg=9
 
+" Make search highlighting tolerable
+" hi Search ctermbg=9
+" hi Search ctermfg=Red
+
 " TODO: Fix this mess
 " let g:thematic#theme_name = 'gruvbox-material'
 "
@@ -314,6 +318,7 @@ augroup END
 augroup Folding
     autocmd!
     autocmd FileType vim,tmux setlocal foldmethod=marker
+    autocmd BufRead,BufNewFile .zshrc setlocal foldmethod=marker
     autocmd FileType python setlocal foldmethod=indent
 augroup END
 
@@ -412,7 +417,7 @@ function! RenameFile() abort
   let new_name = input('New file name: ', expand('%'), 'file')
   if new_name != '' && new_name != old_name
     exec ':saveas ' . new_name
-    exec ':silent !rm ' . old_name
+    exec ':!trash ' . old_name
     redraw!
   endif
 endfunction
@@ -720,6 +725,12 @@ command! -nargs=0 Format :call CocAction('format')
 command! -nargs=? Fold :call CocAction('fold', <f-args>)
 
 " END coc.nvim }}}
+
+" vim-jedi {{{
+
+let g:jedi#documentation_command = "H"
+
+" END vim-jedi }}}
 
 " TODO: Ultisnips {{{
 
