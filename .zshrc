@@ -40,8 +40,6 @@ source $HOME/.zplugin/bin/zplugin.zsh
 autoload -Uz _zplugin
 (( ${+_comps} )) && _comps[zplugin]=_zplugin
 
-# Enable turbo mode
-# zplugin ice wait
 zplugin light "changyuheng/zsh-interactive-cd"
 zplugin light "changyuheng/fz"
 zplugin ice src"z.sh"

@@ -33,10 +33,10 @@ alias cdd='cd'
 
 # Updates {{{
 
-alias zplugin-update='zplugin self-update'
-alias vimup="nvim '+PlugUpdate' '+PlugUpgrade' '+CocUpdate' '+qall'"
-alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor'
-alias update='rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\nOnePassword: $(op update)\n"; zplug update; vimup; zplugin-update;'
+alias zplugin-update='zplugin self-update; zplugin update --all;'
+alias vimup="nvim '+PlugUpdate' '+PlugUpgrade' '+CocUpdate' '+qall';"
+alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor;'
+alias update='rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\n1Password: $(op update)\n"; vimup; zplugin-update;'
 
 # END Updates }}}
 
@@ -83,7 +83,7 @@ alias poetry-publish='poetry publish --user $PYPI_USERNAME --password $PYPI_PASS
 # Convenience {{{
 
 alias yank='pbcopy'
-alias help='navi'
+alias help='tldr'
 alias ip_en0='ipconfig getifaddr en0'
 alias ip_tun0='ipconfig getifaddr tun0'
 alias please='sudo $(fc -ln -1)' # Rerun last command with sudo
@@ -98,7 +98,7 @@ alias o='open'
 alias cpwd='pwd | xargs echo -n | pbcopy' # Copy the working dir to the clipboard
 alias tls='zsh-startify'
 alias b64='base64'
-alias server='echo "Server IP Address: `ip_en0`:8000" && python3 -m http.server'
+alias server='echo "Server IP Address (copied to clipboard): `ip_en0`:8000/" && echo "`ip_en0`:8000/" | pbcopy && python3 -m http.server'
 alias rm="safe-rm"
 alias trash='trash -F'
 
@@ -174,4 +174,8 @@ alias reset-ignored-updates='sudo softwareupdate --reset-ignored'
 
 # END macOS Management }}}
 
-#  vim: set filetype=zsh foldmethod=marker:
+# For an explanation of why the filetype is set to fish even though I use zsh,
+# read this: https://github.com/liuchengxu/vista.vim/issues/207. I really hate
+# computers sometimes.
+
+# vim: ft=fish :

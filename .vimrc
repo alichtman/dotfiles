@@ -318,7 +318,6 @@ augroup END
 augroup Folding
     autocmd!
     autocmd FileType vim,tmux setlocal foldmethod=marker
-    autocmd BufRead,BufNewFile .zshrc setlocal foldmethod=marker
     autocmd FileType python setlocal foldmethod=indent
 augroup END
 
@@ -397,7 +396,7 @@ augroup end
 
 " Append modeline after last line in buffer
 function! AppendModeline() abort
-  let l:modeline = printf("# vim: set ts=%d sw=%d tw=%d %set :",
+  let l:modeline = printf("# vim: ts=%d sw=%d tw=%d %set :",
         \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
   call append(line("$"), l:modeline)
   doautocmd BufRead
@@ -405,7 +404,7 @@ endfunction
 
 " Modeline for nasm files
 function! AppendASMModeline() abort
-let l:modeline = printf("; vim: set ft=nasm ts=%d sw=%d tw=%d et :",
+let l:modeline = printf("; vim: ft=nasm ts=%d sw=%d tw=%d et :",
         \ &tabstop, &shiftwidth, &textwidth)
   call append(line("$"), l:modeline)
   doautocmd BufRead
