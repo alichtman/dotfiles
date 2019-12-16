@@ -40,10 +40,12 @@ source $HOME/.zplugin/bin/zplugin.zsh
 autoload -Uz _zplugin
 (( ${+_comps} )) && _comps[zplugin]=_zplugin
 
+zplugin ice wait'!' pick"zsh-interactive-cd.plugin.zsh"
 zplugin light "changyuheng/zsh-interactive-cd"
-zplugin light "changyuheng/fz"
-zplugin ice src"z.sh"
+zplugin ice wait'!' pick"z.sh"
 zplugin light "rupa/z"
+zplugin ice wait'!' pick"fz.plugin.zsh"
+zplugin light "changyuheng/fz"
 
 # END Plugins }}}
 
