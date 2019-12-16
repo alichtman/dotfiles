@@ -80,7 +80,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'mattn/gist-vim'
 
-" Scrolling
+" File Scrolling
 Plug 'psliwka/vim-smoothie'
 
 " Status Bar
@@ -317,7 +317,9 @@ augroup END
 
 augroup Folding
     autocmd!
-    autocmd FileType vim,tmux setlocal foldmethod=marker
+    " TODO: What I really want is for this to apply to zshrc, vimrc and
+    " tmux.conf, not all vim and tmux fts
+    autocmd FileType vim,tmux setlocal foldmethod=marker foldcolumn=2
     autocmd FileType python setlocal foldmethod=indent
 augroup END
 

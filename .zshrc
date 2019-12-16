@@ -1,5 +1,5 @@
 # .zshrc for macOS
-# Aaron Lichtman
+# Aaron Lichtman (@alichtman)
 
 # Prompt {{{
 
@@ -23,23 +23,20 @@ export ZSH_STARTIFY_NON_INTERACTIVE=true
 
 # Plugins {{{
 
-# oh-my-zsh
-# Plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-plugins=(
-  fzf
-  git
-  tmux
-  ssh-agent
-  zsh-autosuggestions
-  zsh-completions
-)
-
-# zplugin
 source $HOME/.zplugin/bin/zplugin.zsh
 autoload -Uz _zplugin
 (( ${+_comps} )) && _comps[zplugin]=_zplugin
 
+# oh-my-zsh plugins
+zplugin snippet OMZ::lib/git.zsh
+zplugin snippet OMZ::plugins/git/git.plugin.zsh
+zplugin snippet OMZ::plugins/fzf/fzf.plugin.zsh
+zplugin snippet OMZ::plugins/tmux/tmux.plugin.zsh
+zplugin snippet OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh
+
+# GitHub Plugins
+zplugin light zsh-users/zsh-autosuggestions
+zplugin light zsh-users/zsh-completions
 zplugin ice wait'!' pick"zsh-interactive-cd.plugin.zsh"
 zplugin light "changyuheng/zsh-interactive-cd"
 zplugin ice wait'!' pick"z.sh"
@@ -64,7 +61,7 @@ zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab rpi_h
 
 # Completion {{{
 
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
 
 # Use hyphen-insensitive completion. Case sensitive completion must be off. _ and - will be interchangeable.
 HYPHEN_INSENSITIVE="true"
@@ -201,3 +198,5 @@ year-progress
 zsh-startify
 
 # END Startup Tools }}}
+
+# vim: foldmethod=marker foldcolumn=1

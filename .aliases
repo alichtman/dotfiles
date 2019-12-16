@@ -36,7 +36,7 @@ alias cdd='cd'
 alias zplugin-update='zplugin self-update; zplugin update --all;'
 alias vimup="nvim '+PlugUpdate' '+PlugUpgrade' '+CocUpdate' '+qall';"
 alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor;'
-alias update='rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\n1Password: $(op update)\n"; vimup; zplugin-update;'
+alias update='upgrade_oh_my_zsh; rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\n1Password: $(op update)\n"; vimup; zplugin-update;'
 
 # END Updates }}}
 
