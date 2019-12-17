@@ -172,6 +172,11 @@ alias hide-desktop='defaults write com.apple.finder CreateDesktop false; killall
 # Updates
 alias reset-ignored-updates='sudo softwareupdate --reset-ignored'
 
+# Volume
+
+alias mute="osascript -e 'set volume output muted true'"
+alias unmute="osascript -e 'set volume output muted false'"
+
 # END macOS Management }}}
 
 # For an explanation of why the filetype is set to fish even though I use zsh,

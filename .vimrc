@@ -318,7 +318,7 @@ augroup END
 augroup Folding
     autocmd!
     " TODO: What I really want is for this to apply to zshrc, vimrc and
-    " tmux.conf, not all vim and tmux fts
+    " tmux.conf, not all vim and tmux fts. Should be included in a modeline
     autocmd FileType vim,tmux setlocal foldmethod=marker foldcolumn=2
     autocmd FileType python setlocal foldmethod=indent
 augroup END

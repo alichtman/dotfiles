@@ -1,12 +1,27 @@
 # .zshrc for macOS
 # Aaron Lichtman (@alichtman)
 
+# TODO {{{
+
+# - Migrate .fzf.zsh out of $ZSH_CUSTOM and uninstall oh-my-zsh
+
+# }}}
+
 # Prompt {{{
 
 # Config in ~/.config/starship.toml
 eval "$(starship init zsh)"
 
 # END Prompt }}}
+
+# FZF {{{
+
+# Show hidden files in search and ignore .git directory
+export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -l -g ""'
+export FZF_DEFAULT_OPTS="--cycle"
+export FZF_BASE="/usr/local/bin/fzf"
+
+# END FZF }}}
 
 # Env Vars {{{
 
@@ -23,6 +38,11 @@ export ZSH_STARTIFY_NON_INTERACTIVE=true
 
 # Plugins {{{
 
+plugins=(
+  ssh-agent
+  fzf
+)
+
 source $HOME/.zplugin/bin/zplugin.zsh
 autoload -Uz _zplugin
 (( ${+_comps} )) && _comps[zplugin]=_zplugin
@@ -37,12 +57,15 @@ zplugin snippet OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh
 # GitHub Plugins
 zplugin light zsh-users/zsh-autosuggestions
 zplugin light zsh-users/zsh-completions
+
 zplugin ice wait'!' pick"zsh-interactive-cd.plugin.zsh"
 zplugin light "changyuheng/zsh-interactive-cd"
 zplugin ice wait'!' pick"z.sh"
 zplugin light "rupa/z"
 zplugin ice wait'!' pick"fz.plugin.zsh"
 zplugin light "changyuheng/fz"
+zplgin ice wait
+zplugin light peterhurford/git-it-on.zsh
 
 # END Plugins }}}
 
@@ -171,14 +194,6 @@ unsetopt RM_STAR_SILENT
 setopt RM_STAR_WAIT
 
 # END Disarm rm }}}
-
-# FZF {{{
-
-# Show hidden files in search and ignore .git directory
-export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -l -g ""'
-export FZF_DEFAULT_OPTS="--cycle"
-
-# END FZF }}}
 
 # Sourcing Other Files {{{
 
