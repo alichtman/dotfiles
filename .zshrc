@@ -48,14 +48,21 @@ autoload -Uz _zplugin
 (( ${+_comps} )) && _comps[zplugin]=_zplugin
 
 # oh-my-zsh plugins
+zplugin ice wait'!'
 zplugin snippet OMZ::lib/git.zsh
+zplugin ice wait'!'
 zplugin snippet OMZ::plugins/git/git.plugin.zsh
+zplugin ice wait'!'
 zplugin snippet OMZ::plugins/fzf/fzf.plugin.zsh
+# zplugin ice wait'!'
 zplugin snippet OMZ::plugins/tmux/tmux.plugin.zsh
+zplugin ice wait'!'
 zplugin snippet OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh
 
 # GitHub Plugins
+zplugin ice wait'!'
 zplugin light zsh-users/zsh-autosuggestions
+zplugin ice wait'!'
 zplugin light zsh-users/zsh-completions
 
 zplugin ice wait'!' pick"zsh-interactive-cd.plugin.zsh"
@@ -64,7 +71,7 @@ zplugin ice wait'!' pick"z.sh"
 zplugin light "rupa/z"
 zplugin ice wait'!' pick"fz.plugin.zsh"
 zplugin light "changyuheng/fz"
-zplgin ice wait
+zplugin ice wait'!' pick"git-it-on.plugin.zsh"
 zplugin light peterhurford/git-it-on.zsh
 
 # END Plugins }}}
@@ -161,6 +168,7 @@ setopt hist_ignore_space    # remove command lines from the history list when th
 export HIST_STAMPS="mm/dd/yyyy"
 export HISTSIZE=1000000000
 export SAVEHIST=$HISTSIZE
+export HISTFILE="$HOME/.zsh_history"
 
 # END History }}}
 
@@ -210,7 +218,7 @@ unset file
 # Startup Tools {{{
 
 year-progress
-zsh-startify
+tls
 
 # END Startup Tools }}}
 

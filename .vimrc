@@ -6,7 +6,6 @@
 
 " TODO {{{
 
-" 1. Make fzf file browsing open in a floating preview window
 " 2. Syntastic -> ALE
 " 3. Figure out how to properly configure C and C++ formatting.
 " 4. Show leading spaces with the bullet character.
@@ -136,7 +135,7 @@ set signcolumn=yes              " Always show signcolumns
 set switchbuf=usetab            " Search first in opened windows if opening buffer
 set shortmess+=c                " Don't give ins-completion-menu messages
 set backspace=indent,eol,start  " Make delete in insert mode behave as expected.
-set fillchars+=fold:. " for folds
+set fillchars+=fold:.           " Make folds pretty.
 syntax on
 
 " Tab completion menu

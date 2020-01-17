@@ -96,11 +96,11 @@ alias fg='setopt monitor && fg'
 alias tags='ctags -R .'
 alias o='open'
 alias cpwd='pwd | xargs echo -n | pbcopy' # Copy the working dir to the clipboard
-alias tls='zsh-startify'
 alias b64='base64'
 alias server='echo "Server IP Address (copied to clipboard): `ip_en0`:8000/" && echo "`ip_en0`:8000/" | pbcopy && python3 -m http.server'
 alias rm="safe-rm"
 alias trash='trash -F'
+alias tl='tls'
 
 # END Convenience }}}
 
