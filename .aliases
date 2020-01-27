@@ -33,10 +33,10 @@ alias cdd='cd'
 
 # Updates {{{
 
-alias zplugin-update='zplugin self-update; zplugin update --all;'
+alias zinit-update='zinit self-update; zinit update --all;'
 alias vimup="nvim '+PlugUpdate' '+PlugUpgrade' '+CocUpdate' '+qall';"
 alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor;'
-alias update='upgrade_oh_my_zsh; rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\n1Password: $(op update)\n"; vimup; zplugin-update;'
+alias update='upgrade_oh_my_zsh; rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\n1Password: $(op update)\n"; vimup; zinit-update;'
 
 # END Updates }}}
 
@@ -100,9 +100,19 @@ alias b64='base64'
 alias server='echo "Server IP Address (copied to clipboard): `ip_en0`:8000/" && echo "`ip_en0`:8000/" | pbcopy && python3 -m http.server'
 alias rm="safe-rm"
 alias trash='trash -F'
-alias tl='tls'
 
 # END Convenience }}}
+
+# tmux {{{
+
+alias ta='tmux attach -t'
+alias tad='tmux attach -d -t'
+alias tkss='tmux kill-session -t'
+alias tksv='tmux kill-server'
+alias tl='tls'
+alias ts='tmux new-session -s'
+
+# }}}
 
 # Hashes {{{
 

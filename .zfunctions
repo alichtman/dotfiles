@@ -132,4 +132,17 @@ tm() {
 
 # END tmux }}}
 
+# school {{{
+
+cs421-assignment-fetch() {
+	git fetch release
+	if [ -z $1 ]; then
+		echo "No assignment name given."
+	else
+		git merge release/$1 -m "Merging release repository"
+	fi
+}
+
+# }}}
+
 # vim: set filetype=zsh foldmethod=marker:

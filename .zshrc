@@ -43,36 +43,34 @@ plugins=(
   fzf
 )
 
-source $HOME/.zplugin/bin/zplugin.zsh
-autoload -Uz _zplugin
-(( ${+_comps} )) && _comps[zplugin]=_zplugin
+source $HOME/.zinit/bin/zinit.zsh
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
 
 # oh-my-zsh plugins
-zplugin ice wait'!'
-zplugin snippet OMZ::lib/git.zsh
-zplugin ice wait'!'
-zplugin snippet OMZ::plugins/git/git.plugin.zsh
-zplugin ice wait'!'
-zplugin snippet OMZ::plugins/fzf/fzf.plugin.zsh
-# zplugin ice wait'!'
-zplugin snippet OMZ::plugins/tmux/tmux.plugin.zsh
-zplugin ice wait'!'
-zplugin snippet OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh
+zinit ice wait'!'
+zinit snippet OMZ::lib/git.zsh
+zinit ice wait'!'
+zinit snippet OMZ::plugins/git/git.plugin.zsh
+zinit ice wait'!'
+zinit snippet OMZ::plugins/fzf/fzf.plugin.zsh
+zinit ice wait'!'
+zinit snippet OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh
 
 # GitHub Plugins
-zplugin ice wait'!'
-zplugin light zsh-users/zsh-autosuggestions
-zplugin ice wait'!'
-zplugin light zsh-users/zsh-completions
+zinit ice wait'!'
+zinit light zsh-users/zsh-autosuggestions
+zinit ice wait'!'
+zinit light zsh-users/zsh-completions
 
-zplugin ice wait'!' pick"zsh-interactive-cd.plugin.zsh"
-zplugin light "changyuheng/zsh-interactive-cd"
-zplugin ice wait'!' pick"z.sh"
-zplugin light "rupa/z"
-zplugin ice wait'!' pick"fz.plugin.zsh"
-zplugin light "changyuheng/fz"
-zplugin ice wait'!' pick"git-it-on.plugin.zsh"
-zplugin light peterhurford/git-it-on.zsh
+zinit ice wait'!' pick"zsh-interactive-cd.plugin.zsh"
+zinit light "changyuheng/zsh-interactive-cd"
+zinit ice wait'!' pick"z.sh"
+zinit light "rupa/z"
+zinit ice wait'!' pick"fz.plugin.zsh"
+zinit light "changyuheng/fz"
+zinit ice wait'!' pick"git-it-on.plugin.zsh"
+zinit light peterhurford/git-it-on.zsh
 
 # END Plugins }}}
 
@@ -85,7 +83,7 @@ FZ_SUBDIR_CMD=jj
 
 # ssh {{{
 
-zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab rpi_hydrogen rpi_krypton
+zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab rpi_hydrogen rpi_krypton cs421
 
 # END ssh }}}
 
@@ -142,6 +140,8 @@ autoload -U compinit && compinit
 
 # tmux {{{
 
+export ZSH_TMUX_AUTOSTART=false
+export ZSH_TMUX_AUTOSTART_ONCE=true
 export ZSH_TMUX_AUTOQUIT=false
 
 # END tmux }}}
