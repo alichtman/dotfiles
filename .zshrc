@@ -138,14 +138,6 @@ autoload -U compinit && compinit
 
 # END Completion }}}
 
-# tmux {{{
-
-export ZSH_TMUX_AUTOSTART=false
-export ZSH_TMUX_AUTOSTART_ONCE=true
-export ZSH_TMUX_AUTOQUIT=false
-
-# END tmux }}}
-
 # General zsh Behavior {{{
 
 set termguicolors
@@ -205,9 +197,6 @@ setopt RM_STAR_WAIT
 
 # Sourcing Other Files {{{
 
-source $ZSH/oh-my-zsh.sh
-
-# Load other dotfiles
 for file in ~/.{aliases,zfunctions,zprofile,secrets}; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
