@@ -10,8 +10,11 @@
 	name = Aaron Lichtman
 	email = aaronlichtman@gmail.com
 	signingkey = 22368077DE9F9903
+[pager]
+    diff = diff-so-fancy | less --tabs=1,5 -RFX
+    show = diff-so-fancy | less --tabs=1,5 -RFX
+	branch = false
 [core]
-	pager = diff-so-fancy | less --tabs=4 -RFX
 	excludesfile = /Users/alichtman/.gitignore_global
 	autocrlf = false
 [color]

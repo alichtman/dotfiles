@@ -36,7 +36,7 @@ alias cdd='cd'
 alias zinit-update='zinit self-update; zinit update --all;'
 alias vimup="nvim '+PlugUpdate' '+PlugUpgrade' '+CocUpdate' '+qall';"
 alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor;'
-alias update='upgrade_oh_my_zsh; rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\n1Password: $(op update)\n"; vimup; zinit-update;'
+alias update='upgrade_oh_my_zsh; rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\n1Password: $(op update)\n"; vimup; zinit-update; tldr -u;'
 
 # END Updates }}}
 
@@ -63,7 +63,7 @@ alias rcc='radix-calc --all'
 
 # git / GitHub {{{
 
-alias git=hub
+alias git='hub'
 alias pr='hub pull-request'
 alias changelog='github_changelog_generator'
 alias mdpreview='grip -b'
@@ -82,24 +82,27 @@ alias poetry-publish='poetry publish --user $PYPI_USERNAME --password $PYPI_PASS
 
 # Convenience {{{
 
-alias yank='pbcopy'
-alias help='tldr'
+alias b64='base64'
+alias batp='bat --paging=always'
+alias cal='calz'
+alias cloc='tokei'
+alias cpwd='pwd | xargs echo -n | pbcopy' # Copy the working dir to the clipboard
+alias fg='setopt monitor && fg'
+alias fuck='TF_ALIAS=fuck PYTHONIOENCODING=utf-8 thefuck $(fc -ln -1)'
+alias google="googler -l en"
+alias glow='glow -p'
 alias ip_en0='ipconfig getifaddr en0'
 alias ip_tun0='ipconfig getifaddr tun0'
-alias please='sudo $(fc -ln -1)' # Rerun last command with sudo
-alias google="googler -l en"
-alias fuck='eval $(TF_ALIAS=fuck PYTHONIOENCODING=utf-8 thefuck $(fc -ln -1))'
-alias batp='bat --paging=always'
+alias ncdu='ncdu --color dark'
 alias notes='fzf-notes'
-alias cal='calz'
-alias fg='setopt monitor && fg'
-alias tags='ctags -R .'
 alias o='open'
-alias cpwd='pwd | xargs echo -n | pbcopy' # Copy the working dir to the clipboard
-alias b64='base64'
-alias server='echo "Server IP Address (copied to clipboard): `ip_en0`:8000/" && echo "`ip_en0`:8000/" | pbcopy && python3 -m http.server'
+alias ping='prettyping --nolegend'
+alias please='sudo $(fc -ln -1)' # Rerun last command with sudo
 alias rm="safe-rm"
+alias server='echo "Server IP Address (copied to clipboard): `ip_en0`:8000/" && echo "`ip_en0`:8000/" | pbcopy && python3 -m http.server'
+alias tags='ctags -R .'
 alias trash='trash -F'
+alias yank='pbcopy'
 
 # END Convenience }}}
 
@@ -154,14 +157,15 @@ alias tmux.conf='vim ~/.tmux.conf'
 
 # r/unixporn {{{
 
-alias weather='curl "wttr.in/`CoreLocationCLI -format "%address" | tail -n+2 | head -n 1 | cut -d" " -f 2`?&u"'
-alias news='newsroom'
-alias matrix='unimatrix -s 93'
-alias pipes='pipes.sh -f 75 -t 3 -B'
-alias trip='yes "$(seq 231 -1 16)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
 alias mandelbrot='bash ~/bin/mandelbrot'
-alias spotify='spt'
+alias matrix='unimatrix -s 93'
+alias news='newsroom'
+alias pipes='pipes.sh -f 75 -t 3 -B'
 alias reddit='tuir'
+alias spotify='spt'
+alias trip='yes "$(seq 231 -1 16)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
+alias weather='curl "wttr.in/`CoreLocationCLI -format "%address" | tail -n+2 | head -n 1 | cut -d" " -f 2`?&u"'
+alias youtube='mpsyt'
 
 # END r/unixporn }}}
 
@@ -183,7 +187,6 @@ alias hide-desktop='defaults write com.apple.finder CreateDesktop false; killall
 alias reset-ignored-updates='sudo softwareupdate --reset-ignored'
 
 # Volume
-
 alias mute="osascript -e 'set volume output muted true'"
 alias unmute="osascript -e 'set volume output muted false'"
 

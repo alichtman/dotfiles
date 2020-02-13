@@ -6,10 +6,12 @@
 
 " TODO {{{
 
-" 2. Syntastic -> ALE
-" 3. Figure out how to properly configure C and C++ formatting.
+" 1. Figure out why termguicolors causes color words to be higlighted in their color.
+" 2. Syntastic -> ALE?
+" 3. Properly configure C and C++ formatting.
 " 4. Show leading spaces with the bullet character.
-" 5. Snippets
+" 5. Set up snippets
+" 6. Remove unused default colorschemes
 
 " END TODO }}}
 
@@ -76,6 +78,7 @@ Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-surround'
 
 " Git and GitHub
+Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-fugitive'
 Plug 'mattn/gist-vim'
 
@@ -219,11 +222,7 @@ colorscheme gruvbox-material
 
 " Make vertical splits prettier
 set fillchars+=vert:┃
-highlight VertSplit guifg=9
-
-" Make search highlighting tolerable
-" hi Search ctermbg=9
-" hi Search ctermfg=Red
+highlight VertSplit guifg=11
 
 " TODO: Fix this mess
 " let g:thematic#theme_name = 'gruvbox-material'
@@ -298,13 +297,13 @@ augroup VimStartupSequence
                 \ | endif
 augroup END
 
-" " After opening a file, set working dir to the same as that file so relative
-" " paths will work nicely. Pairs with the set of FZF mappings below to allow
-" " you to access files in the parent directories.
-" augroup SetWorkingDirForCurrentWindow
-    " autocmd!
-    " autocmd BufEnter * silent! lcd %:p:h
-" augroup END
+" After opening a file, set working dir to the same as that file so relative
+" paths will work nicely. Pairs with the set of FZF mappings below to allow
+" you to access files in the parent directories.
+augroup SetWorkingDirForCurrentWindow
+    autocmd!
+    autocmd BufEnter * silent! lcd %:p:h
+augroup END
 
 " Folding {{{
 
@@ -509,20 +508,35 @@ inoremap kj <Esc>
 " Save one chracter when saving, and only write if there are changes
 nnoremap <leader>w :up<CR>
 
+" Toggle Scratchpad
+nnoremap <leader>sp :ScratchPreview<CR>
+
 " FZF mappings
-" Little hack to make this play nicely with setWorkingDirForCurrentWindow
-nnoremap <C-p> :Files<CR>
-nnoremap <C-p>. :Files ..<CR>
+nnoremap <C-p> :GFiles<CR>
+nnoremap <C-p>. :Files<CR>
 nnoremap <C-p>.. :Files ../..<CR>
-nnoremap <C-p>... :Files ../../..<CR>
 nnoremap <leader>b :Buffers<CR>
+
+" Git Mappings
+
+" Open selection on github
+nnoremap go :.Gbrowse<CR>
+vnoremap go :'<,'>.Gbrowse<CR>
+
+" TODO: Further optimize?
+nnoremap ga :Gwrite<CR>
+nnoremap gc :Git commit --verbose<CR>
+nnoremap gl :Gpull<CR>
+nnoremap gmv :Gmove<CR>
+nnoremap gp :Gpush<CR>
+nnoremap gs :Gstatus<CR>
 
 " Close buffers and windows more easily
 nnoremap <leader>q :bdelete<cr>
 nnoremap <leader>q! :bdelete!<cr>
 
 " Quickly select the text you just pasted
-noremap gV `[v`]
+nnoremap gV `[v`]
 
 " Automatically jump to end of pasted text
 " noremap <silent> p p`]
@@ -872,6 +886,8 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 " Show just the filename
 let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#wordcount#filetypes = ['asciidoc', 'markdown', 'pandoc', 'rst', 'tex', 'text']
+let g:airline#extensions#wordcount#enabled = 1
 
 " END Airline }}}
 

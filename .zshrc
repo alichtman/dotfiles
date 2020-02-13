@@ -2,9 +2,9 @@
 # Aaron Lichtman (@alichtman)
 
 # TODO {{{
-
-# - Migrate .fzf.zsh out of $ZSH_CUSTOM and uninstall oh-my-zsh
-
+#
+# 1. Figure out how to get OMZ completions through zinit and remove OMZ
+#
 # }}}
 
 # Prompt {{{
@@ -38,11 +38,6 @@ export ZSH_STARTIFY_NON_INTERACTIVE=true
 
 # Plugins {{{
 
-plugins=(
-  ssh-agent
-  fzf
-)
-
 source $HOME/.zinit/bin/zinit.zsh
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
@@ -62,13 +57,14 @@ zinit ice wait'!'
 zinit light zsh-users/zsh-autosuggestions
 zinit ice wait'!'
 zinit light zsh-users/zsh-completions
-
+zinit ice wait'!'
+zinit light zsh-users/zsh-history-substring-search
 zinit ice wait'!' pick"zsh-interactive-cd.plugin.zsh"
-zinit light "changyuheng/zsh-interactive-cd"
+zinit light changyuheng/zsh-interactive-cd
 zinit ice wait'!' pick"z.sh"
-zinit light "rupa/z"
+zinit light rupa/z
 zinit ice wait'!' pick"fz.plugin.zsh"
-zinit light "changyuheng/fz"
+zinit light changyuheng/fz
 zinit ice wait'!' pick"git-it-on.plugin.zsh"
 zinit light peterhurford/git-it-on.zsh
 
@@ -197,6 +193,9 @@ setopt RM_STAR_WAIT
 
 # Sourcing Other Files {{{
 
+source $ZSH/oh-my-zsh.sh
+
+# Load other dotfiles
 for file in ~/.{aliases,zfunctions,zprofile,secrets}; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
