@@ -22,6 +22,7 @@ export XDG_CACHE_HOME="$HOME/.cache"
 # Directories and Files
 #######################
 
+export WAKATIME_HOME=$HOME/.config/wakatime
 export MPLCONFIGDIR=$HOME/.config/matplotlib
 export PYLINTRC=$HOME/.pylintrc
 # export PYTHONSTARTUP=$HOME/.config/pythonrc
