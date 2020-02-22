@@ -9,9 +9,8 @@
 " 1. Figure out why termguicolors causes color words to be higlighted in their color.
 " 2. Syntastic -> ALE?
 " 3. Properly configure C and C++ formatting.
-" 4. Show leading spaces with the bullet character.
-" 5. Set up snippets
-" 6. Remove unused default colorschemes
+" 4. Set up snippets
+" 5. Remove unused default colorschemes
 
 " END TODO }}}
 
@@ -58,6 +57,9 @@ Plug 'mhartington/oceanic-next'
 Plug 'ryanoasis/vim-devicons'
 Plug 'mhinz/vim-startify'
 Plug 'ntpeters/vim-better-whitespace'
+
+" Show leading spaces
+Plug 'Yggdroot/indentLine'
 
 " Tagbar
 Plug 'liuchengxu/vista.vim'
@@ -187,10 +189,8 @@ set colorcolumn=81,121   " 80 and 120 character guidelines
 " END Line breaking }}}
 
 " Show “invisible” characters
-" TODO: Show leading spaces.
 set list
 set listchars=tab:▸\ ,trail:·,eol:¬,nbsp:_
-" set listchars=tab:→\ ,trail:·,eol:¬,nbsp:_
 
 " Indentation {{{
 
@@ -223,6 +223,10 @@ colorscheme gruvbox-material
 " Make vertical splits prettier
 set fillchars+=vert:┃
 highlight VertSplit guifg=11
+
+" Show leading spaces
+let g:indentLine_leadingSpaceEnabled = 1
+let g:indentLine_leadingSpaceChar = '·'
 
 " TODO: Fix this mess
 " let g:thematic#theme_name = 'gruvbox-material'
@@ -741,6 +745,10 @@ command! -nargs=? Fold :call CocAction('fold', <f-args>)
 " END coc.nvim }}}
 
 " vim-jedi {{{
+
+" Fix lagginess with large python libraries
+" https://github.com/davidhalter/jedi-vim/issues/217
+let g:jedi#popup_on_dot = 0
 
 let g:jedi#documentation_command = "H"
 

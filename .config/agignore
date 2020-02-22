@@ -1,0 +1,5 @@
+.git
+.stack
+.rvm
+node_modules
+Library/Caches

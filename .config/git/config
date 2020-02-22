@@ -15,7 +15,7 @@
     show = diff-so-fancy | less --tabs=1,5 -RFX
 	branch = false
 [core]
-	excludesfile = /Users/alichtman/.gitignore_global
+	excludesfile = /Users/alichtman/.config/git/gitignore_global
 	autocrlf = false
 [color]
 	ui = true

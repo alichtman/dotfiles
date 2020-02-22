@@ -16,13 +16,17 @@ export VIMCONFIG='$HOME/.config/nvim'
 
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
 
 #######################
 # Directories and Files
 #######################
 
+export MPLCONFIGDIR=$HOME/.config/matplotlib
 export PYLINTRC=$HOME/.pylintrc
+# export PYTHONSTARTUP=$HOME/.config/pythonrc
 export ZSH=$HOME/.oh-my-zsh
+export _Z_DATA=$HOME/.cache/.z
 export GOPATH=$HOME/go
 export SPLUNK_HOME=/Applications/Splunk
 export PYENV_ROOT=/usr/local/var/pyenv
