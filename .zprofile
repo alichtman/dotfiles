@@ -57,7 +57,6 @@ pyenv global 3.8.0
 ######
 
 export PATH="$PATH:$HOME/.poetry/bin"
-export PATH="$PATH:/usr/local/opt/gnu-getopt/bin"
 export PATH="$PATH:/usr/local/opt/openssl/bin"
 export PATH="$PATH:/usr/local/opt/llvm/bin"
 export PATH="$PATH:$HOME/.cargo/bin"
@@ -74,6 +73,7 @@ export PATH="$PATH:/usr/local/Cellar/node/13.7.0/bin"
 export PATH="$PATH:$HOME/Library/Python/3.7/bin"
 export PATH="$PATH:$SPLUNK_HOME/bin"
 export PATH="$PATH:$GOPATH/bin"
+export PATH="/usr/local/opt/gnu-getopt/bin:$PATH"
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ]; then
@@ -87,3 +87,7 @@ export PATH="$HOME/.rvm/bin:$PATH"
 # Deduplicate entries in PATH
 typeset -U PATH
 export PATH
+
+# GNU-getopt
+
+export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"

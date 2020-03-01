@@ -21,6 +21,10 @@ if it is running then
 			# If the track doesn't have an artist set and is therefore most likely an advert rather than a song
 			"~ " & track_name
 		end if
+	else
+        "♫ None"
 	end if
+else
+    "♫ None"
 end if
 end tell

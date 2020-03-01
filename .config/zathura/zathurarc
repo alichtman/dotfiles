@@ -1,9 +1,11 @@
 set selection-clipboard clipboard
 
 set incremental-search true
-
-# zoom
-map <C-i> zoom in
-map <C-o> zoom out
+set window-height "800"
+set window-width "600"
+set adjust-open "width"
+set statusbar-home-tilde "true"
+set statusbar-h-padding "20"
+set statusbar-v-padding "20"
 
 " vim: set ft=conf ts=4 sw=4 tw=0 et : */

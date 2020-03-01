@@ -85,6 +85,7 @@ alias poetry-publish='poetry publish --user $PYPI_USERNAME --password $PYPI_PASS
 alias b64='base64'
 alias batp='bat --paging=always'
 alias cal='calz'
+alias calc='insect'
 alias cloc='tokei'
 alias cpwd='pwd | xargs echo -n | pbcopy' # Copy the working dir to the clipboard
 alias fg='setopt monitor && fg'

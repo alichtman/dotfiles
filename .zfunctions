@@ -81,6 +81,19 @@ function backup-dots() {
 	)
 }
 
+# Source most config files.
+function resource() {
+	for file in ~/.{aliases,zfunctions,zprofile,secrets}; do
+		if [[ -r "$file" ]] && [[ -f "$file" ]]; then
+			echo "Sourcing $file";
+			source "$file";
+		else
+			echo "Unable to source $file for some reason."
+		fi
+	done
+	unset file
+}
+
 # END Dotfiles }}}
 
 # Ranger {{{
