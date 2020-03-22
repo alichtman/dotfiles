@@ -50,7 +50,7 @@ export PATH="$OS_DEV_PREFIX/bin:$PATH"
 #######
 
 eval "$(pyenv init -)"
-pyenv global 3.8.0
+pyenv global 3.8.1
 
 ######
 # PATH
@@ -69,7 +69,7 @@ export PATH="$PATH:/usr/local/sbin"
 export PATH="$PATH:/usr/local/Cellar/john-jumbo/1.8.0/share/john"
 export PATH="$PATH:$HOME/.local/share/radare2/prefix/bin"
 export PATH="$PATH:/Applications/VMware Fusion.app/Contents/Library"
-export PATH="$PATH:/usr/local/Cellar/node/13.7.0/bin"
+export PATH="$PATH:/usr/local/Cellar/node/13.11.0/bin"
 export PATH="$PATH:$HOME/Library/Python/3.7/bin"
 export PATH="$PATH:$SPLUNK_HOME/bin"
 export PATH="$PATH:$GOPATH/bin"

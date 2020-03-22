@@ -1,4 +1,16 @@
+# Open document in fit-width mode by default
+set adjust-open "best-fit"
+
 set selection-clipboard clipboard
+
+set render-loading "false"
+set scroll-step 100
+set scroll-page-aware "true"
+
+# Fullscreen toggle
+unmap f
+map f toggle_fullscreen
+map [fullscreen] f toggle_fullscreen
 
 set incremental-search true
 set window-height "800"

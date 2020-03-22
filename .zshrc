@@ -85,6 +85,9 @@ zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab rpi_h
 
 # Completion {{{
 
+# Automatically refresh completions
+zstyle ':completion:*' rehash true
+
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
 
 # Use hyphen-insensitive completion. Case sensitive completion must be off. _ and - will be interchangeable.
@@ -156,7 +159,7 @@ setopt hist_ignore_space    # remove command lines from the history list when th
 export HIST_STAMPS="mm/dd/yyyy"
 export HISTSIZE=1000000000
 export SAVEHIST=$HISTSIZE
-export HISTFILE="$HOME/.zsh_history"
+export HISTFILE="$XDG_CACHE_HOME/.zsh_history"
 
 # END History }}}
 

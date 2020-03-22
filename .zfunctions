@@ -4,14 +4,21 @@
 
 # fzf Integrations {{{
 
-# fo [FUZZY PATTERN] - Open the selected file with the default editor
+# fov / fos [FUZZY PATTERN] - Open the selected file with nvim / subl
 #   - Bypass fuzzy finder if there's only one match (--select-1)
 #   - Exit if there's no match (--exit-0)
-function fo() {
+function fov() {
 	local files
 	IFS=$'\n' files=($(fzf --preview="cat {}" --preview-window=right:70%:wrap --query="$1" --multi --select-1 --exit-0))
-	[[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+	[[ -n "$files" ]] && ${EDITOR} "${files[@]}"
 }
+
+function fos() {
+	local files
+	IFS=$'\n' files=($(fzf --preview="cat {}" --preview-window=right:70%:wrap --query="$1" --multi --select-1 --exit-0))
+	[[ -n "$files" ]] && subl "${files[@]}"
+}
+
 
 # fman [FUZZY PATTERN] - Search man pages.
 function fman() {

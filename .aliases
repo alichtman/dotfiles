@@ -36,7 +36,8 @@ alias cdd='cd'
 alias zinit-update='zinit self-update; zinit update --all;'
 alias vimup="nvim '+PlugUpdate' '+PlugUpgrade' '+CocUpdate' '+qall';"
 alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor;'
-alias update='upgrade_oh_my_zsh; rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\n1Password: $(op update)\n"; vimup; zinit-update; tldr -u;'
+alias pipup='pip freeze — local | grep -v ‘^\-e’ | cut -d = -f 1 | xargs pip install -U'
+alias update='upgrade_oh_my_zsh; rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\n1Password: $(op update)\n"; vimup; zinit-update; tldr -u; npm update -g; pipup;'
 
 # END Updates }}}
 
@@ -79,6 +80,13 @@ alias pypibinary='python3 setup.py sdist'
 alias poetry-publish='poetry publish --user $PYPI_USERNAME --password $PYPI_PASSWORD'
 
 # END Pypi }}}
+
+# pyenv {{{
+
+# Used to install python in a way that makes YCM happy
+alias pyenv-install='env PYTHON_CONFIGURE_OPTS="--enable-framework CC=clang" pyenv install'
+
+# END pyenv }}}
 
 # Convenience {{{
 
@@ -151,7 +159,7 @@ alias :q="exit"
 # Configs {{{
 
 alias zshrc='vim ~/.zshrc'
-alias vimrc='vim ~/.vimrc'
+alias vimrc='vim ~/.config/nvim/init.vim'
 alias tmux.conf='vim ~/.tmux.conf'
 
 # END Configs }}}

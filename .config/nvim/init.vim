@@ -26,6 +26,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'vim-syntastic/syntastic'
 " Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'ycm-core/YouCompleteMe'
 Plug 'davidhalter/jedi-vim'
 
 " Snippets
@@ -215,6 +216,8 @@ set background=dark
 let g:gruvbox_contrast_dark='dark'
 colorscheme gruvbox-material
 
+
+"colorscheme solarized
 "colorscheme snow
 "colorscheme gruvbox
 "colorscheme onedark
@@ -224,9 +227,14 @@ colorscheme gruvbox-material
 set fillchars+=vert:┃
 highlight VertSplit guifg=11
 
+" indentLine {{{
+
 " Show leading spaces
 let g:indentLine_leadingSpaceEnabled = 1
 let g:indentLine_leadingSpaceChar = '·'
+let g:indentLine_conceallevel = 1
+
+" END indentLine }}}
 
 " TODO: Fix this mess
 " let g:thematic#theme_name = 'gruvbox-material'
@@ -386,13 +394,13 @@ augroup NoPasteAfterLeavingInsertMode
 augroup END
 
 " tbh not sure if this should stay
-augroup coc-config
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setlocal formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
+" augroup coc-config
+  " autocmd!
+  " " Setup formatexpr specified filetype(s).
+  " autocmd FileType typescript,json setlocal formatexpr=CocAction('formatSelected')
+  " " Update signature help on jump placeholder
+  " autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+" augroup end
 
 " END AutoGroups- }}}
 
@@ -470,8 +478,8 @@ let mapleader = ","
 let maplocalleader = "-"
 
 " Quickly edit important configs
-nnoremap <leader>ev :drop ~/.vimrc<cr>
-nnoremap <leader>sv :source ~/.vimrc<cr>:AirlineRefresh<cr>
+nnoremap <leader>ev :drop ~/.config/nvim/init.vim<cr>
+nnoremap <leader>sv :source ~/.config/nvim/init.vim<cr>:AirlineRefresh<cr>
 nnoremap <leader>et :drop ~/.tmux.conf<cr>
 nnoremap <leader>ez :drop ~/.zshrc<cr>
 
@@ -951,6 +959,12 @@ set statusline+=%*
 " let g:ale_python_mypy_options='--ignore-missing-imports'
 
 " END ALE }}}
+
+" YouCompleteMe {{{
+
+" let g:ycm_path_to_python_interpreter = '/usr/local/var/pyenv/shims/python3'
+
+" END YouCompleteMe }}}
 
 " Python {{{
 
