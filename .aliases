@@ -160,7 +160,7 @@ alias :q="exit"
 
 alias zshrc='vim ~/.zshrc'
 alias vimrc='vim ~/.config/nvim/init.vim'
-alias tmux.conf='vim ~/.tmux.conf'
+alias tmux.conf='vim ~/.config/tmux/tmux.conf'
 
 # END Configs }}}
 
