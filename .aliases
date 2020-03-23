@@ -11,14 +11,21 @@
 
 # $ ls and Friends {{{
 
-alias l='lsd -1A --group-dirs first -I=.DS_Store'
-alias ls='lsd -1A --group-dirs first --prefix-indent -I=.DS_Store'
+if [ "$OS" = "Darwin" ]; then
+    alias l='lsd -1A --group-dirs first -I=.DS_Store'
+    alias ls='lsd -1A --group-dirs first --prefix-indent -I=.DS_Store'
+    alias tree='ls --tree -I=.DS_Store'
+elif [ "$OS" = "Linux" ]; then
+    alias ls='lsd -1A --group-dirs first'
+    alias tree='ls --tree'
+fi
+
 alias LS='ls'
 alias ll='lsd -1Al --group-dirs first'
-alias tree='ls --tree -I=.DS_Store'
-# git ls (until lsd incorporates git status)
-alias gls='LC_COLLATE=cs_CZ.ISO8859-2 colorls -1A --sd --gs'
-alias color_ll='LC_COLLATE=cs_CZ.ISO8859-2 colorls -l -A --sd --gs'
+
+# END $ ls and Friends }}}
+
+# Directory Traversal and Finding {{{
 
 alias fd="fd --hidden --exclude '.git'"
 
@@ -29,7 +36,7 @@ alias jj='zz'
 # Because I clearly can't fucking type
 alias cdd='cd'
 
-# END $ ls and Friends }}}
+# }}}
 
 # Updates {{{
 
@@ -95,23 +102,32 @@ alias batp='bat --paging=always'
 alias cal='calz'
 alias calc='insect'
 alias cloc='tokei'
-alias cpwd='pwd | xargs echo -n | pbcopy' # Copy the working dir to the clipboard
-alias fg='setopt monitor && fg'
+alias cpwd='pwd | xargs echo -n | yank' # Copy the working dir to the clipboard
 alias fuck='TF_ALIAS=fuck PYTHONIOENCODING=utf-8 thefuck $(fc -ln -1)'
 alias google="googler -l en"
 alias glow='glow -p'
-alias ip_en0='ipconfig getifaddr en0'
-alias ip_tun0='ipconfig getifaddr tun0'
+
+if [ "$OS" = "Darwin" ]; then
+    alias fg='setopt monitor && fg'
+    alias ip_en0='ipconfig getifaddr en0'
+    alias ip_tun0='ipconfig getifaddr tun0'
+fi
+
 alias ncdu='ncdu --color dark'
 alias notes='fzf-notes'
 alias o='open'
 alias ping='prettyping --nolegend'
 alias please='sudo $(fc -ln -1)' # Rerun last command with sudo
 alias rm="safe-rm"
-alias server='echo "Server IP Address (copied to clipboard): `ip_en0`:8000/" && echo "`ip_en0`:8000/" | pbcopy && python3 -m http.server'
+alias server='echo "Server IP Address (copied to clipboard): `ip_en0`:8000/" && echo "`ip_en0`:8000/" | yank && python3 -m http.server'
 alias tags='ctags -R .'
 alias trash='trash -F'
-alias yank='pbcopy'
+
+if [ "$OS" = "Darwin" ]; then
+    alias yank='pbcopy'
+elif [ "$OS" = "Linux" ]; then
+    alias yank='xsel -i'
+fi
 
 # END Convenience }}}
 
@@ -173,31 +189,34 @@ alias pipes='pipes.sh -f 75 -t 3 -B'
 alias reddit='tuir'
 alias spotify='spt'
 alias trip='yes "$(seq 231 -1 16)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
-alias weather='curl "wttr.in/`CoreLocationCLI -format "%address" | tail -n+2 | head -n 1 | cut -d" " -f 2`?&u"'
+alias weather='curl wttr.in'
 alias youtube='mpsyt'
 
 # END r/unixporn }}}
 
 # macOS Management {{{
+if [ "$OS" = "Darwin" ]; then
 
-# For murdering various things when they break
-alias kill-touchbar='sudo pkill "Touch Bar agent";sudo killall "ControlStrip";'
-alias kill-dock='killall Dock'
+    # For murdering various things when they break
+    alias kill-touchbar='sudo pkill "Touch Bar agent";sudo killall "ControlStrip";'
+    alias kill-dock='killall Dock'
 
-# Time Machine Optimization
-alias unthrottle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=0;'
-alias throttle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=1;'
+    # Time Machine Optimization
+    alias unthrottle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=0;'
+    alias throttle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=1;'
 
-# Desktop
-alias show-desktop='defaults write com.apple.finder CreateDesktop true; killall Finder'
-alias hide-desktop='defaults write com.apple.finder CreateDesktop false; killall Finder'
+    # Desktop
+    alias show-desktop='defaults write com.apple.finder CreateDesktop true; killall Finder'
+    alias hide-desktop='defaults write com.apple.finder CreateDesktop false; killall Finder'
 
-# Updates
-alias reset-ignored-updates='sudo softwareupdate --reset-ignored'
+    # Updates
+    alias reset-ignored-updates='sudo softwareupdate --reset-ignored'
 
-# Volume
-alias mute="osascript -e 'set volume output muted true'"
-alias unmute="osascript -e 'set volume output muted false'"
+    # Volume
+    alias mute="osascript -e 'set volume output muted true'"
+    alias unmute="osascript -e 'set volume output muted false'"
+
+fi
 
 # END macOS Management }}}
 
