@@ -2,8 +2,8 @@
 .config/nvim/.netrwhist
 .config/nvim/spell/en.utf-8.add
 .config/ranger/plugins/ranger_devicons
-.config/tmux/plugins
-.config/tmux/resurrect
+.tmux/plugins
+.tmux/resurrect
 .pypirc
 .ssh
 .vim

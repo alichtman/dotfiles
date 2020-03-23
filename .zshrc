@@ -208,9 +208,15 @@ unset file
 
 # Startup Tools {{{
 
-year-progress
-tls
+function execute_cmd_if_exists() {
+    if hash "$1" 2>/dev/null; then
+        "$1"
+    fi
+}
+
+execute_cmd_if_exists year-progress
+execute_cmd_if_exists tls
 
 # END Startup Tools }}}
 
-# vim: foldmethod=marker foldcolumn=1
+# vim: foldmethod=marker foldcolumn=1 et

@@ -71,6 +71,7 @@ function dots() {
 # backup-dots [COMMIT MESSAGE]
 function backup-dots() {
 	echo "Backing up..."
+	crontab -l > ~/.config/crontab
 	(
 	shallow-backup -no_splash -dotfiles -separate_dotfiles_repo;
 	cd "$HOME/shallow-backup/dotfiles/" || exit
@@ -153,9 +154,14 @@ function mk() {
 	mkdir "$1" && cd "$1" || exit;
 }
 
-# Copy file contents to clipboard
+# Copy file contents to clipboard.
 function copy() {
-	pbcopy < "$1"
+	OS=$(uname -s)
+	if [ "$OS" = "Darwin" ]; then
+		pbcopy < "$1"
+	elif [ "$OS" = "Linux" ]; then
+		xsel -i < "$1"
+	fi
 }
 
 # END Unix Shortcuts }}}

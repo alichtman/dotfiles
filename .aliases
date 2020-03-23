@@ -106,33 +106,38 @@ alias cpwd='pwd | xargs echo -n | yank' # Copy the working dir to the clipboard
 alias fuck='TF_ALIAS=fuck PYTHONIOENCODING=utf-8 thefuck $(fc -ln -1)'
 alias google="googler -l en"
 alias glow='glow -p'
-
-if [ "$OS" = "Darwin" ]; then
-    alias fg='setopt monitor && fg'
-    alias ip_en0='ipconfig getifaddr en0'
-    alias ip_tun0='ipconfig getifaddr tun0'
-fi
-
 alias ncdu='ncdu --color dark'
 alias notes='fzf-notes'
-alias o='open'
 alias ping='prettyping --nolegend'
 alias please='sudo $(fc -ln -1)' # Rerun last command with sudo
-alias rm="safe-rm"
-alias server='echo "Server IP Address (copied to clipboard): `ip_en0`:8000/" && echo "`ip_en0`:8000/" | yank && python3 -m http.server'
+alias public_ip='curl ifconfig.me 2>/dev/null'
+alias server='echo "Server IP Address copied to clipboard" && echo "`public_ip`:8000/" | yank && python3 -m http.server'
 alias tags='ctags -R .'
-alias trash='trash -F'
 
 if [ "$OS" = "Darwin" ]; then
     alias yank='pbcopy'
+    # This hack fixes some weird tmux + zsh bug
+    alias fg='setopt monitor && fg'
 elif [ "$OS" = "Linux" ]; then
     alias yank='xsel -i'
+    alias open='xdg-open'
 fi
 
 # END Convenience }}}
 
+# File Removal {{{
+
+alias trash='trash -F'
+
+if hash safe-rm; then
+    alias rm="safe-rm"
+fi
+
+# }}}
+
 # tmux {{{
 
+# alias tmux='tmux -f "$XDG_CONFIG_HOME"/tmux/tmux.conf'
 alias ta='tmux attach -t'
 alias tad='tmux attach -d -t'
 alias tkss='tmux kill-session -t'
@@ -176,7 +181,7 @@ alias :q="exit"
 
 alias zshrc='vim ~/.zshrc'
 alias vimrc='vim ~/.config/nvim/init.vim'
-alias tmux.conf='vim ~/.config/tmux/tmux.conf'
+alias tmux.conf='vim ~/.tmux/tmux.conf'
 
 # END Configs }}}
 
