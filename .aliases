@@ -116,10 +116,12 @@ alias tags='ctags -R .'
 
 if [ "$OS" = "Darwin" ]; then
     alias yank='pbcopy'
+    alias run='launch'
     # This hack fixes some weird tmux + zsh bug
     alias fg='setopt monitor && fg'
 elif [ "$OS" = "Linux" ]; then
     alias yank='xsel -i'
+    alias run='rofi -show run'
     alias open='xdg-open'
 fi
 
