@@ -24,6 +24,7 @@ export XDG_CACHE_HOME="$HOME/.cache"
 # Directories and Files
 #######################
 
+export GRIPHOME=$HOME/.config/grip
 export WAKATIME_HOME=$HOME/.config/wakatime
 export MPLCONFIGDIR=$HOME/.config/matplotlib
 export PYLINTRC=$HOME/.pylintrc

@@ -35,7 +35,7 @@
 	gpgsign = true
 	template = /Users/alichtman/.config/git/commit-template
 [merge]
-	tool = meld
+	tool = code
 [diff]
 	guitool = meld
 [pull]

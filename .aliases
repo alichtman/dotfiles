@@ -120,8 +120,8 @@ if [ "$OS" = "Darwin" ]; then
     # This hack fixes some weird tmux + zsh bug
     alias fg='setopt monitor && fg'
 elif [ "$OS" = "Linux" ]; then
-    alias yank='xsel -i'
     alias run='rofi -show run'
+    alias yank='xsel -ib'
     alias open='xdg-open'
 fi
 

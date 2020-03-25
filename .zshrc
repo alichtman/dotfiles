@@ -199,7 +199,7 @@ setopt RM_STAR_WAIT
 source $ZSH/oh-my-zsh.sh
 
 # Load other dotfiles
-for file in ~/.{aliases,zfunctions,zprofile,secrets}; do
+for file in ~/.{aliases,zfunctions,secrets}; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
 unset file
