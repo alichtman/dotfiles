@@ -75,11 +75,7 @@ function backup-dots() {
 	(
 	shallow-backup -no_splash -dotfiles -separate_dotfiles_repo;
 	cd "$HOME/shallow-backup/dotfiles/" || exit
-	git stash
-	git pull
-	git stash pop
 	git add .
-
 	# If no commit message is provided, open vim.
 	# Otherwise, commit with the provided message
 	commit_msg="$1"
@@ -87,6 +83,12 @@ function backup-dots() {
 		git commit --verbose
 	else
 		git commit -m "$commit_msg"
+	fi
+	git pull
+	if [ "$?" -ne 0 ]; then
+		echo "Merge conflict detected. Fix manually in subshell and Ctrl-D when done."
+		git status
+		$SHELL
 	fi
 
 	git push
