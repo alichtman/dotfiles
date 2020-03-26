@@ -95,6 +95,13 @@ function backup-dots() {
 	)
 }
 
+# Commit current dotfile changes, merge with any remote changes and
+# reinstall dotfiles to stay in sync with remote.
+function backup-and-update-dots() {
+	backup-dots
+	shallow-backup -reistall_dots
+}
+
 # Source most config files.
 function resource() {
 	for file in ~/.{aliases,zfunctions,zprofile,secrets}; do

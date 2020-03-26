@@ -6,5 +6,4 @@
 .tmux/resurrect
 .pypirc
 .ssh/*
-!.ssh/config
 .vim

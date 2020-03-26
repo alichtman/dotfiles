@@ -95,6 +95,13 @@ alias pyenv-install='env PYTHON_CONFIGURE_OPTS="--enable-framework CC=clang" pye
 
 # END pyenv }}}
 
+# Verbosity {{{
+
+alias cp="cp -iv"
+alias mv="mv -iv"
+
+# }}}
+
 # Convenience {{{
 
 alias b64='base64'
