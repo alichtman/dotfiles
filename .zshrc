@@ -79,7 +79,11 @@ FZ_SUBDIR_CMD=jj
 
 # ssh {{{
 
-zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab rpi_hydrogen rpi_krypton cs421
+if [ "$OS" = "Darwin" ]; then
+    zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab rpi_hydrogen rpi_krypton cs421
+elif [ "$OS" = "Linux" ]; then
+    zstyle :omz:plugins:ssh-agent identities alichtman-GitHub
+fi
 
 # END ssh }}}
 

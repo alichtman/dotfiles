@@ -1,7 +1,7 @@
 # .zprofile
 # Aaron Lichtman
 
-OS="$(uname -s)"
+export OS="$(uname -s)"
 
 #########
 # Editors
