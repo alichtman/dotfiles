@@ -62,6 +62,12 @@ alias vol='volatility --plugins=/Users/alichtman/volatility-plugins'
 
 # END Binary Analysis / RE / Forensics }}}
 
+# HackTheBox {{{
+
+alias htb="sudo openvpn ~/Desktop/alichtman.ovpn"
+
+# }}}
+
 # Base conversion {{{
 
 alias rc='radix-calc'

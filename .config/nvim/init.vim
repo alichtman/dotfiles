@@ -14,6 +14,9 @@
 
 " END TODO }}}
 
+let uname = substitute(system('uname'), '\n', '', '')
+" Example values: Linux, Darwin
+
 " Plugins {{{
 
 call plug#begin('~/.vim/plugged')
@@ -104,8 +107,10 @@ Plug 'mtth/scratch.vim'
 " Commenting
 Plug 'scrooloose/nerdcommenter'
 
-" TimeTracking
-Plug 'wakatime/vim-wakatime'
+if uname == 'Darwin'
+    " Time Tracking
+    Plug 'wakatime/vim-wakatime'
+endif
 
 " Undo
 Plug 'mbbill/undotree'
@@ -126,7 +131,14 @@ set mouse=nv                    " Use mouse for pane selection, resizing, and cu
 set nostartofline               " Don’t reset cursor to start of line when moving around.
 set title                       " Show the filename in the window titlebar
 set autoread                    " Autoread changed files
-set clipboard=unnamed           " Enable copying to macOS clipboard
+
+" Enable copying to system clipboard
+if uname == "Darwin"
+    set clipboard=unnamed
+elseif uname == "Linux"
+    set clipboard=unnamedplus
+endif
+
 set noshowmode                  " Don't show mode under statusline w/ mode
 set scrolloff=6                 " Minimal num of lines to keep above/below cursor
 set number                      " Enable line numbers
@@ -378,13 +390,12 @@ augroup END
 
 augroup MarkdownConcealing
     autocmd!
-    autocmd FileType markdown set conceallevel=0
+    autocmd FileType markdown,pandoc set conceallevel=0
 augroup END
 
 augroup SpellcheckAndWritingTools
     autocmd!
-    autocmd FileType markdown setlocal spell | call litecorrect#init()
-    autocmd FileType text setlocal spell | call litecorrect#init()
+    autocmd FileType markdown,text setlocal spell | call litecorrect#init()
     hi SpellBad cterm=underline ctermfg=red
 augroup END
 
@@ -651,7 +662,11 @@ set thesaurus+=~/.vim/thesaurus/mthesaur.txt
 " Heavily based on: https://github.com/neoclide/coc.nvim#example-vim-configuration
 
 " https://github.com/neoclide/coc.nvim/issues/856
-let g:coc_node_path = "/usr/local/bin/node"
+if uname == "Darwin"
+    let g:coc_node_path = "/usr/local/bin/node"
+elseif uname == "Linux"
+    let g:coc_node_path = "/usr/bin/node"
+endif
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -969,14 +984,25 @@ set statusline+=%*
 " Python {{{
 
 let python_highlight_all=1
-let g:python3_host_prog = '/usr/local/bin/python3'
-let g:python_host_prog = '/usr/local/bin/python2'
+
+if uname == "Darwin"
+    let g:python3_host_prog = '/usr/local/bin/python3'
+    let g:python_host_prog = '/usr/local/bin/python2'
+elseif uname == "Linux"
+    let g:python3_host_prog = '/usr/bin/python3'
+    let g:python_host_prog = '/usr/bin/python2'
+endif
 
 " END Python }}}
 
 " Gist {{{
 
 let g:gist_detect_filetype = 1
-let g:gist_clip_command = 'pbcopy'
+
+if uname == "Darwin"
+    let g:gist_clip_command = 'pbcopy'
+elseif uname == "Linux"
+    let g:gist_clip_command = 'xsel -ib'
+endif
 
 " END Gist }}}
