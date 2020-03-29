@@ -14,8 +14,9 @@
 
 " END TODO }}}
 
-let uname = substitute(system('uname'), '\n', '', '')
+" This variable determines if you're running nvim on macOS or Linux
 " Example values: Linux, Darwin
+let uname = substitute(system('uname'), '\n', '', '')
 
 " Plugins {{{
 
@@ -50,12 +51,13 @@ Plug 'junegunn/goyo.vim'
 Plug 'amix/vim-zenroom2'
 
 " Themes
-"Plug 'reedes/vim-thematic'
+Plug 'reedes/vim-thematic'
 Plug 'joshdick/onedark.vim'
-Plug 'morhetz/gruvbox'
+Plug 'drewtempelmeyer/palenight.vim'
 Plug 'sainnhe/gruvbox-material'
 Plug 'nightsense/snow'
 Plug 'mhartington/oceanic-next'
+Plug 'reedes/vim-colors-pencil'
 
 " General Appearance
 Plug 'ryanoasis/vim-devicons'
@@ -223,21 +225,56 @@ set autoindent          " copy indent from current line when starting a new line
 
 " Appearance {{{
 
+" Theme {{{
+
 set termguicolors
-set background=dark
 let g:gruvbox_contrast_dark='dark'
-colorscheme gruvbox-material
-
-
-"colorscheme solarized
-"colorscheme snow
-"colorscheme gruvbox
-"colorscheme onedark
-"colorscheme OceanicNext
+let g:palenight_terminal_italics=1
 
 " Make vertical splits prettier
 set fillchars+=vert:┃
 highlight VertSplit guifg=11
+
+" Default theme
+let g:thematic#theme_name = 'palenight'
+" let g:thematic#theme_name = 'gruvbox-material'
+
+" Default theme properties which may be overridden in thematic#themes
+let g:thematic#defaults = {
+\ 'airline-theme': 'onedark',
+\ 'background': 'dark',
+\ 'colorscheme': 'gruvbox-material'
+\ }
+
+let g:thematic#themes = {
+\ 'snow-dark': {
+\     'theme': 'snow',
+\     'airline-theme': 'snow_dark',
+\ },
+\ 'pencil_dark' : {
+\     'colorscheme': 'pencil',
+\     'airline-theme': 'badwolf',
+\ },
+\ 'pencil_light' : {
+\     'colorscheme': 'pencil',
+\     'background': 'light',
+\     'airline-theme': 'solarized',
+\  },
+\ 'gruvbox-material': {
+\     'airline-theme': 'onedark',
+\ },
+\ 'onedark': {
+\     'airline-theme': 'onedark'
+\ },
+\ 'OceanicNext': {
+\     'airline-theme': 'onedark'
+\ },
+\ 'palenight': {
+\     'airline-theme': 'palenight',
+\ },
+\ }
+
+" END Theme }}}
 
 " indentLine {{{
 
@@ -247,32 +284,6 @@ let g:indentLine_leadingSpaceChar = '·'
 let g:indentLine_conceallevel = 1
 
 " END indentLine }}}
-
-" TODO: Fix this mess
-" let g:thematic#theme_name = 'gruvbox-material'
-"
-" let g:thematic#defaults = {
-" \ 'airline-theme': 'onedark',
-" \ }
-"
-" " TODO: Resolve airline-theme change bug on source vimrc
-" let g:thematic#themes = {
-" \ 'gruvbox-material' : {
-" \              "airline-theme": 'onedark',
-" \ },
-" \ }
-"
-" " let g:thematic#themes = {
-" " \ 'snow'  : {},
-" " \ 'gruvbox' : {
-" " \              'airline-theme': 'onedark',
-" " \ },
-" " \ 'gruvbox-material' : {
-" " \              'airline-theme': 'onedark',
-" " \ },
-" " \ 'onedark' : {},
-" " \ 'OceanicNext' : {},
-" " \ }
 
 " Vim Dev Icons {{{
 
@@ -658,125 +669,6 @@ set thesaurus+=~/.vim/thesaurus/mthesaur.txt
 
 " END Writing }}}
 
-" coc.nvim {{{
-" Heavily based on: https://github.com/neoclide/coc.nvim#example-vim-configuration
-
-" https://github.com/neoclide/coc.nvim/issues/856
-if uname == "Darwin"
-    let g:coc_node_path = "/usr/local/bin/node"
-elseif uname == "Linux"
-    let g:coc_node_path = "/usr/bin/node"
-endif
-
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-
-" TODO: Use tab to trigger completion with support for snippets.
-" inoremap <silent><expr> <TAB>
-      " \ pumvisible() ? coc#_select_confirm() :
-      " \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-      " \ <SID>check_back_space() ? "\<TAB>" :
-      " \ coc#refresh()
-
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <M-space> to trigger completion.
-inoremap <silent><expr> <M-space> coc#refresh()
-
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-" Use <Tab> and <S-Tab> to navigate the completion list
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" TODO: Snippets {{{
-
-" " Use <C-l> to trigger snippet expand.
-" imap <C-l> <Plug>(coc-snippets-expand)
-"
-" " Use <C-j> to select text for visual placeholder of snippet.
-" vmap <C-j> <Plug>(coc-snippets-select)
-"
-" " Jump to next placeholder.
-" let g:coc_snippet_next = '<c-k>'
-"
-" " Jump to previous placeholder.
-" let g:coc_snippet_prev = '<c-j>'
-"
-" " Use <C-j> to both expand and jump (make expand higher priority.)
-" imap <C-j> <Plug>(coc-snippets-expand-jump)
-
-" END Snippets }}}
-
-" Use H to show documentation in preview window
-nnoremap <silent> H :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-" Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Mapping for rename current word
-nmap <leader>rn <Plug>(coc-rename)
-
-" Mapping for format selected region
-xmap <leader>f <Plug>(coc-format-selected)
-nmap <leader>f <Plug>(coc-format-selected)
-
-" Mapping for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-xmap <leader>a <Plug>(coc-codeaction-selected)
-nmap <leader>a <Plug>(coc-codeaction-selected)
-
-" Mapping for do codeAction of current line
-nmap <leader>ac <Plug>(coc-codeaction)
-" Fix autofix problem of current line
-nmap <leader>qf <Plug>(coc-fix-current)
-
-" Use `:Format` to format current buffer
-command! -nargs=0 Format :call CocAction('format')
-
-" Use `:Fold` to fold current buffer
-command! -nargs=? Fold :call CocAction('fold', <f-args>)
-
-" END coc.nvim }}}
-
-" vim-jedi {{{
-
-" Fix lagginess with large python libraries
-" https://github.com/davidhalter/jedi-vim/issues/217
-let g:jedi#popup_on_dot = 0
-
-let g:jedi#documentation_command = "H"
-
-" END vim-jedi }}}
-
 " TODO: Ultisnips {{{
 
 " https://github.com/SirVer/ultisnips/issues/1052#issuecomment-504719268
@@ -910,12 +802,10 @@ let g:show_spaces_that_precede_tabs=1
 
 " vim-airline {{{
 
-let g:airline_theme='onedark'
-" let g:airline_theme='gruvbox_material'
 let g:airline_powerline_fonts = 1
 " Enable the list of buffers
 let g:airline#extensions#tabline#enabled = 1
-" Show just the filename
+" Show just the filename in the tabline
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#wordcount#filetypes = ['asciidoc', 'markdown', 'pandoc', 'rst', 'tex', 'text']
 let g:airline#extensions#wordcount#enabled = 1
@@ -944,6 +834,8 @@ let g:bullets_enabled_file_types = [
             \]
 
 " END Bullets.vim }}}
+
+" Linting {{{
 
 " Syntastic {{{
 
@@ -975,11 +867,136 @@ set statusline+=%*
 
 " END ALE }}}
 
+" END Linting }}}
+
+" Completion {{{
+
+" coc.nvim {{{
+" Heavily based on: https://github.com/neoclide/coc.nvim#example-vim-configuration
+
+" https://github.com/neoclide/coc.nvim/issues/856
+if uname == "Darwin"
+    let g:coc_node_path = "/usr/local/bin/node"
+elseif uname == "Linux"
+    let g:coc_node_path = "/usr/bin/node"
+endif
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+" TODO: Use tab to trigger completion with support for snippets.
+" inoremap <silent><expr> <TAB>
+      " \ pumvisible() ? coc#_select_confirm() :
+      " \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      " \ <SID>check_back_space() ? "\<TAB>" :
+      " \ coc#refresh()
+
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <M-space> to trigger completion.
+inoremap <silent><expr> <M-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Use <Tab> and <S-Tab> to navigate the completion list
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" TODO: Snippets {{{
+
+" " Use <C-l> to trigger snippet expand.
+" imap <C-l> <Plug>(coc-snippets-expand)
+"
+" " Use <C-j> to select text for visual placeholder of snippet.
+" vmap <C-j> <Plug>(coc-snippets-select)
+"
+" " Jump to next placeholder.
+" let g:coc_snippet_next = '<c-k>'
+"
+" " Jump to previous placeholder.
+" let g:coc_snippet_prev = '<c-j>'
+"
+" " Use <C-j> to both expand and jump (make expand higher priority.)
+" imap <C-j> <Plug>(coc-snippets-expand-jump)
+
+" END Snippets }}}
+
+" Use H to show documentation in preview window
+nnoremap <silent> H :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Mapping for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Mapping for format selected region
+xmap <leader>f <Plug>(coc-format-selected)
+nmap <leader>f <Plug>(coc-format-selected)
+
+" Mapping for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+xmap <leader>a <Plug>(coc-codeaction-selected)
+nmap <leader>a <Plug>(coc-codeaction-selected)
+
+" Mapping for do codeAction of current line
+nmap <leader>ac <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>qf <Plug>(coc-fix-current)
+
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" Use `:Fold` to fold current buffer
+command! -nargs=? Fold :call CocAction('fold', <f-args>)
+
+" END coc.nvim }}}
+
 " YouCompleteMe {{{
 
 " let g:ycm_path_to_python_interpreter = '/usr/local/var/pyenv/shims/python3'
 
 " END YouCompleteMe }}}
+
+" vim-jedi {{{
+
+" Fix lagginess with large python libraries
+" https://github.com/davidhalter/jedi-vim/issues/217
+let g:jedi#popup_on_dot = 0
+
+let g:jedi#documentation_command = "H"
+
+" END vim-jedi }}}
+
+" END Completion }}}
 
 " Python {{{
 
