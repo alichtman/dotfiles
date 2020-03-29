@@ -4,10 +4,10 @@
 
 # fzf Integrations {{{
 
-# fov / fos [FUZZY PATTERN] - Open the selected file with nvim / subl
+# fo / fos [FUZZY PATTERN] - Open the selected file with $EDITOR / subl
 #   - Bypass fuzzy finder if there's only one match (--select-1)
 #   - Exit if there's no match (--exit-0)
-function fov() {
+function fo() {
 	local files
 	IFS=$'\n' files=($(fzf --preview="cat {}" --preview-window=right:70%:wrap --query="$1" --multi --select-1 --exit-0))
 	[[ -n "$files" ]] && ${EDITOR} "${files[@]}"
@@ -84,6 +84,10 @@ function backup-dots() {
 	else
 		git commit -m "$commit_msg"
 	fi
+	if [ "$?" -ne 0 ]; then
+	    echo "No commit made. Exiting..."
+	    exit
+	fi
 	git pull
 	if [ "$?" -ne 0 ]; then
 		echo "Merge conflict detected. Fix manually in subshell and Ctrl-D when done."
@@ -103,17 +107,23 @@ function backup-and-update-dots() {
 }
 
 # Source most config files.
-function resource() {
-	for file in ~/.{aliases,zfunctions,zprofile,secrets}; do
-		if [[ -r "$file" ]] && [[ -f "$file" ]]; then
-			echo "Sourcing $file";
-			source "$file";
-		else
-			echo "Unable to source $file for some reason."
-		fi
-	done
-	unset file
-}
+function resource() (
+    # The outer function definition with () makes this behave like nested python functions. https://stackoverflow.com/a/31316688/8740440
+    function _source_files () {
+	    for file in "$@"; do
+		    if [[ -r "$file" ]] && [[ -f "$file" ]]; then
+			    echo "Sourcing $file";
+			    source "$file";
+		    else
+			    echo "Unable to source $file for some reason."
+		    fi
+	    done
+	    unset file
+    }
+
+    _source_files $HOME/.{zprofile,secrets}
+    _source_files $XDG_CONFIG_HOME/zsh/.{aliases,zshrc,zfunctions}
+)
 
 # END Dotfiles }}}
 

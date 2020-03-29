@@ -194,8 +194,10 @@ alias :q="exit"
 
 # Configs {{{
 
-alias zshrc='vim ~/.zshrc'
-alias vimrc='vim ~/.config/nvim/init.vim'
+alias aliases='vim $XDG_CONFIG_HOME/zsh/.aliases'
+alias zfunctions='vim $XDG_CONFIG_HOME/zsh/.zfunctions'
+alias zshrc='vim $XDG_CONFIG_HOME/zsh/.zshrc'
+alias vimrc='vim $XDG_CONFIG_HOME/nvim/init.vim'
 alias tmux.conf='vim ~/.tmux/tmux.conf'
 
 # END Configs }}}

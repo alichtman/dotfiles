@@ -9,8 +9,6 @@ export OS="$(uname -s)"
 
 export EDITOR='nvim'
 export VISUAL='nvim'
-export VIMCONFIG='$HOME/.config/nvim'
-
 
 #####
 # XDG
@@ -20,20 +18,25 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 
-#######################
-# Directories and Files
-#######################
+############################
+# House Cleaning (~ cleanup)
+############################
 
-export GRIPHOME=$HOME/.config/grip
-export WAKATIME_HOME=$HOME/.config/wakatime
-export MPLCONFIGDIR=$HOME/.config/matplotlib
-export PYLINTRC=$HOME/.pylintrc
-export ZSH=$HOME/.oh-my-zsh
-export _Z_DATA=$HOME/.cache/.z
-export GOPATH=$HOME/go
+export ZDOTDIR=$XDG_CONFIG_HOME/zsh
+export GRIPHOME=$XDG_CONFIG_HOME/grip
+export WAKATIME_HOME=$XDG_CONFIG_HOME/wakatime
+export MPLCONFIGDIR=$XDG_CONFIG_HOME/matplotlib
+export _Z_DATA=$XDG_CACHE_HOME/.z
 export PYENV_ROOT=/usr/local/var/pyenv
-export LESSHISTFILE=$HOME/.cache/lesshst
-export NODE_REPL_HISTORY=$HOME/.cache/node_repl_history
+export LESSHISTFILE=$XDG_CACHE_HOME/lesshst
+export NODE_REPL_HISTORY=$XDG_CACHE_HOME/node_repl_history
+
+##############
+# Random Paths
+##############
+
+export GOPATH=$HOME/go
+export ZSH=$HOME/.oh-my-zsh
 
 ##############
 # gcc / OS-Dev
@@ -56,9 +59,9 @@ if hash pyenv; then
     pyenv global 3.8.1
 fi
 
-######
-# PATH
-######
+#############
+# PATH Config
+#############
 
 export PATH="$PATH:$HOME/.poetry/bin"
 export PATH="$PATH:/usr/local/opt/openssl/bin"
