@@ -47,11 +47,11 @@ Plug 'junegunn/fzf.vim'
 " Writing-related
 Plug 'reedes/vim-litecorrect'
 Plug 'szw/vim-dict'
-Plug 'junegunn/goyo.vim'
 Plug 'amix/vim-zenroom2'
 
 " Themes
 Plug 'reedes/vim-thematic'
+Plug 'lifepillar/vim-solarized8'
 Plug 'joshdick/onedark.vim'
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'sainnhe/gruvbox-material'
@@ -63,6 +63,10 @@ Plug 'reedes/vim-colors-pencil'
 Plug 'ryanoasis/vim-devicons'
 Plug 'mhinz/vim-startify'
 Plug 'ntpeters/vim-better-whitespace'
+
+"Focus
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
 
 " Show leading spaces
 Plug 'Yggdroot/indentLine'
@@ -237,6 +241,7 @@ highlight VertSplit guifg=11
 
 " Default theme
 let g:thematic#theme_name = 'palenight'
+let g:thematic#theme_name = 'onedark'
 " let g:thematic#theme_name = 'gruvbox-material'
 
 " Default theme properties which may be overridden in thematic#themes
@@ -247,30 +252,30 @@ let g:thematic#defaults = {
 \ }
 
 let g:thematic#themes = {
-\ 'snow-dark': {
-\     'theme': 'snow',
-\     'airline-theme': 'snow_dark',
-\ },
-\ 'pencil_dark' : {
-\     'colorscheme': 'pencil',
-\     'airline-theme': 'badwolf',
-\ },
-\ 'pencil_light' : {
-\     'colorscheme': 'pencil',
+\ 'light' : {
+\     'colorscheme': 'solarized8_high',
 \     'background': 'light',
 \     'airline-theme': 'solarized',
 \  },
-\ 'gruvbox-material': {
+\ 'dark': {
+\     'airline-theme': 'palenight',
+\ },
+\ 'gruvbox': {
 \     'airline-theme': 'onedark',
+\ },
+\ 'snow': {
+\     'theme': 'snow',
+\     'airline-theme': 'snow_dark',
+\ },
+\ 'pencil-dark' : {
+\     'colorscheme': 'pencil',
+\     'airline-theme': 'badwolf',
 \ },
 \ 'onedark': {
 \     'airline-theme': 'onedark'
 \ },
 \ 'OceanicNext': {
 \     'airline-theme': 'onedark'
-\ },
-\ 'palenight': {
-\     'airline-theme': 'palenight',
 \ },
 \ }
 
@@ -281,7 +286,7 @@ let g:thematic#themes = {
 " Show leading spaces
 let g:indentLine_leadingSpaceEnabled = 1
 let g:indentLine_leadingSpaceChar = '·'
-let g:indentLine_conceallevel = 1
+let g:indentLine_conceallevel = 0
 
 " END indentLine }}}
 
@@ -415,6 +420,12 @@ augroup NoPasteAfterLeavingInsertMode
     au InsertLeave * silent! set nopaste
 augroup END
 
+augroup GoyoConfig
+    autocmd!
+    autocmd User GoyoEnter Limelight0.2 | call <SID>goyo_enter()
+    autocmd User GoyoLeave Limelight! | call <SID>goyo_leave()
+augroup END
+
 " tbh not sure if this should stay
 " augroup coc-config
   " autocmd!
@@ -485,6 +496,28 @@ function! OpenMarkdownPreview() abort
   call system('open http://localhost:6419')
 endfunction
 
+" Goyo {{{
+
+function! s:goyo_enter()
+  let b:quitting = 0
+  let b:quitting_bang = 0
+  autocmd QuitPre <buffer> let b:quitting = 1
+  cabbrev <buffer> q! let b:quitting_bang = 1 <bar> q!
+endfunction
+
+function! s:goyo_leave()
+  " Quit Vim if this is the only remaining buffer
+  if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
+    if b:quitting_bang
+      qa!
+    else
+      qa
+    endif
+  endif
+endfunction
+
+" END Goyo }}}
+
 " https://github.com/stoeffel/.dotfiles/blob/master/vim/visual-at.vim
 function! ExecuteMacroOverVisualRange() abort
   echo "@".getcmdline()
@@ -502,8 +535,8 @@ let maplocalleader = "-"
 " Quickly edit important configs
 nnoremap <leader>ev :drop ~/.config/nvim/init.vim<cr>
 nnoremap <leader>sv :source ~/.config/nvim/init.vim<cr>:AirlineRefresh<cr>
-nnoremap <leader>et :drop ~/.tmux.conf<cr>
-nnoremap <leader>ez :drop ~/.zshrc<cr>
+nnoremap <leader>et :drop ~/.tmux/tmux.conf<cr>
+nnoremap <leader>ed :drop $XDG_CONFIG_HOME/zsh/<cr>
 
 " Make : commands easier
 nnoremap ; :
@@ -539,8 +572,11 @@ nnoremap K i<CR><Esc>
 inoremap jk <Esc>
 inoremap kj <Esc>
 
-" Save one chracter when saving, and only write if there are changes
+" Quickly save, only writing the file if there are changes
 nnoremap <leader>w :up<CR>
+
+" Write to file with sudo privileges on :w!!
+cmap w!! w !sudo tee % > /dev/null
 
 " Toggle Scratchpad
 nnoremap <leader>sp :ScratchPreview<CR>
@@ -556,14 +592,6 @@ nnoremap <leader>b :Buffers<CR>
 " Open selection on github
 nnoremap go :.Gbrowse<CR>
 vnoremap go :'<,'>.Gbrowse<CR>
-
-" TODO: Further optimize?
-nnoremap ga :Gwrite<CR>
-nnoremap gc :Git commit --verbose<CR>
-nnoremap gl :Gpull<CR>
-nnoremap gmv :Gmove<CR>
-nnoremap gp :Gpush<CR>
-nnoremap gs :Gstatus<CR>
 
 " Close buffers and windows more easily
 nnoremap <leader>q :bdelete<cr>
@@ -658,7 +686,7 @@ vnoremap <c-u> y:call setreg('', CycleCasing(@"), getregtype(''))<CR>gv""Pgv
 " Run macro over visual range with @REG
 xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
 
-" Remappings }}}
+" END Remappings }}}
 
 " Writing {{{
 

@@ -201,15 +201,13 @@ setopt RM_STAR_WAIT
 # Sourcing Other Files {{{
 
 source $ZSH/oh-my-zsh.sh
-# source ~/.zprofile
+source "$HOME/.secrets"
 
 # Load other dotfiles
 for file in $XDG_CONFIG_HOME/zsh/.{aliases,zfunctions}; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file"
 done
 unset file
-
-source "$HOME/.secrets"
 
 # END Sourcing Other Files }}}
 

@@ -42,8 +42,14 @@ export ZSH=$HOME/.oh-my-zsh
 # gcc / OS-Dev
 ##############
 
-export CC=/usr/local/bin/gcc-9
-export LD=/usr/local/bin/gcc-9
+if [ "$OS" = "Darwin" ]; then
+    export CC=/usr/local/bin/gcc-9
+    export LD=/usr/local/bin/gcc-9
+elif [ "$OS" = "Linux" ]; then
+    export CC=/usr/bin/gcc-9
+    export LD=/usr/bin/gcc-9
+fi
+
 
 export OS_DEV_PREFIX="/Users/alichtman/bin/i386elfgcc"
 export TARGET=i386-elf
