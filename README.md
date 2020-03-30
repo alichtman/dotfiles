@@ -1,6 +1,6 @@
 # Aaron's Dotfiles
 
-These are written for `macOS`, but they are `Linux` compatible for the most part. Automatically backed up with [`shallow-backup`](https://github.com/alichtman/shallow-backup).
+These are written for `macOS` with `Linux` compatibility in mind. Automatically backed up with [`shallow-backup`](https://github.com/alichtman/shallow-backup).
 
 ![Tmux Demo](img/tmux.png)
 ![Vim Demo](img/vim.png)
@@ -9,9 +9,13 @@ My default setup consists mainly of:
 
 - `git`
 - `tmux`
-- `vim`
+- `neovim`
 - `zsh`
 
-## zsh Config
+The `XDG Base Directory Specification` is followed as much as possible. 
 
-Instead of using the `$ZSH_CUSTOM` directory for custom functions, I wrote mine in `~/.zfunctions` and sourced it in my `~/.zshrc`. Works for me, but definitely not the way it's intended to be done.
+## Notes
+
+### `zsh` Config
+
+`~/.zprofile` must be in the `$HOME` directory, however, the rest of the `zsh` config files live in `~/.config/zsh/`.
