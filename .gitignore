@@ -8,3 +8,10 @@
 .pypirc
 .ssh/*
 .vim
+.config/ranger/plugins/__init__.py
+.config/ranger/plugins/__init__.pyo
+.config/ranger/plugins/devicons.py
+.config/ranger/plugins/devicons.pyo
+.config/ranger/plugins/devicons_linemode.py
+.config/ranger/plugins/devicons_linemode.pyo
+.config/ranger/plugins/ranger_devicons/
