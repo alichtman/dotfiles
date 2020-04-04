@@ -121,8 +121,8 @@ function resource() (
 	    unset file
     }
 
-    _source_files $HOME/.{zprofile,secrets}
-    _source_files $XDG_CONFIG_HOME/zsh/.{aliases,zshrc,zfunctions}
+    _source_files $HOME/.{secrets,zshenv}
+    _source_files $XDG_CONFIG_HOME/zsh/.{zprofile,aliases,zshrc,zfunctions}
 )
 
 # END Dotfiles }}}
@@ -185,6 +185,11 @@ function copy() {
 	elif [ "$OS" = "Linux" ]; then
 		xsel -i < "$1"
 	fi
+}
+
+# Pretty viewer for csv files
+function csvviewer() {
+    column -s, -t < "$1" | less -#2 -N -S
 }
 
 # END Unix Shortcuts }}}

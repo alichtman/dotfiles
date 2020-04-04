@@ -241,14 +241,13 @@ highlight VertSplit guifg=11
 
 " Default theme
 let g:thematic#theme_name = 'palenight'
-let g:thematic#theme_name = 'onedark'
+" let g:thematic#theme_name = 'onedark'
 " let g:thematic#theme_name = 'gruvbox-material'
 
 " Default theme properties which may be overridden in thematic#themes
 let g:thematic#defaults = {
 \ 'airline-theme': 'onedark',
 \ 'background': 'dark',
-\ 'colorscheme': 'gruvbox-material'
 \ }
 
 let g:thematic#themes = {
@@ -258,13 +257,15 @@ let g:thematic#themes = {
 \     'airline-theme': 'solarized',
 \  },
 \ 'dark': {
+\     'colorscheme': 'palenight',
 \     'airline-theme': 'palenight',
 \ },
 \ 'gruvbox': {
+\     'colorscheme': 'gruvbox-material',
 \     'airline-theme': 'onedark',
 \ },
 \ 'snow': {
-\     'theme': 'snow',
+\     'colorscheme': 'snow',
 \     'airline-theme': 'snow_dark',
 \ },
 \ 'pencil-dark' : {
@@ -272,10 +273,12 @@ let g:thematic#themes = {
 \     'airline-theme': 'badwolf',
 \ },
 \ 'onedark': {
-\     'airline-theme': 'onedark'
+\     'colorscheme': 'onedark',
+\     'airline-theme': 'onedark',
 \ },
 \ 'OceanicNext': {
-\     'airline-theme': 'onedark'
+\     'colorscheme': 'OceanicNext',
+\     'airline-theme': 'oceanicnext'
 \ },
 \ }
 

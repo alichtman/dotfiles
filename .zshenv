@@ -1,4 +1,4 @@
-# .zprofile
+# .zshenv
 # Aaron Lichtman
 
 export OS="$(uname -s)"
@@ -54,16 +54,6 @@ fi
 export OS_DEV_PREFIX="/Users/alichtman/bin/i386elfgcc"
 export TARGET=i386-elf
 export PATH="$OS_DEV_PREFIX/bin:$PATH"
-
-#######
-# pyenv
-#######
-
-# If pyenv is on PATH, load it and set the python interpreter version.
-if hash pyenv; then
-    eval "$(pyenv init -)"
-    pyenv global 3.8.1
-fi
 
 #############
 # PATH Config
