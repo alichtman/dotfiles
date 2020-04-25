@@ -123,7 +123,7 @@ alias ncdu='ncdu --color dark'
 alias notes='fzf-notes'
 alias ping='prettyping --nolegend'
 alias please='sudo $(fc -ln -1)' # Rerun last command with sudo
-alias public_ip='curl ifconfig.me 2>/dev/null'
+alias public_ip='ipconfig getifaddr en1'
 alias server='echo "Server IP Address copied to clipboard" && echo "`public_ip`:8000/" | yank && python3 -m http.server'
 alias tags='ctags -R .'
 

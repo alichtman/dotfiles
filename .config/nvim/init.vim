@@ -28,10 +28,13 @@ Plug 'mattn/webapi-vim'
 " Syntax Highlighting, Linting and Completion
 Plug 'sheerun/vim-polyglot'
 Plug 'vim-syntastic/syntastic'
-" Plug 'dense-analysis/ale'
+Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Plug 'ycm-core/YouCompleteMe'
 Plug 'davidhalter/jedi-vim'
+
+" Shell Commands in ENV
+Plug 'christoomey/vim-run-interactive'
 
 " Snippets
 " Plug 'SirVer/ultisnips'
@@ -51,7 +54,6 @@ Plug 'amix/vim-zenroom2'
 
 " Themes
 Plug 'reedes/vim-thematic'
-Plug 'lifepillar/vim-solarized8'
 Plug 'joshdick/onedark.vim'
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'sainnhe/gruvbox-material'
@@ -62,7 +64,6 @@ Plug 'reedes/vim-colors-pencil'
 " General Appearance
 Plug 'ryanoasis/vim-devicons'
 Plug 'mhinz/vim-startify'
-Plug 'ntpeters/vim-better-whitespace'
 
 "Focus
 Plug 'junegunn/goyo.vim'
@@ -113,10 +114,8 @@ Plug 'mtth/scratch.vim'
 " Commenting
 Plug 'scrooloose/nerdcommenter'
 
-if uname == 'Darwin'
-    " Time Tracking
-    Plug 'wakatime/vim-wakatime'
-endif
+" Time Tracking
+Plug 'wakatime/vim-wakatime'
 
 " Undo
 Plug 'mbbill/undotree'
@@ -240,9 +239,9 @@ set fillchars+=vert:┃
 highlight VertSplit guifg=11
 
 " Default theme
-let g:thematic#theme_name = 'palenight'
+" let g:thematic#theme_name = 'palenight'
 " let g:thematic#theme_name = 'onedark'
-" let g:thematic#theme_name = 'gruvbox-material'
+let g:thematic#theme_name = 'gruvbox-material'
 
 " Default theme properties which may be overridden in thematic#themes
 let g:thematic#defaults = {
@@ -251,14 +250,14 @@ let g:thematic#defaults = {
 \ }
 
 let g:thematic#themes = {
-\ 'light' : {
-\     'colorscheme': 'solarized8_high',
-\     'background': 'light',
-\     'airline-theme': 'solarized',
-\  },
 \ 'dark': {
 \     'colorscheme': 'palenight',
 \     'airline-theme': 'palenight',
+\ },
+\ 'light': {
+\     'colorscheme': 'gruvbox-material',
+\     'airline-theme': 'gruvbox_material',
+\     'background': 'light',
 \ },
 \ 'gruvbox': {
 \     'colorscheme': 'gruvbox-material',
@@ -529,6 +528,13 @@ endfunction
 
 " END Functions }}}
 
+" Abbreviations {{{
+
+" Insert timestamp
+iabbrev <expr> dts strftime("%a, %b %d, %Y -- %X")
+
+" END Abbreviations }}}
+
 " Remappings {{{
 
 " Set , as leader and - as localleader
@@ -540,12 +546,6 @@ nnoremap <leader>ev :drop ~/.config/nvim/init.vim<cr>
 nnoremap <leader>sv :source ~/.config/nvim/init.vim<cr>:AirlineRefresh<cr>
 nnoremap <leader>et :drop ~/.tmux/tmux.conf<cr>
 nnoremap <leader>ed :drop $XDG_CONFIG_HOME/zsh/<cr>
-
-" Make : commands easier
-nnoremap ; :
-
-" Insert timestamp
-iabbrev <expr> dts strftime("%a, %b %d, %Y -- %X")
 
 " Don't overwrite copy register when deleting with x or X
 nnoremap x "_x
@@ -581,6 +581,9 @@ nnoremap <leader>w :up<CR>
 " Write to file with sudo privileges on :w!!
 cmap w!! w !sudo tee % > /dev/null
 
+" Run shell command in ENV
+cmap !i RunInInteractiveShell<space>
+
 " Toggle Scratchpad
 nnoremap <leader>sp :ScratchPreview<CR>
 
@@ -604,8 +607,8 @@ nnoremap <leader>q! :bdelete!<cr>
 nnoremap gV `[v`]
 
 " Automatically jump to end of pasted text
-" noremap <silent> p p`]
-" nnoremap <silent> p p`]
+noremap <silent> p p`]
+nnoremap <silent> p p`]
 
 " Create vertical split for help
 cabbrev hv vert h
@@ -822,15 +825,6 @@ let g:EasyMotion_smartcase = 1
 
 " END vim-easymotion }}}
 
-" Better Whitespace {{{
-"
-let g:better_whitespace_enabled=1
-let g:strip_whitespace_on_save=1
-let g:better_whitespace_skip_empty_lines=1
-let g:show_spaces_that_precede_tabs=1
-
-" END Better Whitespace }}}
-
 " vim-airline {{{
 
 let g:airline_powerline_fonts = 1
@@ -884,17 +878,40 @@ set statusline+=%*
 
 " ALE {{{
 
-" " TODO: Dedup with better_whitespace
-" let g:ale_fixers = {
-" \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-" \}
-" let g:ale_linters = {
-" \   'python': ['flake8', 'mypy'],
-" \}
-"
-" let g:ale_fix_on_save = 1
+" Ripped from: https://github.com/ZachAttackMLR/dotfiles/blob/35cafb67c9ce1f10e10da77295791a0abda9ccc4/.config/nvim/init.vim#L256
+
+" Enabling both loclist and quickfix, and enabling opening the list in a vnew
+" let g:ale_set_loclist=1
+" let g:ale_set_quickfix=1
+" let g:ale_open_list = 1
+let g:ale_fix_on_save = 1
 " let g:ale_python_flake8_options='--ignore=E225,E402,E501'
 " let g:ale_python_mypy_options='--ignore-missing-imports'
+
+" " ALELinters for each language
+" let g:ale_linters = {
+" \     'c': ['clangtidy', 'cppcheck', 'gcc'],
+" \     'cpp': ['clangtidy', 'cppcheck', 'gcc'],
+" \     'css': ['prettier'],
+" \     'html': ['prettier'],
+" \     'java': ['checkstyle', 'javac'],
+" \     'javascript': ['prettier', 'eslint'],
+" \     'json': ['prettier'],
+" \     'markdown': ['prettier'],
+" \     'python': ['flake8', 'mypy'],
+" \     'yaml': ['prettier']
+" \}
+"
+" :ALEFix-ers for each language
+" let g:ale_fixers = {
+" \     '*': ['remove_trailing_lines', 'trim_whitespace'],
+" \     'java': ['google_java_format'],
+" \     'c': ['clang-format']
+" \}
+
+let g:ale_fixers = {
+\     '*': ['remove_trailing_lines', 'trim_whitespace']
+\}
 
 " END ALE }}}
 
