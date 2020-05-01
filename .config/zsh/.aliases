@@ -13,7 +13,7 @@
 
 if [ "$OS" = "Darwin" ]; then
     alias l='lsd -1A --group-dirs first -I=.DS_Store'
-    alias ls='lsd -1A --group-dirs first --prefix-indent -I=.DS_Store'
+    alias ls='lsd -1A --group-dirs first -I=.DS_Store'
     alias tree='ls --tree -I=.DS_Store'
 elif [ "$OS" = "Linux" ]; then
     alias ls='lsd -1A --group-dirs first'

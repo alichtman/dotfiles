@@ -1,0 +1,109 @@
+"""
+This file is executed when the Python interactive shell is started if
+$PYTHONSTARTUP is in your environment and points to this file. It's just
+regular Python commands, so do what you will. Your ~/.inputrc file can greatly
+complement this file.
+
+Modified from: https://gist.github.com/taavi223/1340876/7fcbec09a4f9dd4ee9bbafcfec5ce94c9decb8fb,
+which itself was modified from: https://github.com/sontek/dotfiles
+"""
+
+#######################
+# IMPORTS & CONSTANTS #
+#######################
+
+import os
+import sys
+
+##################
+# TAB COMPLETION #
+##################
+
+try:
+    import readline
+    readline.parse_and_bind("tab: complete")
+except ImportError:
+    pass
+
+#################
+# COLOR SUPPORT #
+#################
+
+class TermColors(dict):
+    """Gives easy access to ANSI color codes. Attempts to fall back to no color
+    for certain TERM values. (Mostly stolen from IPython.)"""
+
+    COLOR_TEMPLATES = (
+        ("Black"       , "0;30"),
+        ("Red"         , "0;31"),
+        ("Green"       , "0;32"),
+        ("Brown"       , "0;33"),
+        ("Blue"        , "0;34"),
+        ("Purple"      , "0;35"),
+        ("Cyan"        , "0;36"),
+        ("LightGray"   , "0;37"),
+        ("DarkGray"    , "1;30"),
+        ("LightRed"    , "1;31"),
+        ("LightGreen"  , "1;32"),
+        ("Yellow"      , "1;33"),
+        ("LightBlue"   , "1;34"),
+        ("LightPurple" , "1;35"),
+        ("LightCyan"   , "1;36"),
+        ("White"       , "1;37"),
+        ("Normal"      , "0"),
+    )
+
+    NoColor = ''
+    _base  = '\001\033[%sm\002'
+
+    def __init__(self):
+        if os.environ.get('TERM') in ('xterm-color', 'xterm-256color', 'linux',
+                                    'screen', 'screen-256color', 'screen-bce'):
+            self.update(dict([(k, self._base % v) for k,v in self.COLOR_TEMPLATES]))
+        else:
+            self.update(dict([(k, self.NoColor) for k,v in self.COLOR_TEMPLATES]))
+_c = TermColors()
+
+################################
+# PRETTY PRINT OUTPUT & ERRORS #
+################################
+
+# NOTE: there is a bug (at least on Mac OS X) that causes the following lines to
+# garble the command history whenever there are long lines. Try enabling them
+# and using the up/down arrows to cycle through your history.
+
+# Make the prompts colorful.
+sys.ps1 = "%s>>> %s" % (_c['LightGreen'], _c['Normal'])
+sys.ps2 = "%s... %s" % (_c['LightPurple'], _c['Normal'])
+
+# Enable pretty printing for STDOUT
+def my_displayhook(value):
+    if value is not None:
+        # TODO: What's the point of this anyway?
+        try:
+            import __builtin__
+            __builtin__._ = value
+        except ImportError:
+            __builtins__._ = value
+
+        import pprint
+        pprint.pprint(value)
+        del pprint
+sys.displayhook = my_displayhook
+
+# Make errors and tracebacks stand out a bit more.
+def my_excepthook(type, value, tb):
+    sys.stderr.write(_c['Red'])
+    import traceback
+    output = traceback.print_exception(type, value, tb)
+    del traceback
+    sys.stderr.write(_c['Normal'])
+
+    # NOTE: There is a bug (?) in Python 3, where a trailing color marker that's
+    # written to STDERR or STDOUT by itself does not color the subsequent lines.
+    # We work around this by manually calling ``flush`` afterwards.
+    sys.stderr.flush()
+sys.excepthook = my_excepthook
+
+
+# vim: et ft=python :

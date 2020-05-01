@@ -30,6 +30,7 @@ export _Z_DATA=$XDG_CACHE_HOME/.z
 export PYENV_ROOT=/usr/local/var/pyenv
 export LESSHISTFILE=$XDG_CACHE_HOME/lesshst
 export NODE_REPL_HISTORY=$XDG_CACHE_HOME/node_repl_history
+export PYTHONSTARTUP=$XDG_CONFIG_HOME/python/pythonrc
 
 ##############
 # Random Paths

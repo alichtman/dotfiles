@@ -83,7 +83,7 @@ Plug 'godlygeek/tabular'
 Plug 'dkarter/bullets.vim'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
-
+Plug 'ferrine/md-img-paste.vim'
 " Delimiters
 Plug 'Raimondi/delimitMate'
 
@@ -333,10 +333,10 @@ augroup VimStartupSequence
                 \ |   wincmd w
                 \ | endif
     " Automatically install missing plugins
-    autocmd VimEnter *
-                \   if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-                \ |   PlugInstall --sync | q
-                \ | endif
+    " autocmd VimEnter *
+                " \   if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+                " \ |   PlugInstall --sync | q
+                " \ | endif
 augroup END
 
 " After opening a file, set working dir to the same as that file so relative
@@ -409,6 +409,11 @@ augroup END
 augroup MarkdownConcealing
     autocmd!
     autocmd FileType markdown,pandoc set conceallevel=0
+augroup END
+
+augroup MarkdownImagePaste
+    autocmd!
+    autocmd FileType markdown,pandoc nmap <buffer><silent> <leader>p :call mdip#MarkdownClipboardImage()<CR>
 augroup END
 
 augroup SpellcheckAndWritingTools
@@ -712,9 +717,7 @@ set thesaurus+=~/.vim/thesaurus/mthesaur.txt
 
 " END Ultisnips }}}
 
-" Markdown {{{
-
-" Pandoc {{{
+" Markdown / Pandoc {{{
 
 " vim-pandoc {{{
 
@@ -732,9 +735,7 @@ let g:pandoc#syntax#codeblocks#embeds#langs = [ "python", "ruby", "c", "bash=sh"
 
 " END vim-pandoc-syntax }}}
 
-" END pandoc }}}
-
-" END Markdown }}}
+" END Markdown / Pandoc }}}
 
 " fzf {{{
 
