@@ -20,7 +20,7 @@ let uname = substitute(system('uname'), '\n', '', '')
 
 " Plugins {{{
 
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.local/share/nvim/plugged')
 
 " Dependency for gist-vim
 Plug 'mattn/webapi-vim'
@@ -704,7 +704,7 @@ xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
 " Note that this dictionary is purely for spelling correction and does not
 " allow you to look up definitions. That's why I have the vim-dict plugin.
 set dictionary+=/usr/share/dict/words
-set thesaurus+=~/.vim/thesaurus/mthesaur.txt
+set thesaurus+=~/.config/nvim/thesaurus/mthesaur.txt
 
 " END Writing }}}
 
