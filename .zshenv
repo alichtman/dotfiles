@@ -1,6 +1,13 @@
 # .zshenv
 # Aaron Lichtman
 
+# TODO {{{
+#
+# 1. Move .ctags to CONFIG: https://github.com/universal-ctags/ctags/pull/2386
+# 2. Figure out WAKATIME bug where home dir files are still created after launching sublime
+#
+# }}}
+
 export OS="$(uname -s)"
 
 #########
@@ -22,38 +29,76 @@ export XDG_CACHE_HOME="$HOME/.cache"
 # House Cleaning (~ cleanup)
 ############################
 
-export ZDOTDIR=$XDG_CONFIG_HOME/zsh
-export GRIPHOME=$XDG_CONFIG_HOME/grip
-export WAKATIME_HOME=$XDG_CONFIG_HOME/wakatime
-export MPLCONFIGDIR=$XDG_CONFIG_HOME/matplotlib
-export _Z_DATA=$XDG_CACHE_HOME/.z
-export PYENV_ROOT=/usr/local/var/pyenv
-export LESSHISTFILE=$XDG_CACHE_HOME/lesshst
-export NODE_REPL_HISTORY=$XDG_CACHE_HOME/node_repl_history
-export PYTHONSTARTUP=$XDG_CONFIG_HOME/python/pythonrc
-export PYLINTHOME=$XDG_CACHE_HOME/pylint.d
-export TMUX_PLUGIN_MANAGER_PATH=$XDG_CONFIG_HOME/tmux/plugins/
+export ELECTRUMDIR="$XDG_DATA_HOME"/electrum
+export GRIPHOME="$XDG_CONFIG_HOME"/grip
+export LESSHISTFILE="$XDG_CACHE_HOME"/lesshst
+export MPLCONFIGDIR="$XDG_CONFIG_HOME"/matplotlib
+export WAKATIME_HOME="$XDG_CONFIG_HOME"/wakatime
 
+# Atom
+export ATOM_HOME="$XDG_DATA_HOME"/atom
+
+# Android SDK
+export ANDROID_SDK_HOME="$XDG_CONFIG_HOME"/android
+export ADB_VENDOR_KEY="$XDG_CONFIG_HOME"/android
+
+# Docker
+export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
+
+# GPG
+export GNUPGHOME="$XDG_DATA_HOME"/gnupg
+
+# Go
+export GOPATH="$XDG_DATA_HOME"/go
+
+# Gradle
+export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
+
+# Python
+export PYENV_ROOT=/usr/local/var/pyenv
+export PYLINTHOME="$XDG_CACHE_HOME"/pylint.d
+export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/pythonrc
+
+# Jupyter / ipython
+export IPYTHONDIR="$XDG_CONFIG_HOME"/jupyter
+export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME"/jupyter
+
+# Rust / Cargo
+export CARGO_HOME="$XDG_DATA_HOME"/cargo
+export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME"/bundle
+export BUNDLE_USER_CACHE="$XDG_CACHE_HOME"/bundle
+export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME"/bundle
+export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
+
+# Ruby / Gem
+export GEM_HOME="$XDG_DATA_HOME"/gem
+export GEM_SPEC_CACHE="$XDG_CACHE_HOME"/gem
+
+# Stack
+export STACK_ROOT="$XDG_DATA_HOME"/stack
+
+# Node / npm
 # https://github.com/npm/npm/issues/6675#issuecomment-251049832
-export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
-export NPM_CONFIG_CACHE=$XDG_CACHE_HOME/npm
-export NPM_CONFIG_TMP=$XDG_RUNTIME_DIR/npm
+export NODE_REPL_HISTORY="$XDG_CACHE_HOME"/node_repl_history
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
+export NPM_CONFIG_CACHE="$XDG_CACHE_HOME"/npm
+export NPM_CONFIG_TMP="$XDG_RUNTIME_DIR"/npm
+
+# tmux / tpm
+export TMUX_PLUGIN_MANAGER_PATH="$XDG_CONFIG_HOME"/tmux/plugins/
+
+# zsh + tools
+export ZDOTDIR="$XDG_CONFIG_HOME"/zsh
+export _Z_DATA="$XDG_CACHE_HOME"/.z
 
 # zinit
 declare -A ZINIT
-ZINIT[HOME_DIR]=$ZDOTDIR/.zinit
-ZINIT[BIN_DIR]=$ZDOTDIR/.zinit/bin
-ZINIT[PLUGINS_DIR]=$ZDOTDIR/.zinit/plugins
-ZINIT[COMPLETIONS_DIR]=$ZDOTDIR/.zinit/completions
-ZINIT[SNIPPETS_DIR]=$ZDOTDIR/.zinit/snippets
-ZINIT[ZCOMPDUMP_PATH]=$XDG_CACHE_HOME/zcompdump/zcompdump-zinit
-
-##############
-# Random Paths
-##############
-
-export GOPATH=$HOME/go
-export ZSH=$HOME/.oh-my-zsh
+ZINIT[HOME_DIR]="$ZDOTDIR"/.zinit
+ZINIT[BIN_DIR]="$ZDOTDIR"/.zinit/bin
+ZINIT[PLUGINS_DIR]="$ZDOTDIR"/.zinit/plugins
+ZINIT[COMPLETIONS_DIR]="$ZDOTDIR"/.zinit/completions
+ZINIT[SNIPPETS_DIR]="$ZDOTDIR"/.zinit/snippets
+ZINIT[ZCOMPDUMP_PATH]="$XDG_CACHE_HOME"/zcompdump/zcompdump-zinit
 
 ##############
 # gcc / OS-Dev
@@ -79,7 +124,7 @@ export PATH="$OS_DEV_PREFIX/bin:$PATH"
 export PATH="$PATH:$HOME/.poetry/bin"
 export PATH="$PATH:/usr/local/opt/openssl/bin"
 export PATH="$PATH:/usr/local/opt/llvm/bin"
-export PATH="$PATH:$HOME/.cargo/bin"
+export PATH="$PATH:$CARGO_HOME/bin"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:/usr/local/bin"
 export PATH="$PATH:/sbin"

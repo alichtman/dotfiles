@@ -11,6 +11,7 @@
 " 3. Properly configure C and C++ formatting.
 " 4. Set up snippets
 " 5. Remove unused default colorschemes
+" 6. Map opening correct man page to H
 
 " END TODO }}}
 

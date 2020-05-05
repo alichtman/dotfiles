@@ -10,9 +10,8 @@ encrypt: false
 highlight: true
 indent_character: '|'
 journals:
-  default: /Users/alichtman/journals/journal.txt
-  tech: /Users/alichtman/journals/tech.txt
-  test: /Users/alichtman/journals/test.txt
+  default: /Users/alichtman/Documents/journals/journal.txt
+  test: /Users/alichtman/Documents/journals/test.txt
 linewrap: 79
 tagsymbols: '@'
 template: false

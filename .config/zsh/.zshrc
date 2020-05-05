@@ -46,7 +46,6 @@ zinit snippet OMZP::ssh-agent
 # GitHub Plugins
 
 # https://github.com/zdharma/zinit-configs/blob/a60ff64823778969ce2b66230fd8cfb1a957fe89/psprint/zshrc.zsh#L277
-# Fast-syntax-highlighting & autosuggestions
 zinit wait lucid for \
  silent atinit"ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay" \
     zdharma/fast-syntax-highlighting \
@@ -105,6 +104,8 @@ fi
 
 # Automatically refresh completions
 zstyle ':completion:*' rehash true
+# Highlight currently selected tab completion
+zstyle ':completion:*' menu select
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
 
@@ -193,6 +194,9 @@ export KEYTIMEOUT=05
 autoload -U edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd v edit-command-line
+
+# Shift+Tab to get reverse menu completion
+bindkey '^[[Z' reverse-menu-complete
 
 # END vim }}}
 

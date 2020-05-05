@@ -181,14 +181,11 @@ alias sha256='openssl dgst -sha256'
 
 # END Hashes }}}
 
-# Tasks and Habits {{{
+# Tasks {{{
 
 alias t='tb'
 alias tasks='tb'
 alias task='tb --task'
-alias h='habitctl'
-alias habits='habitctl log && echo "\nTODO:\n" && habitctl todo'
-alias habitedit='habitctl edith'
 
 # END Tasks and Habits }}}
 
@@ -206,12 +203,13 @@ alias :q="exit"
 
 # Configs {{{
 
-alias aliases='vim $XDG_CONFIG_HOME/zsh/.aliases'
-alias zfunctions='vim $XDG_CONFIG_HOME/zsh/.zfunctions'
-alias zshrc='vim $XDG_CONFIG_HOME/zsh/.zshrc'
-alias src-zshrc='source $XDG_CONFIG_HOME/zsh/.zshrc'
-alias vimrc='vim $XDG_CONFIG_HOME/nvim/init.vim'
-alias tmux.conf='vim ~/.tmux/tmux.conf'
+alias aliases="vim $XDG_CONFIG_HOME/zsh/.aliases"
+alias zfunctions="vim $XDG_CONFIG_HOME/zsh/.zfunctions"
+alias zshrc="vim $XDG_CONFIG_HOME/zsh/.zshrc"
+alias zshenv="vim $HOME/.zshenv"
+alias src-zshrc="source $XDG_CONFIG_HOME/zsh/.zshrc"
+alias vimrc="vim $XDG_CONFIG_HOME/nvim/init.vim"
+alias tmux.conf="vim ~/.tmux/tmux.conf"
 
 # END Configs }}}
 
