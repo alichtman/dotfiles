@@ -31,7 +31,22 @@ export PYENV_ROOT=/usr/local/var/pyenv
 export LESSHISTFILE=$XDG_CACHE_HOME/lesshst
 export NODE_REPL_HISTORY=$XDG_CACHE_HOME/node_repl_history
 export PYTHONSTARTUP=$XDG_CONFIG_HOME/python/pythonrc
+export PYLINTHOME=$XDG_CACHE_HOME/pylint.d
 export TMUX_PLUGIN_MANAGER_PATH=$XDG_CONFIG_HOME/tmux/plugins/
+
+# https://github.com/npm/npm/issues/6675#issuecomment-251049832
+export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
+export NPM_CONFIG_CACHE=$XDG_CACHE_HOME/npm
+export NPM_CONFIG_TMP=$XDG_RUNTIME_DIR/npm
+
+# zinit
+declare -A ZINIT
+ZINIT[HOME_DIR]=$ZDOTDIR/.zinit
+ZINIT[BIN_DIR]=$ZDOTDIR/.zinit/bin
+ZINIT[PLUGINS_DIR]=$ZDOTDIR/.zinit/plugins
+ZINIT[COMPLETIONS_DIR]=$ZDOTDIR/.zinit/completions
+ZINIT[SNIPPETS_DIR]=$ZDOTDIR/.zinit/snippets
+ZINIT[ZCOMPDUMP_PATH]=$XDG_CACHE_HOME/zcompdump/zcompdump-zinit
 
 ##############
 # Random Paths

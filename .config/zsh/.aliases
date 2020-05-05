@@ -40,11 +40,11 @@ alias cdd='cd'
 
 # Updates {{{
 
-alias zinit-update='zinit self-update; zinit update --all;'
+alias zinit-update='zinit delete --all; zinit self-update;' # Plugins and snippets will be installed on next zshrc source
 alias vimup="nvim '+PlugUpdate' '+PlugUpgrade' '+CocUpdate' '+qall';"
 alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor;'
 alias pipup='pip freeze — local | grep -v ‘^\-e’ | cut -d = -f 1 | xargs pip install -U'
-alias update='upgrade_oh_my_zsh; rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\n1Password: $(op update)\n"; vimup; zinit-update; tldr -u; npm update -g; pipup;'
+alias update='rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\n1Password: $(op update)\n"; vimup; zinit-update; tldr -u; npm update -g; pipup;'
 
 # END Updates }}}
 
@@ -67,6 +67,13 @@ alias vol='volatility --plugins=/Users/alichtman/volatility-plugins'
 alias htb="sudo openvpn ~/Desktop/alichtman.ovpn"
 
 # }}}
+
+# Home Cleanup {{{
+
+alias wget="wget --hsts-file $XDG_CACHE_HOME/wget-hsts"
+alias ncmpcpp="ncmpcpp ncmpcpp_directory=$XDG_CONFIG_HOME/ncmpcpp/"
+
+# END Home Cleanup }}}
 
 # Base conversion {{{
 
@@ -125,6 +132,11 @@ alias ping='prettyping --nolegend'
 alias please='sudo $(fc -ln -1)' # Rerun last command with sudo
 alias public_ip='ipconfig getifaddr en1'
 alias server='echo "Server IP Address copied to clipboard" && echo "`public_ip`:8000/" | yank && python3 -m http.server'
+
+# Make sudo use aliases
+# https://unix.stackexchange.com/a/148548
+alias sudo='sudo '
+
 alias tags='ctags -R .'
 
 if [ "$OS" = "Darwin" ]; then

@@ -3,8 +3,8 @@
 .config/nvim/spell/en.utf-8.add*
 .config/ranger/plugins/*
 .config/zsh/.zcompdump*
+.config/zsh/.zinit
 .config/tmux/plugins
 .config/tmux/resurrect
 .pypirc
 .ssh/*
-.vim

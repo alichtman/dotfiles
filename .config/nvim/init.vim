@@ -84,6 +84,7 @@ Plug 'dkarter/bullets.vim'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'ferrine/md-img-paste.vim'
+
 " Delimiters
 Plug 'Raimondi/delimitMate'
 
@@ -102,7 +103,7 @@ Plug 'psliwka/vim-smoothie'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-" RipGrep
+" Ripgrep
 Plug 'jremmen/vim-ripgrep'
 
 " Quick Jump
@@ -116,6 +117,9 @@ Plug 'scrooloose/nerdcommenter'
 
 " Time Tracking
 Plug 'wakatime/vim-wakatime'
+
+" Write to readonly file as root
+Plug 'lambdalisue/suda.vim'
 
 " Undo
 Plug 'mbbill/undotree'
@@ -583,9 +587,6 @@ inoremap kj <Esc>
 " Quickly save, only writing the file if there are changes
 nnoremap <leader>w :up<CR>
 
-" Write to file with sudo privileges on :w!!
-cmap w!! w !sudo tee % > /dev/null
-
 " Run shell command in ENV
 cmap !i RunInInteractiveShell<space>
 
@@ -1047,6 +1048,12 @@ let g:jedi#documentation_command = "H"
 
 " END Completion }}}
 
+" suda.vim {{{
+
+let g:suda_smart_edit = 1
+
+" END suda.vim }}}
+
 " Python {{{
 
 let python_highlight_all=1
@@ -1064,6 +1071,7 @@ endif
 " Gist {{{
 
 let g:gist_detect_filetype = 1
+let g:gist_token_file = $XDG_CACHE_HOME . '/gist-vim'
 
 if uname == "Darwin"
     let g:gist_clip_command = 'pbcopy'

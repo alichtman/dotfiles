@@ -1,12 +1,6 @@
 # .zshrc for macOS
 # Aaron Lichtman (@alichtman)
 
-# TODO {{{
-#
-# 1. Figure out how to get OMZ completions through zinit and remove OMZ
-#
-# }}}
-
 # Prompt {{{
 
 # Config in ~/.config/starship.toml
@@ -30,15 +24,12 @@ export HOMEBREW_NO_ANALYTICS=1
 export BAT_THEME="TwoDark"
 export NOTES=$HOME/Desktop/Development/notes
 
-# zsh-startify
-export ZSH_STARTIFY_NO_SPLASH=true
-export ZSH_STARTIFY_NON_INTERACTIVE=true
-
 # END Env Vars }}}
 
 # Plugins {{{
 
-source $HOME/.zinit/bin/zinit.zsh
+source "$ZDOTDIR/.zinit/bin/zinit.zsh"
+
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
@@ -46,29 +37,52 @@ autoload -Uz _zinit
 zinit ice wait'!'
 zinit snippet OMZ::lib/git.zsh
 zinit ice wait'!'
-zinit snippet OMZ::plugins/git/git.plugin.zsh
+zinit snippet OMZP::git
 zinit ice wait'!'
-zinit snippet OMZ::plugins/fzf/fzf.plugin.zsh
+zinit snippet OMZP::fzf
 zinit ice wait'!'
-zinit snippet OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh
+zinit snippet OMZP::ssh-agent
 
 # GitHub Plugins
-zinit ice wait'!'
-zinit light zsh-users/zsh-autosuggestions
-zinit ice wait'!'
-zinit light zsh-users/zsh-completions
-zinit ice wait'!'
-zinit light zsh-users/zsh-history-substring-search
-zinit ice wait'!' pick"zsh-interactive-cd.plugin.zsh"
-zinit light changyuheng/zsh-interactive-cd
-zinit ice wait'!' pick"z.sh"
-zinit light rupa/z
-zinit ice wait'!' pick"fz.plugin.zsh"
-zinit light changyuheng/fz
-zinit ice wait'!' pick"git-it-on.plugin.zsh"
-zinit light peterhurford/git-it-on.zsh
+
+# https://github.com/zdharma/zinit-configs/blob/a60ff64823778969ce2b66230fd8cfb1a957fe89/psprint/zshrc.zsh#L277
+# Fast-syntax-highlighting & autosuggestions
+zinit wait lucid for \
+ silent atinit"ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay" \
+    zdharma/fast-syntax-highlighting \
+ atload"!_zsh_autosuggest_start" \
+    zsh-users/zsh-autosuggestions \
+ blockf \
+    zsh-users/zsh-completions \
+ atload"!export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=yellow,fg=white,bold'" \
+    zsh-users/zsh-history-substring-search \
+ pick"zsh-interactive-cd.plugin.zsh" \
+    changyuheng/zsh-interactive-cd \
+ pick"z.sh" \
+    rupa/z \
+ pick"fz.plugin.zsh" \
+    changyuheng/fz \
+ pick"git-it-on.plugin.zsh" \
+    peterhurford/git-it-on.zsh
+
+# Install my custom completions
+zinit creinstall -q $ZDOTDIR/completions
 
 # END Plugins }}}
+
+# zsh-history-substring-search {{{
+
+setopt HIST_IGNORE_ALL_DUPS
+
+# Bind up and down arrow keys
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
+# Bind j and k for in vim mode
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
+
+# END zsh-history-substring-search }}}
 
 # z and fz {{{
 
@@ -137,13 +151,16 @@ bindkey -M isearch . self-insert
 
 # Load completions
 fpath=(/usr/local/share/zsh-completions $fpath)
-autoload -U compinit && compinit
+autoload -U compinit && compinit -d $XDG_CACHE_HOME/zcompdump/default
 
 # END Completion }}}
 
 # General zsh Behavior {{{
 
 set termguicolors
+
+# cd without needing "cd"
+setopt auto_cd
 
 # Fix $ git reset --soft HEAD^ error.
 unsetopt nomatch
@@ -169,8 +186,17 @@ export HISTFILE="$XDG_CACHE_HOME/.zsh_history"
 
 # vim {{{
 
-# Enable Ctrl-x-e to edit current command in vim
+# Reduce mode change delay to 0.05 seconds
+export KEYTIMEOUT=05
+
+# Enable ESC-v to edit current command in vim
 autoload -U edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd v edit-command-line
+
+# END vim }}}
+
+# Backgrounding and Unbackgrounding {{{
 
 # Use Ctrl-z swap in and out of vim (or any other process)
 # https://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
@@ -186,7 +212,7 @@ function ctrl-z-toggle () {
 zle -N ctrl-z-toggle
 bindkey '^Z' ctrl-z-toggle
 
-# END vim }}}
+# END Backgrounding and Unbackgrounding }}}
 
 # Disarm rm {{{
 
@@ -200,7 +226,6 @@ setopt RM_STAR_WAIT
 
 # Sourcing Other Files {{{
 
-source $ZSH/oh-my-zsh.sh
 source "$HOME/.secrets"
 
 # Load other dotfiles
