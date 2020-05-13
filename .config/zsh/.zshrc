@@ -1,6 +1,12 @@
 # .zshrc for macOS
 # Aaron Lichtman (@alichtman)
 
+# TODO {{{
+#
+# 1. Sort out vim bindings
+#
+# }}}
+
 # Prompt {{{
 
 # Config in ~/.config/starship.toml
@@ -42,6 +48,8 @@ zinit ice wait'!'
 zinit snippet OMZP::fzf
 zinit ice wait'!'
 zinit snippet OMZP::ssh-agent
+# zinit ice wait'!'
+# zinit snippet OMZP::vi-mode
 
 # GitHub Plugins
 
@@ -62,10 +70,12 @@ zinit wait lucid for \
  pick"fz.plugin.zsh" \
     changyuheng/fz \
  pick"git-it-on.plugin.zsh" \
-    peterhurford/git-it-on.zsh
+    peterhurford/git-it-on.zsh #\
+ # pick"zsh-vim-mode.plugin.zsh" \
+    # softmoth/zsh-vim-mode
 
 # Install my custom completions
-zinit creinstall -q $ZDOTDIR/completions
+zinit creinstall -Q $ZDOTDIR/completions
 
 # END Plugins }}}
 
@@ -106,6 +116,9 @@ fi
 zstyle ':completion:*' rehash true
 # Highlight currently selected tab completion
 zstyle ':completion:*' menu select
+zstyle ':completion:*' completer _complete _expand _ignored _approximate
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
+zstyle ':completion:*' group-name '' # group results by category
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
 
@@ -169,6 +182,9 @@ unsetopt nomatch
 # Append a trailing `/' to all directory names resulting from globbing
 setopt mark_dirs
 
+# Shift+Tab to get reverse menu completion
+bindkey '^[[Z' reverse-menu-complete
+
 # END General zsh Behavior }}}
 
 # History {{{
@@ -185,18 +201,25 @@ export HISTFILE="$XDG_CACHE_HOME/.zsh_history"
 
 # END History }}}
 
-# vim {{{
+# Vim Mode {{{
 
-# Reduce mode change delay to 0.05 seconds
-export KEYTIMEOUT=05
+bindkey -v
 
-# Enable ESC-v to edit current command in vim
+# Reduce mode change delay (in hundreths of a second)
+export KEYTIMEOUT=5
+
+# Enable ESC-V to edit current command in vim
 autoload -U edit-command-line
 zle -N edit-command-line
-bindkey -M vicmd v edit-command-line
+bindkey -M vicmd "^V" edit-command-line
 
-# Shift+Tab to get reverse menu completion
-bindkey '^[[Z' reverse-menu-complete
+# Hit jk to enter NORMAL mode. You basically have to hit them at the same time.
+bindkey -s jk \\e
+
+# TODO: Allow backspace over newline
+
+# TODO: BUG: Doesn't work with symbol changing for prompt
+# https://github.com/LukeSmithxyz/voidrice/blob/33e329c8cb44679c37054d1823ef487c2569fcdc/.config/zsh/.zshrc#L26-L56
 
 # END vim }}}
 

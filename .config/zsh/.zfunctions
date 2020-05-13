@@ -167,6 +167,12 @@ function help(){
 
 # Unix Shortcuts {{{
 
+# Searchable bash man pages
+# Usage: bashman -z
+function bashman() {
+    man bash | less -p "^       $1 ";
+}
+
 # tree command with "quick jump" ability
 function tre() {
 	command tre "$@" -e && source "/tmp/tre_aliases_$USER" 2>/dev/null;

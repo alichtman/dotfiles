@@ -28,7 +28,6 @@ Plug 'mattn/webapi-vim'
 
 " Syntax Highlighting, Linting and Completion
 Plug 'sheerun/vim-polyglot'
-Plug 'vim-syntastic/syntastic'
 Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Plug 'ycm-core/YouCompleteMe'
@@ -66,7 +65,7 @@ Plug 'reedes/vim-colors-pencil'
 Plug 'ryanoasis/vim-devicons'
 Plug 'mhinz/vim-startify'
 
-"Focus
+" Focus
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 
@@ -124,6 +123,9 @@ Plug 'lambdalisue/suda.vim'
 
 " Undo
 Plug 'mbbill/undotree'
+
+" Unix Tools
+Plug 'tpope/vim-eunuch'
 
 call plug#end()
 
@@ -246,7 +248,7 @@ highlight VertSplit guifg=11
 " Default theme
 " let g:thematic#theme_name = 'palenight'
 " let g:thematic#theme_name = 'onedark'
-let g:thematic#theme_name = 'gruvbox-material'
+let g:thematic#theme_name = 'gruvbox'
 
 " Default theme properties which may be overridden in thematic#themes
 let g:thematic#defaults = {
@@ -255,7 +257,7 @@ let g:thematic#defaults = {
 \ }
 
 let g:thematic#themes = {
-\ 'dark': {
+\ 'palenight': {
 \     'colorscheme': 'palenight',
 \     'airline-theme': 'palenight',
 \ },
@@ -271,10 +273,6 @@ let g:thematic#themes = {
 \ 'snow': {
 \     'colorscheme': 'snow',
 \     'airline-theme': 'snow_dark',
-\ },
-\ 'pencil-dark' : {
-\     'colorscheme': 'pencil',
-\     'airline-theme': 'badwolf',
 \ },
 \ 'onedark': {
 \     'colorscheme': 'onedark',
@@ -467,17 +465,6 @@ let l:modeline = printf("; vim: ft=nasm ts=%d sw=%d tw=%d et :",
   doautocmd BufRead
 endfunction
 
-" Rename current file (mirrors $ mv)
-function! RenameFile() abort
-  let old_name = expand('%')
-  let new_name = input('New file name: ', expand('%'), 'file')
-  if new_name != '' && new_name != old_name
-    exec ':saveas ' . new_name
-    exec ':!trash ' . old_name
-    redraw!
-  endif
-endfunction
-
 function! ToggleNerdTree() abort
     :NERDTreeToggle
     :AirlineRefresh
@@ -542,6 +529,9 @@ endfunction
 
 " Insert timestamp
 iabbrev <expr> dts strftime("%a, %b %d, %Y -- %X")
+
+" Spelling corrections
+iabbrev yb by
 
 " END Abbreviations }}}
 
@@ -837,6 +827,8 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#wordcount#filetypes = ['asciidoc', 'markdown', 'pandoc', 'rst', 'tex', 'text']
 let g:airline#extensions#wordcount#enabled = 1
+" Display ALE error info in the status bar
+let g:airline#extensions#ale#enabled = 1
 
 " END Airline }}}
 
@@ -863,47 +855,28 @@ let g:bullets_enabled_file_types = [
 
 " END Bullets.vim }}}
 
-" Linting {{{
-
-" Syntastic {{{
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 1
-let g:syntastic_python_python_exec = 'python3'
-let g:syntastic_python_pylint_exe = 'python3 -m pylint'
-
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-" END Syntastic }}}
-
 " ALE {{{
 
-" Ripped from: https://github.com/ZachAttackMLR/dotfiles/blob/35cafb67c9ce1f10e10da77295791a0abda9ccc4/.config/nvim/init.vim#L256
-
-" Enabling both loclist and quickfix, and enabling opening the list in a vnew
-" let g:ale_set_loclist=1
-" let g:ale_set_quickfix=1
-" let g:ale_open_list = 1
+" Disable loclist and enable quickfix. Open list when things are wrong.
+let g:ale_set_loclist=0
+let g:ale_set_quickfix=1
+let g:ale_open_list = 1
 let g:ale_fix_on_save = 1
-" let g:ale_python_flake8_options='--ignore=E225,E402,E501'
-" let g:ale_python_mypy_options='--ignore-missing-imports'
+let g:ale_python_flake8_options='--ignore=E117,E402,E501,W191,C0330'
 
-" " ALELinters for each language
-" let g:ale_linters = {
-" \     'c': ['clangtidy', 'cppcheck', 'gcc'],
-" \     'cpp': ['clangtidy', 'cppcheck', 'gcc'],
-" \     'css': ['prettier'],
-" \     'html': ['prettier'],
-" \     'java': ['checkstyle', 'javac'],
-" \     'javascript': ['prettier', 'eslint'],
-" \     'json': ['prettier'],
-" \     'markdown': ['prettier'],
-" \     'python': ['flake8', 'mypy'],
-" \     'yaml': ['prettier']
-" \}
+" ALELinters for each language
+let g:ale_linters = {
+\     'c': ['clangtidy', 'cppcheck', 'gcc'],
+\     'cpp': ['clangtidy', 'cppcheck', 'gcc'],
+\     'css': ['prettier'],
+\     'html': ['prettier'],
+\     'java': ['checkstyle', 'javac'],
+\     'javascript': ['prettier', 'eslint'],
+\     'json': ['prettier'],
+\     'markdown': ['prettier'],
+\     'python': ['flake8', 'mypy'],
+\     'yaml': ['prettier']
+\}
 "
 " :ALEFix-ers for each language
 " let g:ale_fixers = {
@@ -917,8 +890,6 @@ let g:ale_fixers = {
 \}
 
 " END ALE }}}
-
-" END Linting }}}
 
 " Completion {{{
 
@@ -956,9 +927,6 @@ function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-
-" Use <M-space> to trigger completion.
-inoremap <silent><expr> <M-space> coc#refresh()
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
@@ -1037,15 +1005,19 @@ command! -nargs=? Fold :call CocAction('fold', <f-args>)
 
 " END YouCompleteMe }}}
 
-" vim-jedi {{{
+" jedi-vim {{{
 
 " Fix lagginess with large python libraries
 " https://github.com/davidhalter/jedi-vim/issues/217
 let g:jedi#popup_on_dot = 0
 
+" Autocomplete imports after 'from module.name<space>
+" let g:jedi#smart_auto_mappings = 1
+
+" Shows docs for highlighted word
 let g:jedi#documentation_command = "H"
 
-" END vim-jedi }}}
+" END jedi-vim }}}
 
 " END Completion }}}
 
