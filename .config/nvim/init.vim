@@ -7,7 +7,7 @@
 " TODO {{{
 
 " 1. Figure out why termguicolors causes color words to be higlighted in their color.
-" 2. Syntastic -> ALE?
+" 2. Configure ALE
 " 3. Properly configure C and C++ formatting.
 " 4. Set up snippets
 " 5. Remove unused default colorschemes
@@ -306,6 +306,8 @@ let g:webdevicons_conceal_nerdtree_brackets = 0
 
 " Vista {{{
 
+" NOTE: Won't work for ctags, only the LSP executives
+" (https://github.com/liuchengxu/vista.vim#options)
 let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
 let g:vista#renderer#enable_icon = 1
 let g:vista_fzf_preview = ['right:50%']
