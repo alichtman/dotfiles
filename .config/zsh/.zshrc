@@ -259,7 +259,7 @@ setopt RM_STAR_WAIT
 
 # Sourcing Other Files {{{
 
-source "$HOME/.secrets"
+[ -f "$HOME/.secrets" ] && source "$HOME/.secrets"
 
 # Load other dotfiles
 for file in $XDG_CONFIG_HOME/zsh/.{aliases,zfunctions}; do

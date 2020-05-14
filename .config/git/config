@@ -9,7 +9,7 @@
 [user]
 	name = Aaron Lichtman
 	email = aaronlichtman@gmail.com
-	signingkey = 22368077DE9F9903
+	signingkey = D046D019DC745EDA
 [pager]
     diff = diff-so-fancy | less --tabs=1,5 -RFX
     show = diff-so-fancy | less --tabs=1,5 -RFX
@@ -44,3 +44,5 @@
     followTags = true
 [github]
 	user = alichtman
+[gpg]
+	program = gpg
