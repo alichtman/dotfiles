@@ -21,9 +21,9 @@ eval "$(starship init zsh)"
 # Show hidden files in search and ignore .git directory
 export FZF_DEFAULT_COMMAND='ag --hidden --path-to-ignore ~/.config/agignore -l -g ""'
 export FZF_DEFAULT_OPTS="--cycle"
-if [ "$OS" == "Darwin" ]; then
+if [ "$OS" = "Darwin" ]; then
     export FZF_BASE="/usr/local/bin/fzf"
-elif [ "$OS" == "Linux" ]; then
+elif [ "$OS" = "Linux" ]; then
     export FZF_BASE="/usr/bin/fzf"
 fi
 
