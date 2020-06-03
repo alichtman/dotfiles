@@ -26,8 +26,12 @@ call plug#begin('~/.local/share/nvim/plugged')
 " Dependency for gist-vim
 Plug 'mattn/webapi-vim'
 
-" Syntax Highlighting, Linting and Completion
+" Syntax Highlighting
 Plug 'sheerun/vim-polyglot'
+Plug 'kovetskiy/sxhkd-vim'
+Plug 'zinit-zsh/zinit-vim-syntax'
+
+" Linting and Completion
 Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Plug 'ycm-core/YouCompleteMe'

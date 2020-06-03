@@ -68,44 +68,6 @@ function dots() {
 	cat ~/.config/shallow-backup.conf | jq '.dotfiles' | jq -r '.[]' | fzf --bind "enter:execute(nvim ~/{})"
 }
 
-# backup-dots [COMMIT MESSAGE]
-function backup-dots() {
-	echo "Backing up..."
-	crontab -l > ~/.config/crontab
-	(
-	shallow-backup -no-splash -backup-dots -separate-dotfiles-repo;
-	cd "$HOME/shallow-backup/dotfiles/" || exit
-	git add .
-	# If no commit message is provided, open vim.
-	# Otherwise, commit with the provided message
-	commit_msg="$1"
-	if [ -z "$commit_msg" ] ; then
-		git commit --verbose
-	else
-		git commit -m "$commit_msg"
-	fi
-	if [ "$?" -ne 0 ]; then
-	    echo "No commit made. Exiting..."
-	    exit
-	fi
-	git pull
-	if [ "$?" -ne 0 ]; then
-		echo "Merge conflict detected. Fix manually in subshell and Ctrl-D when done."
-		git status
-		$SHELL
-	fi
-
-	git push
-	)
-}
-
-# Commit current dotfile changes, merge with any remote changes and
-# reinstall dotfiles to stay in sync with remote.
-function backup-and-update-dots() {
-	backup-dots
-	shallow-backup -reistall_dots
-}
-
 # Source most config files.
 function resource() (
     # The outer function definition with () makes this behave like nested python functions. https://stackoverflow.com/a/31316688/8740440

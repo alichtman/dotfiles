@@ -144,23 +144,17 @@ if [ "$OS" = "Darwin" ]; then
     alias run='launch'
     # This hack fixes some weird tmux + zsh bug
     alias fg='setopt monitor && fg'
+    alias trash='trash -F'
 elif [ "$OS" = "Linux" ]; then
     alias run='rofi -show run'
     alias yank='xsel -ib'
     alias open='xdg-open'
+    alias trash='trash-put'
 fi
+
+alias rm='trash'
 
 # END Convenience }}}
-
-# File Removal {{{
-
-alias trash='trash -F'
-
-if hash safe-rm; then
-    alias rm="safe-rm"
-fi
-
-# }}}
 
 # tmux {{{
 
@@ -181,11 +175,11 @@ alias sha256='openssl dgst -sha256'
 
 # END Hashes }}}
 
-# Tasks {{{
+# Taskwarrior {{{
 
-alias t='tb'
-alias tasks='tb'
-alias task='tb --task'
+alias t='task list'
+alias tasks='task next'
+alias task='task add'
 
 # END Tasks and Habits }}}
 
@@ -228,6 +222,7 @@ alias youtube='mpsyt'
 # END r/unixporn }}}
 
 # macOS Management {{{
+
 if [ "$OS" = "Darwin" ]; then
 
     # For murdering various things when they break
@@ -252,6 +247,14 @@ if [ "$OS" = "Darwin" ]; then
 fi
 
 # END macOS Management }}}
+
+# Linux Management {{{
+
+if [ "$OS" = "Darwin" ]; then
+    alias sxhkd='sxhkd >/dev/null 2>&1 &'
+fi
+
+# END Linux Management }}}
 
 # For an explanation of why the filetype is set to fish even though I use zsh,
 # read this: https://github.com/liuchengxu/vista.vim/issues/207. I really hate

@@ -54,6 +54,8 @@ zinit ice wait'!'
 zinit snippet OMZP::fzf
 zinit ice wait'!'
 zinit snippet OMZP::ssh-agent
+zinit ice wait'!'
+zinit snippet OMZP::colored-man-pages
 # zinit ice wait'!'
 # zinit snippet OMZP::vi-mode
 
@@ -65,7 +67,7 @@ zinit wait lucid for \
     zdharma/fast-syntax-highlighting \
  atload"!_zsh_autosuggest_start" \
     zsh-users/zsh-autosuggestions \
- blockf \
+ as"completion" \
     zsh-users/zsh-completions \
  atload"!export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=yellow,fg=white,bold'" \
     zsh-users/zsh-history-substring-search \
@@ -90,8 +92,11 @@ zinit creinstall -Q $ZDOTDIR/completions
 setopt HIST_IGNORE_ALL_DUPS
 
 # Bind up and down arrow keys
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
+
+# https://superuser.com/a/1296543
+# key dict is defined in /etc/zsh/zshrc
+bindkey "$key[Up]" history-substring-search-up
+bindkey "$key[Down]" history-substring-search-down
 
 # Bind j and k for in vim mode
 bindkey -M vicmd 'k' history-substring-search-up
@@ -111,7 +116,7 @@ FZ_SUBDIR_CMD=jj
 if [ "$OS" = "Darwin" ]; then
     zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab rpi_hydrogen rpi_krypton
 elif [ "$OS" = "Linux" ]; then
-    zstyle :omz:plugins:ssh-agent identities alichtman-GitHub
+    zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-MBP
 fi
 
 # END ssh }}}
@@ -248,8 +253,6 @@ bindkey '^Z' ctrl-z-toggle
 # END Backgrounding and Unbackgrounding }}}
 
 # Disarm rm {{{
-
-# rm aliased to safe-rm in ~/.aliases
 
 # Prompt to confirm rm DIR/*
 unsetopt RM_STAR_SILENT

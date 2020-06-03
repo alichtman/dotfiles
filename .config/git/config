@@ -15,7 +15,7 @@
     show = diff-so-fancy | less --tabs=1,5 -RFX
 	branch = false
 [core]
-	excludesfile = /Users/alichtman/.config/git/gitignore_global
+	excludesfile = ~/.config/git/gitignore_global
 	autocrlf = false
 [color]
 	ui = true
@@ -33,7 +33,7 @@
 	whitespace = red reverse
 [commit]
 	gpgsign = true
-	template = /Users/alichtman/.config/git/commit-template
+	template = ~/.config/git/commit-template
 [merge]
 	tool = code
 [diff]
