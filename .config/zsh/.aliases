@@ -42,9 +42,16 @@ alias cdd='cd'
 
 alias zinit-update='zinit delete --all; zinit self-update;' # Plugins and snippets will be installed on next zshrc source
 alias vimup="nvim '+PlugUpdate' '+PlugUpgrade' '+CocUpdate' '+qall';"
-alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor;'
-alias pipup='pip freeze — local | grep -v ‘^\-e’ | cut -d = -f 1 | xargs pip install -U'
-alias update='rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\n1Password: $(op update)\n"; vimup; zinit-update; tldr -u; npm update -g; pipup;'
+alias pipup="pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U"
+
+if [ "$OS" = "Darwin" ]; then
+    alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor;'
+    alias update='rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\n1Password: $(op update)\n"; vimup; zinit-update; tldr -u; npm update -g;'
+elif [ "$OS" = "Linux" ]; then
+    alias aptup='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
+    alias update='rustup update; cargo install-update -a; aptup; flatpak update -y; vimup; snap refresh; zinit-update; tldr -u; npm update -g;'
+fi
+
 
 # END Updates }}}
 
@@ -148,17 +155,25 @@ if [ "$OS" = "Darwin" ]; then
 elif [ "$OS" = "Linux" ]; then
     alias run='rofi -show run'
     alias yank='xsel -ib'
+    alias paste-img='xclip -selection clipboard -t image/png -o > '
     alias open='xdg-open'
     alias trash='trash-put'
+    alias reboot_to_bios='systemctl reboot --firmware-setup'
+    alias openRGB='(cd ~/open-source-software/OpenRGB && sudo ./OpenRGB)'
 fi
 
 alias rm='trash'
 
 # END Convenience }}}
 
+# Debian Packaging {{{
+
+alias dquilt="quilt --quiltrc=$XDG_CONFIG_HOME/.quiltrc-dpkg"
+
+# END Debian Packaging }}}
+
 # tmux {{{
 
-# alias tmux='tmux -f "$XDG_CONFIG_HOME"/tmux/tmux.conf'
 alias ta='tmux attach -t'
 alias tad='tmux attach -d -t'
 alias tkss='tmux kill-session -t'
@@ -179,7 +194,6 @@ alias sha256='openssl dgst -sha256'
 
 alias t='task list'
 alias tasks='task next'
-alias task='task add'
 
 # END Tasks and Habits }}}
 

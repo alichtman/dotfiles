@@ -17,6 +17,13 @@ export OS="$(uname -s)"
 export EDITOR='nvim'
 export VISUAL='nvim'
 
+########
+# Debian
+########
+
+export DEBEMAIL="aaronlichtman@gmail.com"
+export DEBFULLNAME="Aaron Lichtman"
+
 #####
 # XDG
 #####
@@ -37,6 +44,7 @@ export GRIPHOME="$XDG_CONFIG_HOME"/grip
 export LESSHISTFILE="$XDG_CACHE_HOME"/lesshst
 export MPLCONFIGDIR="$XDG_CONFIG_HOME"/matplotlib
 export WAKATIME_HOME="$XDG_CONFIG_HOME"/wakatime
+export WINEPREFIX="$XDG_DATA_HOME"/wineprefixes/default
 
 # Atom
 export ATOM_HOME="$XDG_DATA_HOME"/atom
@@ -111,6 +119,13 @@ ZINIT[PLUGINS_DIR]="$ZDOTDIR"/.zinit/plugins
 ZINIT[COMPLETIONS_DIR]="$ZDOTDIR"/.zinit/completions
 ZINIT[SNIPPETS_DIR]="$ZDOTDIR"/.zinit/snippets
 ZINIT[ZCOMPDUMP_PATH]="$XDG_CACHE_HOME"/zcompdump/zcompdump-zinit
+
+##############
+# Firefox Send
+##############
+
+export FFSEND_COPY
+export FFSEND_API=-
 
 ##############
 # gcc / OS-Dev

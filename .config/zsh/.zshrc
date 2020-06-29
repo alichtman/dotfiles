@@ -1,4 +1,4 @@
-# .zshrc for macOS
+# .zshrc for macOS and Linux
 # Aaron Lichtman (@alichtman)
 
 # TODO {{{
