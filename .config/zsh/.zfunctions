@@ -42,7 +42,7 @@ function fkill() {
 
 # macOS fuzzy app launcher
 function launch() {
-	open -a "`find /Applications -name '*app' -maxdepth 1 | cut -d'/' -f 3 | cut -d'.' -f 1 | fzf --query=$1`"
+	open -a "$(find /Applications /System/Applications/ /System/Applications/Utilities -name '*app' -maxdepth 1 -exec basename {} .app \; | fzf --query "$1")"
 }
 
 # END fzf integrations }}}
