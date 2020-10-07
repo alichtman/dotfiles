@@ -25,6 +25,13 @@ alias ll='lsd -1Al --group-dirs first'
 
 # END $ ls and Friends }}}
 
+# SSH {{{
+
+# I have no idea why the ssh config file isn't taking care of this but I don't care enough
+alias rpi-hydrogen='ssh pi@192.168.68.163'
+
+# END SSH }}}
+
 # Directory Traversal and Finding {{{
 
 alias fd="fd --hidden --exclude '.git'"

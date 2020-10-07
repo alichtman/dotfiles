@@ -146,6 +146,8 @@ fi
 # PATH Config
 #############
 
+# TODO: https://www.arp242.net/zshrc.html#easier-path
+
 export PATH="$PATH:$CARGO_HOME/bin"
 export PATH="$PATH:$GOPATH/bin"
 export PATH="$PATH:$HOME/.local/bin"

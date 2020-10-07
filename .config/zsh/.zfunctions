@@ -40,11 +40,6 @@ function fkill() {
     fi
 }
 
-# macOS fuzzy app launcher
-function launch() {
-	open -a "$(find /Applications /System/Applications/ /System/Applications/Utilities -name '*app' -maxdepth 1 -exec basename {} .app \; | fzf --query "$1")"
-}
-
 # END fzf integrations }}}
 
 # git {{{
@@ -172,17 +167,10 @@ function csvviewer() {
 
 # END Unix Shortcuts }}}
 
-# school {{{
-
-cs421-assignment-fetch() {
-	git fetch release
-	if [ -z $1 ]; then
-		echo "No assignment name given."
-	else
-		git merge release/$1 -m "Merging release repository"
-	fi
+# macOS fuzzy app launcher
+# This function breaks the syntax highlighting so it's at the end lmao
+function launch() {
+    open -a "$(find /Applications /System/Applications/ /System/Applications/Utilities -name '*app' -maxdepth 1 -exec basename {} .app \; | fzf --query "$1")"
 }
-
-# }}}
 
 # vim: set filetype=zsh foldmethod=marker:

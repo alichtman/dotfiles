@@ -120,7 +120,9 @@ Plug 'mtth/scratch.vim'
 Plug 'scrooloose/nerdcommenter'
 
 " Time Tracking
-Plug 'wakatime/vim-wakatime'
+" Disabled until https://github.com/wakatime/wakatime/issues/221 is resolved.
+" ONLY an issue on macOS, idk what to do to fix it.
+" Plug 'wakatime/vim-wakatime'
 
 " Write to readonly file as root
 Plug 'lambdalisue/suda.vim'
@@ -488,6 +490,16 @@ function! CycleCasing(str) abort
   endif
   return result
 endfunction
+
+function! ReplaceAppleQuotes() abort
+    silent! %s/”/"/g
+    silent! %s/“/"/g
+    silent! %s/’/'/g
+    silent! %s/‘/'/g
+    echo "Replaced Apple Quotes"
+endfunction
+
+command! ReplaceAppleQuotes call ReplaceAppleQuotes()
 
 " Open Markdown preview using grip
 " https://www.reddit.com/r/vim/comments/8asgjj/topnotch_vim_markdown_live_previews_with_no/

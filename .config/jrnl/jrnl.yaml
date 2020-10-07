@@ -10,9 +10,8 @@ encrypt: false
 highlight: true
 indent_character: '|'
 journals:
-  default: /Users/alichtman/Documents/journals/journal.txt
-  test: /Users/alichtman/Documents/journals/test.txt
-  oscp: /Users/alichtman/Documents/journals/oscp.txt
+  default: ~/Documents/journals/journal.txt
+  oscp: ~/Documents/journals/oscp.txt
 
 linewrap: 79
 tagsymbols: '@'
