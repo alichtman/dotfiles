@@ -9,6 +9,9 @@
 #
 #####################################################
 
+# NOTE: DO NOT WRAP SEMICOLONS IN DOUBLE QUOTES: https://github.com/liuchengxu/vista.vim/issues/207#issuecomment-682231513
+#       This bug drove me nuts, and caused vista.vim to crash. Just don't do it.
+
 # $ ls and Friends {{{
 
 if [ "$OS" = "Darwin" ]; then
@@ -48,8 +51,8 @@ alias cdd='cd'
 # Updates {{{
 
 alias zinit-update='zinit delete --all; zinit self-update;' # Plugins and snippets will be installed on next zshrc source
-alias vimup="nvim '+PlugUpdate' '+PlugUpgrade' '+CocUpdate' '+qall';"
-alias pipup="pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U"
+alias vimup='nvim "+PlugUpdate" "+PlugUpgrade" "+CocUpdate" "+qall";'
+alias pipup='pip list --outdated --format=freeze | grep -v "^\-e" | cut -d = -f 1  | xargs -n1 pip install -U'
 
 if [ "$OS" = "Darwin" ]; then
     alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor;'
@@ -75,12 +78,6 @@ alias objdumpd='objdump -x86-asm-syntax=intel -d' # Disassemble with Intel synta
 alias vol='volatility --plugins=/Users/alichtman/volatility-plugins'
 
 # END Binary Analysis / RE / Forensics }}}
-
-# HackTheBox {{{
-
-alias htb="sudo openvpn ~/Desktop/alichtman.ovpn"
-
-# }}}
 
 # Home Cleanup {{{
 
@@ -111,7 +108,7 @@ alias pypitestup='python3 setup.py sdist; twine upload --repository testpypi dis
 alias pip3test='pip3 install --index-url https://test.pypi.org/simple/'
 alias pypiup='python3 setup.py sdist; twine upload --repository pypi dist/*'
 alias pypibinary='python3 setup.py sdist'
-alias poetry-publish='poetry publish --user $PYPI_USERNAME --password $PYPI_PASSWORD'
+alias poetrypublish="poetry publish --user $PYPI_USERNAME --password $PYPI_PASSWORD"
 
 # END Pypi }}}
 
@@ -124,8 +121,8 @@ alias pyenv-install='env PYTHON_CONFIGURE_OPTS="--enable-framework CC=clang" pye
 
 # Verbosity {{{
 
-alias cp="cp -iv"
-alias mv="mv -iv"
+alias cp='cp -iv'
+alias mv='mv -iv'
 
 # }}}
 
@@ -142,10 +139,12 @@ alias google="googler -l en"
 alias glow='glow -p'
 alias ncdu='ncdu --color dark'
 alias notes='fzf-notes'
+alias mutt='neomutt'
 alias ping='prettyping --nolegend'
 alias please='sudo $(fc -ln -1)' # Rerun last command with sudo
 alias public_ip='ipconfig getifaddr en0'
-alias server='echo "Server IP Address copied to clipboard" && echo "`public_ip`:8000/" | yank && python3 -m http.server'
+alias server='echo "Server IP Address copied to clipboard" && echo "`public_ip`" | yank && sudo python3 -m http.server 80'
+alias mbsync="mbsync -c $XDG_CONFIG_HOME/isync/mbsyncrc"
 
 # Make sudo use aliases
 # https://unix.stackexchange.com/a/148548
@@ -207,7 +206,7 @@ alias tasks='task next'
 # Editors {{{
 
 alias vim='nvim'
-alias vimdiff="nvim -d"
+alias vimdiff='nvim -d'
 alias xcode='open -a Xcode'
 
 # vim habits
@@ -224,7 +223,7 @@ alias zshrc="vim $XDG_CONFIG_HOME/zsh/.zshrc"
 alias zshenv="vim $HOME/.zshenv"
 alias src-zshrc="source $XDG_CONFIG_HOME/zsh/.zshrc"
 alias vimrc="vim $XDG_CONFIG_HOME/nvim/init.vim"
-alias tmux.conf="vim ~/.tmux/tmux.conf"
+alias tmux.conf="vim $XDG_CONFIG_HOME/tmux/tmux.conf"
 
 # END Configs }}}
 
@@ -245,8 +244,7 @@ alias youtube='mpsyt'
 # macOS Management {{{
 
 if [ "$OS" = "Darwin" ]; then
-
-    # For murdering various things when they break
+    # Murder various things when they break
     alias kill-touchbar='sudo pkill "Touch Bar agent";sudo killall "ControlStrip";'
     alias kill-dock='killall Dock'
 
@@ -264,21 +262,14 @@ if [ "$OS" = "Darwin" ]; then
     # Volume
     alias mute="osascript -e 'set volume output muted true'"
     alias unmute="osascript -e 'set volume output muted false'"
-
 fi
 
 # END macOS Management }}}
 
 # Linux Management {{{
 
-if [ "$OS" = "Darwin" ]; then
+if [ "$OS" = "Linux" ]; then
     alias sxhkd='sxhkd >/dev/null 2>&1 &'
 fi
 
 # END Linux Management }}}
-
-# For an explanation of why the filetype is set to fish even though I use zsh,
-# read this: https://github.com/liuchengxu/vista.vim/issues/207. I really hate
-# computers sometimes.
-
-# vim: ft=fish :

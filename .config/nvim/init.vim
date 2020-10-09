@@ -48,7 +48,7 @@ Plug 'christoomey/vim-run-interactive'
 Plug 'scrooloose/nerdtree'
 
 " fzf
-Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 " Writing-related
@@ -71,7 +71,6 @@ Plug 'mhinz/vim-startify'
 
 " Focus
 Plug 'junegunn/goyo.vim'
-Plug 'junegunn/limelight.vim'
 
 " Show leading spaces
 Plug 'Yggdroot/indentLine'
@@ -120,9 +119,7 @@ Plug 'mtth/scratch.vim'
 Plug 'scrooloose/nerdcommenter'
 
 " Time Tracking
-" Disabled until https://github.com/wakatime/wakatime/issues/221 is resolved.
-" ONLY an issue on macOS, idk what to do to fix it.
-" Plug 'wakatime/vim-wakatime'
+Plug 'wakatime/vim-wakatime'
 
 " Write to readonly file as root
 Plug 'lambdalisue/suda.vim'
@@ -429,7 +426,7 @@ augroup END
 
 augroup SpellcheckAndWritingTools
     autocmd!
-    autocmd FileType markdown,text setlocal spell | call litecorrect#init()
+    autocmd FileType markdown,text,mail setlocal spell | call litecorrect#init()
     hi SpellBad cterm=underline ctermfg=red
 augroup END
 
@@ -440,8 +437,8 @@ augroup END
 
 augroup GoyoConfig
     autocmd!
-    autocmd User GoyoEnter Limelight0.2 | call <SID>goyo_enter()
-    autocmd User GoyoLeave Limelight! | call <SID>goyo_leave()
+    autocmd User GoyoEnter | call <SID>goyo_enter()
+    autocmd User GoyoLeave | call <SID>goyo_leave()
 augroup END
 
 " tbh not sure if this should stay

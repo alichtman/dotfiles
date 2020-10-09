@@ -119,9 +119,9 @@ FZ_SUBDIR_CMD=jj
 # ssh {{{
 
 if [ "$OS" = "Darwin" ]; then
-    zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab rpi-hydrogen rpi-krypton alichtman-Gitea
+    zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab rpi-hydrogen alichtman-Gitea
 elif [ "$OS" = "Linux" ]; then
-    zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-MBP alichtman-Gitea
+    zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab rpi-hydrogen alichtman-MBP alichtman-Gitea
 fi
 
 # END ssh }}}
