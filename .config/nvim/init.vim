@@ -49,6 +49,7 @@ Plug 'scrooloose/nerdtree'
 
 " fzf
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 
 " Writing-related
@@ -119,7 +120,7 @@ Plug 'mtth/scratch.vim'
 Plug 'scrooloose/nerdcommenter'
 
 " Time Tracking
-Plug 'wakatime/vim-wakatime'
+" Plug 'wakatime/vim-wakatime'
 
 " Write to readonly file as root
 Plug 'lambdalisue/suda.vim'

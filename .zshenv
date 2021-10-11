@@ -65,9 +65,6 @@ export GOPATH="$XDG_DATA_HOME"/go
 # Gradle
 export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 
-# Pass
-export PASSWORD_STORE_DIR="$XDG_DATA_HOME"/pass
-
 # Python
 export PYENV_ROOT=/usr/local/var/pyenv
 export PYLINTHOME="$XDG_CACHE_HOME"/pylint.d
@@ -85,16 +82,13 @@ export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME"/bundle
 export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
 
 # Ruby / Gem
-# if [ "$OS" = "Darwin" ]; then
-export GEM_HOME="$XDG_DATA_HOME"/gem
-export GEM_SPEC_CACHE="$XDG_CACHE_HOME"/gem
-# elif [ "$OS" = "Linux" ]; then
-    # unset GGEM_HOME="$XDG_DATA_HOME"/gemEM_HOME
-# fi
+if [ "$OS" = "Darwin" ]; then
+    export GEM_HOME="$XDG_DATA_HOME"/gem
+    export GEM_SPEC_CACHE="$XDG_CACHE_HOME"/gem
+elif [ "$OS" = "Linux" ]; then
+    unset GEM_HOME
+fi
 
-
-# notmuch
-export NOTMUCH_CONFIG="$XDG_CONFIG_HOME"/notmuch/notmuchrc
 
 # Stack
 export STACK_ROOT="$XDG_DATA_HOME"/stack
@@ -189,7 +183,7 @@ fi
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
+export PATH="$HOME/.rvm/bin:$PATH"
 
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
@@ -215,8 +209,7 @@ export RANGER_LOAD_DEFAULT_RC=FALSE
 ###############
 
 if [ "$OS" = "Linux" ]; then
-    pgrep sxhkd >/dev/null || (bash -c "sxhkd -r $XDG_CACHE_HOME/sxhkd.log &")
-    pgrep greenclip >/dev/null || (bash -c "greenclip daemon & > /dev/null 2>&1")
+    pgrep sxhkd >/dev/null || (bash -c "sxhkd &> /dev/null &")
 fi
 
 # vim: ts=4 sw=4 tw=0 et ft=zsh :
