@@ -1,3 +1,4 @@
 notebooks:
   default: ~/Desktop/Development/notes
-  scratchpad: /Users/alichtman/scratchpad
+  scratchpad: ~/scratchpad
+default_extension: md

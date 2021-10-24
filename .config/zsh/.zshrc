@@ -3,7 +3,6 @@
 
 # TODO {{{
 #
-#
 # 1. Sort out vim bindings
 #
 # }}}
@@ -47,17 +46,17 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
 # oh-my-zsh plugins
-zinit ice wait lucid
+zinit ice wait'!'
 zinit snippet OMZ::lib/git.zsh
-zinit ice wait lucid
+zinit ice wait'!'
 zinit snippet OMZP::git
-zinit ice wait lucid
+zinit ice wait'!'
 zinit snippet OMZP::fzf
-zinit ice wait lucid
+zinit ice wait'!'
 zinit snippet OMZP::ssh-agent
-zinit ice wait lucid
+zinit ice wait'!'
 zinit snippet OMZP::colored-man-pages
-# zinit ice wait lucid
+# zinit ice wait'!'
 # zinit snippet OMZP::vi-mode
 
 # GitHub Plugins
@@ -83,8 +82,7 @@ zinit wait lucid for \
  # pick"zsh-vim-mode.plugin.zsh" \
     # softmoth/zsh-vim-mode
 
-# Install custom completions
-zinit ice wait
+# Install my custom completions
 zinit creinstall -Q $ZDOTDIR/completions
 
 # END Plugins }}}
@@ -121,9 +119,9 @@ FZ_SUBDIR_CMD=jj
 # ssh {{{
 
 if [ "$OS" = "Darwin" ]; then
-    zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab rpi-hydrogen rpi-krypton alichtman-Gitea
+    zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab rpi-hydrogen alichtman-Gitea
 elif [ "$OS" = "Linux" ]; then
-    zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-MBP alichtman-Gitea
+    zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab alichtman-MBP alichtman-Gitea
 fi
 
 # END ssh }}}
@@ -183,6 +181,7 @@ bindkey -M isearch . self-insert
 
 # Load completions
 fpath=(/usr/local/share/zsh-completions $fpath)
+autoload -U compinit && compinit -d $XDG_CACHE_HOME/zcompdump/default
 
 # END Completion }}}
 

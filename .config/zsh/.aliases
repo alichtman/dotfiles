@@ -12,8 +12,6 @@
 # NOTE: DO NOT WRAP SEMICOLONS IN DOUBLE QUOTES: https://github.com/liuchengxu/vista.vim/issues/207#issuecomment-682231513
 #       This bug drove me nuts, and caused vista.vim to crash. Just don't do it.
 
-
-
 # $ ls and Friends {{{
 
 if [ "$OS" = "Darwin" ]; then
@@ -33,7 +31,7 @@ alias ll='lsd -1Al --group-dirs first'
 # SSH {{{
 
 # I have no idea why the ssh config file isn't taking care of this but I don't care enough
-alias rpi-hydrogen="ssh pi@192.168.68.131"
+alias rpi-hydrogen='ssh pi@192.168.68.163'
 
 # END SSH }}}
 
@@ -61,7 +59,7 @@ if [ "$OS" = "Darwin" ]; then
     alias update='rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\n1Password: $(op update)\n"; vimup; zinit-update; tldr -u; npm update -g;'
 elif [ "$OS" = "Linux" ]; then
     alias aptup='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
-    alias update='rustup update; cargo install-update -a; aptup; flatpak update -y; vimup; snap refresh; zinit-update; tldr -u; npm update -g;'
+    alias update='rustup update stable; aptup; flatpak update -y; vimup; snap refresh; zinit-update; tldr -u; npm update -g;'
 fi
 
 
@@ -80,12 +78,6 @@ alias objdumpd='objdump -x86-asm-syntax=intel -d' # Disassemble with Intel synta
 alias vol='volatility --plugins=/Users/alichtman/volatility-plugins'
 
 # END Binary Analysis / RE / Forensics }}}
-
-# HackTheBox {{{
-
-alias htb="sudo openvpn ~/Desktop/alichtman.ovpn"
-
-# }}}
 
 # Home Cleanup {{{
 
@@ -116,7 +108,7 @@ alias pypitestup='python3 setup.py sdist; twine upload --repository testpypi dis
 alias pip3test='pip3 install --index-url https://test.pypi.org/simple/'
 alias pypiup='python3 setup.py sdist; twine upload --repository pypi dist/*'
 alias pypibinary='python3 setup.py sdist'
-alias poetry-publish='poetry publish --user $PYPI_USERNAME --password $PYPI_PASSWORD'
+alias poetrypublish="poetry publish --user $PYPI_USERNAME --password $PYPI_PASSWORD"
 
 # END Pypi }}}
 
@@ -151,7 +143,9 @@ alias mutt='neomutt'
 alias ping='prettyping --nolegend'
 alias please='sudo $(fc -ln -1)' # Rerun last command with sudo
 alias public_ip='ipconfig getifaddr en0'
-alias server='echo "Server IP Address copied to clipboard" && echo "`public_ip`:8000/" | yank && python3 -m http.server'
+alias scratch='nvim ~/scratchpad/scratch'
+alias server='echo "Server IP Address copied to clipboard" && echo "`public_ip`" | yank && sudo python3 -m http.server 80'
+alias mbsync="mbsync -c $XDG_CONFIG_HOME/isync/mbsyncrc"
 
 # Make sudo use aliases
 # https://unix.stackexchange.com/a/148548
@@ -172,12 +166,18 @@ elif [ "$OS" = "Linux" ]; then
     alias open='xdg-open'
     alias trash='trash-put'
     alias reboot_to_bios='systemctl reboot --firmware-setup'
-    alias openRGB='(cd ~/open-source-software/OpenRGB && sudo ./OpenRGB)'
+    alias openRGB='(cd /opt/OpenRGB && sudo ./openrgb)'
 fi
 
 alias rm='trash'
 
 # END Convenience }}}
+
+# Habit Tracking {{{
+
+alias jrnl='dijo -c "track-up jrnl" && jrnl'
+
+# END Habit Tracking
 
 # Debian Packaging {{{
 
@@ -213,7 +213,7 @@ alias tasks='task next'
 # Editors {{{
 
 alias vim='nvim'
-alias vimdiff="nvim -d"
+alias vimdiff='nvim -d'
 alias xcode='open -a Xcode'
 
 # vim habits
@@ -230,7 +230,7 @@ alias zshrc="vim $XDG_CONFIG_HOME/zsh/.zshrc"
 alias zshenv="vim $HOME/.zshenv"
 alias src-zshrc="source $XDG_CONFIG_HOME/zsh/.zshrc"
 alias vimrc="vim $XDG_CONFIG_HOME/nvim/init.vim"
-alias tmux.conf="vim $XDG_CONFIG_HOME/.tmux/tmux.conf"
+alias tmux.conf="vim $XDG_CONFIG_HOME/tmux/tmux.conf"
 
 # END Configs }}}
 
@@ -251,7 +251,6 @@ alias youtube='mpsyt'
 # macOS Management {{{
 
 if [ "$OS" = "Darwin" ]; then
-
     # Murder various things when they break
     alias kill-touchbar='sudo pkill "Touch Bar agent";sudo killall "ControlStrip";'
     alias kill-dock='killall Dock'
@@ -270,7 +269,6 @@ if [ "$OS" = "Darwin" ]; then
     # Volume
     alias mute="osascript -e 'set volume output muted true'"
     alias unmute="osascript -e 'set volume output muted false'"
-
 fi
 
 # END macOS Management }}}
@@ -279,12 +277,7 @@ fi
 
 if [ "$OS" = "Linux" ]; then
     alias sxhkd='sxhkd >/dev/null 2>&1 &'
+    alias restart_pulseaudio='pulseaudio -k && pulseaudio -D'
 fi
 
 # END Linux Management }}}
-
-# For an explanation of why the filetype is set to fish even though I use zsh,
-# read this: https://github.com/liuchengxu/vista.vim/issues/207. I really hate
-# computers sometimes.
-
-# vim: ft=fish :

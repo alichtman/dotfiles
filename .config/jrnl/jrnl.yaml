@@ -12,7 +12,6 @@ indent_character: '|'
 journals:
   default: ~/Documents/journals/journal.txt
   oscp: ~/Documents/journals/oscp.txt
-
 linewrap: 79
 tagsymbols: '@'
 template: false

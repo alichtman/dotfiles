@@ -17,6 +17,7 @@
 [core]
 	excludesfile = ~/.config/git/gitignore_global
 	autocrlf = false
+	pager = git-split-diffs --color | less -RFX
 [color]
 	ui = true
 [color "diff-highlight"]

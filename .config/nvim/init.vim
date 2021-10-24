@@ -30,6 +30,7 @@ Plug 'mattn/webapi-vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'kovetskiy/sxhkd-vim'
 Plug 'zinit-zsh/zinit-vim-syntax'
+Plug 'wren/jrnl.vim'
 
 " Linting and Completion
 Plug 'dense-analysis/ale'
@@ -49,7 +50,6 @@ Plug 'scrooloose/nerdtree'
 
 " fzf
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 
 " Writing-related
@@ -58,6 +58,7 @@ Plug 'szw/vim-dict'
 Plug 'amix/vim-zenroom2'
 
 " Themes
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 Plug 'reedes/vim-thematic'
 Plug 'joshdick/onedark.vim'
 Plug 'drewtempelmeyer/palenight.vim'
@@ -65,6 +66,8 @@ Plug 'sainnhe/gruvbox-material'
 Plug 'nightsense/snow'
 Plug 'mhartington/oceanic-next'
 Plug 'reedes/vim-colors-pencil'
+Plug 'meain/hima-vim'
+Plug 'ghifarit53/daycula-vim' , {'branch' : 'main'}
 
 " General Appearance
 Plug 'ryanoasis/vim-devicons'
@@ -72,6 +75,7 @@ Plug 'mhinz/vim-startify'
 
 " Focus
 Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
 
 " Show leading spaces
 Plug 'Yggdroot/indentLine'
@@ -100,7 +104,7 @@ Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-fugitive'
 Plug 'mattn/gist-vim'
 
-" File Scrolling
+" Smooth Scrolling
 Plug 'psliwka/vim-smoothie'
 
 " Status Bar
@@ -239,11 +243,15 @@ set autoindent          " copy indent from current line when starting a new line
 
 " Appearance {{{
 
+" set guifont=SFMono\ Nerd\ Font\ 14
+
 " Theme {{{
 
 set termguicolors
 let g:gruvbox_contrast_dark='dark'
 let g:palenight_terminal_italics=1
+
+let g:daycula_current_word='bold'
 
 " Make vertical splits prettier
 set fillchars+=vert:┃
@@ -252,7 +260,9 @@ highlight VertSplit guifg=11
 " Default theme
 " let g:thematic#theme_name = 'palenight'
 " let g:thematic#theme_name = 'onedark'
-let g:thematic#theme_name = 'gruvbox'
+" let g:thematic#theme_name = 'daycula'
+let g:thematic#theme_name = 'tokyonight'
+" let g:thematic#theme_name = 'gruvbox'
 
 " Default theme properties which may be overridden in thematic#themes
 let g:thematic#defaults = {
@@ -265,10 +275,19 @@ let g:thematic#themes = {
 \     'colorscheme': 'palenight',
 \     'airline-theme': 'palenight',
 \ },
+\ 'tokyonight': {
+\     'colorscheme': 'tokyonight',
+\     'airline-theme': 'palenight',
+\ },
 \ 'light': {
 \     'colorscheme': 'gruvbox-material',
 \     'airline-theme': 'gruvbox_material',
 \     'background': 'light',
+\ },
+\ 'github': {
+\     'background': 'light',
+\     'colorscheme': 'hima',
+\     'airline-theme': 'palenight',
 \ },
 \ 'gruvbox': {
 \     'colorscheme': 'gruvbox-material',
@@ -285,6 +304,10 @@ let g:thematic#themes = {
 \ 'OceanicNext': {
 \     'colorscheme': 'OceanicNext',
 \     'airline-theme': 'oceanicnext'
+\ },
+\ 'daycula': {
+\     'colorscheme': 'daycula',
+\     'airline-theme': 'daycula'
 \ },
 \ }
 
@@ -403,6 +426,7 @@ augroup SetCorrectFiletype
     autocmd!
     autocmd BufRead,BufNewFile *.md set filetype=pandoc
     autocmd BufRead,BufNewFile *.txt set filetype=text
+    autocmd BufRead,BufNewFile *.jrnl set filetype=jrnl textwidth=0
 augroup END
 
 augroup GitCommitFormat
@@ -438,8 +462,8 @@ augroup END
 
 augroup GoyoConfig
     autocmd!
-    autocmd User GoyoEnter | call <SID>goyo_enter()
-    autocmd User GoyoLeave | call <SID>goyo_leave()
+    autocmd User GoyoEnter Limelight | call <SID>goyo_enter()
+    autocmd User GoyoLeave Limelight! | call <SID>goyo_leave()
 augroup END
 
 " tbh not sure if this should stay
@@ -450,6 +474,11 @@ augroup END
   " " Update signature help on jump placeholder
   " autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 " augroup end
+
+augroup HighlightCurrentWord
+    autocmd!
+    autocmd CursorHold * silent call CocActionAsync('highlight')
+augroup end
 
 " END AutoGroups- }}}
 
@@ -490,10 +519,7 @@ function! CycleCasing(str) abort
 endfunction
 
 function! ReplaceAppleQuotes() abort
-    silent! %s/”/"/g
-    silent! %s/“/"/g
-    silent! %s/’/'/g
-    silent! %s/‘/'/g
+    silent! %s/[“”’]/"/g
     echo "Replaced Apple Quotes"
 endfunction
 
@@ -548,6 +574,7 @@ iabbrev <expr> dts strftime("%a, %b %d, %Y -- %X")
 
 " Spelling corrections
 iabbrev yb by
+iabbrev ni in
 
 " END Abbreviations }}}
 
@@ -656,10 +683,14 @@ vnoremap <silent> <C-k> <C-w>k
 nnoremap <silent> <C-l> <C-w>l
 vnoremap <silent> <C-l> <C-w>l
 
-" Move the current line above or below with ALT + [j/k].
-" TODO: Make this not fail on top or bottom of file
-noremap <A-j> ddjP
-noremap <A-k> ddkP
+" Move lines above or below with ALT + [j/k].
+" https://vimtricks.substack.com/p/vimtrick-moving-lines
+nnoremap <A-j> :m .+1<CR>==
+nnoremap <A-k> :m .-2<CR>==
+inoremap <A-j> <Esc>:m .+1<CR>==gi
+inoremap <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <A-j> :m '>+1<CR>gv=gv
+vnoremap <A-k> :m '<-2<CR>gv=gv
 
 " Make j and k operate on virtual lines, not real lines.
 nnoremap j gj
@@ -916,7 +947,7 @@ let g:ale_fixers = {
 if uname == "Darwin"
     let g:coc_node_path = "/usr/local/bin/node"
 elseif uname == "Linux"
-    let g:coc_node_path = "/usr/bin/node"
+    let g:coc_node_path = "/home/alichtman/.config/nvm/versions/node/v14.2.0/bin/node"
 endif
 
 " Use tab for trigger completion with characters ahead and navigate.
