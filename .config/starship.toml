@@ -60,8 +60,8 @@ $character"""
 
 # Replace the "❯" symbol in the prompt with "➜"
 [character]      # The name of the module we are configuring is "character"
-success_symbol = "➜"     # The "symbol" segment is being set to "➜"
-error_symbol = "✗"
+success_symbol = "[➜](bold green)"     # The "symbol" segment is being set to "➜"
+error_symbol = "[✗](bold red)"
 
 [cmd_duration]
 min_time = 1
@@ -70,4 +70,4 @@ min_time = 1
 disabled = false
 use_12hr = true
 format = "[$time]($style) "
-time_format = "%I:%M %p"
+time_format = "%I:%M:%S %p"
