@@ -10,14 +10,13 @@
 	name = Aaron Lichtman
 	email = aaronlichtman@gmail.com
 	signingkey = D046D019DC745EDA
-; [pager]
-    ; diff = diff-so-fancy | less --tabs=1,5 -RFX
-    ; show = diff-so-fancy | less --tabs=1,5 -RFX
-    ; branch = false
+[pager]
+    diff = diff-so-fancy | less --tabs=1,5 -RFX
+    show = diff-so-fancy | less --tabs=1,5 -RFX
+    branch = false
 [core]
 	excludesfile = ~/.config/git/gitignore_global
 	autocrlf = false
-	pager = git-split-diffs --color | less -RFX
 [color]
 	ui = true
 [color "diff-highlight"]
