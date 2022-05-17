@@ -25,6 +25,7 @@ fi
 
 alias LS='ls'
 alias ll='lsd -1Al --group-dirs first'
+alias l='lsd -1Al --group-dirs first'
 
 # END $ ls and Friends }}}
 
@@ -58,7 +59,9 @@ if [ "$OS" = "Darwin" ]; then
     alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor;'
     alias update='rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\n1Password: $(op update)\n"; vimup; zinit-update; tldr -u; npm update -g;'
 elif [ "$OS" = "Linux" ]; then
+    alias apt='nala'
     alias aptup='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
+    alias nalaup='sudo nala update && sudo nala upgrade -y && sudo nala autoremove -y'
     alias update='rustup update stable; aptup; flatpak update -y; vimup; snap refresh; zinit-update; tldr -u; npm update -g;'
 fi
 

@@ -32,6 +32,8 @@ fi
 # Env Vars {{{
 
 export BETTER_EXCEPTIONS=1     # Python Better Exceptions
+export FORCE_COLOR=1
+
 export HOMEBREW_NO_ANALYTICS=1
 export BAT_THEME="TwoDark"
 export NOTES=$HOME/Desktop/Development/notes
@@ -40,8 +42,7 @@ export NOTES=$HOME/Desktop/Development/notes
 
 # Plugins {{{
 
-source "$ZDOTDIR/.zinit/bin/zinit.zsh"
-
+source $ZINIT_HOME/zinit.zsh
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
@@ -82,8 +83,11 @@ zinit wait lucid for \
  # pick"zsh-vim-mode.plugin.zsh" \
     # softmoth/zsh-vim-mode
 
+rustup completions zsh cargo > $ZDOTDIR/completions/_cargo
+
 # Install my custom completions
 zinit creinstall -Q $ZDOTDIR/completions
+
 
 # END Plugins }}}
 

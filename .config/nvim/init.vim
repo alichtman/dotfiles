@@ -29,7 +29,7 @@ Plug 'mattn/webapi-vim'
 " Syntax Highlighting
 Plug 'sheerun/vim-polyglot'
 Plug 'kovetskiy/sxhkd-vim'
-Plug 'zinit-zsh/zinit-vim-syntax'
+Plug 'zdharma-continuum/zinit-vim-syntax'
 Plug 'wren/jrnl.vim'
 
 " Linting and Completion
@@ -37,6 +37,8 @@ Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Plug 'ycm-core/YouCompleteMe'
 Plug 'davidhalter/jedi-vim'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
 
 " Shell Commands in ENV
 Plug 'christoomey/vim-run-interactive'
@@ -103,6 +105,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-fugitive'
 Plug 'mattn/gist-vim'
+Plug 'ruanyl/vim-gh-line'
 
 " Smooth Scrolling
 Plug 'psliwka/vim-smoothie'
@@ -223,7 +226,7 @@ set colorcolumn=81,121   " 80 and 120 character guidelines
 
 " Show “invisible” characters
 set list
-set listchars=tab:▸\ ,trail:·,eol:¬,nbsp:_
+set listchars=tab:▸\ ,trail:·,eol:¬,nbsp:_,space:·
 
 " Indentation {{{
 
@@ -261,8 +264,8 @@ highlight VertSplit guifg=11
 " let g:thematic#theme_name = 'palenight'
 " let g:thematic#theme_name = 'onedark'
 " let g:thematic#theme_name = 'daycula'
-let g:thematic#theme_name = 'tokyonight'
-" let g:thematic#theme_name = 'gruvbox'
+" let g:thematic#theme_name = 'tokyonight'
+let g:thematic#theme_name = 'gruvbox'
 
 " Default theme properties which may be overridden in thematic#themes
 let g:thematic#defaults = {
@@ -1053,6 +1056,7 @@ command! -nargs=? Fold :call CocAction('fold', <f-args>)
 " END YouCompleteMe }}}
 
 " jedi-vim {{{
+let g:jedi#environment_path = "/usr/local/var/pyenv/shims/python3"
 
 " Fix lagginess with large python libraries
 " https://github.com/davidhalter/jedi-vim/issues/217
@@ -1060,6 +1064,8 @@ let g:jedi#popup_on_dot = 0
 
 " Autocomplete imports after 'from module.name<space>
 " let g:jedi#smart_auto_mappings = 1
+
+let g:jedi#show_call_signatures = "1"
 
 " Shows docs for highlighted word
 let g:jedi#documentation_command = "H"
@@ -1082,7 +1088,7 @@ if uname == "Darwin"
     let g:python3_host_prog = '/usr/local/bin/python3'
     let g:python_host_prog = '/usr/local/bin/python2'
 elseif uname == "Linux"
-    let g:python3_host_prog = '/usr/bin/python3'
+    let g:python3_host_prog = '/usr/local/var/pyenv/shims/python3'
     let g:python_host_prog = '/usr/bin/python2'
 endif
 

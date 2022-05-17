@@ -120,13 +120,9 @@ export ZDOTDIR="$XDG_CONFIG_HOME"/zsh
 export _Z_DATA="$XDG_CACHE_HOME"/.z
 
 # zinit
-declare -A ZINIT
-ZINIT[HOME_DIR]="$ZDOTDIR"/.zinit
-ZINIT[BIN_DIR]="$ZDOTDIR"/.zinit/bin
-ZINIT[PLUGINS_DIR]="$ZDOTDIR"/.zinit/plugins
-ZINIT[COMPLETIONS_DIR]="$ZDOTDIR"/.zinit/completions
-ZINIT[SNIPPETS_DIR]="$ZDOTDIR"/.zinit/snippets
-ZINIT[ZCOMPDUMP_PATH]="$XDG_CACHE_HOME"/zcompdump/zcompdump-zinit
+export ZINIT_HOME="$XDG_DATA_HOME"/zinit/zinit.git
+export ZPFX="$XDG_CACHE_HOME"/polaris
+
 
 ##############
 # Firefox Send
@@ -156,6 +152,9 @@ fi
 
 # TODO: https://www.arp242.net/zshrc.html#easier-path
 
+export PATH="$PATH:/home/linuxbrew/.linuxbrew/bin"
+export PATH="$PATH:/home/alichtman/.local/share/cargo/bin" # starship in root shell hack
+export PATH="$PATH:/opt/GoLand/bin/goland.sh"
 export PATH="$PATH:$CARGO_HOME/bin"
 export PATH="$PATH:$GOPATH/bin"
 export PATH="$PATH:$HOME/.local/bin"
@@ -219,7 +218,7 @@ export RANGER_LOAD_DEFAULT_RC=FALSE
 
 if [ "$OS" = "Linux" ]; then
     pgrep sxhkd >/dev/null || (bash -c "sxhkd -r $XDG_CACHE_HOME/sxhkd.log &")
-    pgrep greenclip >/dev/null || (bash -c "greenclip daemon & > /dev/null 2>&1")
+    pgrep greenclip >/dev/null || (bash -c "greenclip daemon > /dev/null 2>&1 &")
 fi
 
 # vim: ts=4 sw=4 tw=0 et ft=zsh :
