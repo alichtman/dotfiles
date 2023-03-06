@@ -39,13 +39,25 @@
 	tool = code
 [diff]
 	guitool = meld
+	; external = difft
 [pull]
     rebase = true
 [push]
     followTags = true
+	autoSetupRemote = true
 [github]
 	user = alichtman
 [gpg]
 	program = gpg
 [interactive]
 	diffFilter = diff-so-fancy --patch
+[blame]
+    date = human
+[init]
+	defaultBranch = main
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential

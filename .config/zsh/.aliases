@@ -62,7 +62,7 @@ elif [ "$OS" = "Linux" ]; then
     alias apt='nala'
     alias aptup='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
     alias nalaup='sudo nala update && sudo nala upgrade -y && sudo nala autoremove -y'
-    alias update='rustup update stable; aptup; flatpak update -y; vimup; snap refresh; zinit-update; tldr -u; npm update -g;'
+    alias update='rustup update stable; aptup; flatpak update -y; vimup; snap refresh; zinit-update; tldr -u; npm update -g;pyenv update;'
 fi
 
 
@@ -84,7 +84,7 @@ alias vol='volatility --plugins=/Users/alichtman/volatility-plugins'
 
 # Home Cleanup {{{
 
-alias wget="wget --hsts-file $XDG_CACHE_HOME/wget-hsts"
+alias wget="wget --hsts-file=\"$XDG_CACHE_HOME\"/wget-hsts"
 alias ncmpcpp="ncmpcpp ncmpcpp_directory=$XDG_CONFIG_HOME/ncmpcpp/"
 
 # END Home Cleanup }}}
@@ -134,6 +134,7 @@ alias mv='mv -iv'
 alias b64='base64'
 alias batp='bat --paging=always'
 alias cal='calz'
+alias cat='bat'
 alias calc='insect'
 alias cloc='tokei'
 alias cpwd='pwd | xargs echo -n | yank' # Copy the working dir to the clipboard
@@ -170,6 +171,11 @@ elif [ "$OS" = "Linux" ]; then
     alias trash='trash-put'
     alias reboot_to_bios='systemctl reboot --firmware-setup'
     alias openRGB='(cd /opt/OpenRGB && sudo ./openrgb)'
+    alias obsidian='flatpak run md.obsidian.Obsidian'
+    alias keyboard='openrgb -p "Soft Red.orp"'
+    alias led='openrgb -p "Soft Red.orp"'
+    alias leds='openrgb -p "Soft Red.orp"'
+
 fi
 
 alias rm='trash'

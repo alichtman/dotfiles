@@ -36,7 +36,7 @@ Plug 'wren/jrnl.vim'
 Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Plug 'ycm-core/YouCompleteMe'
-Plug 'davidhalter/jedi-vim'
+" Plug 'davidhalter/jedi-vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 
@@ -105,10 +105,13 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-fugitive'
 Plug 'mattn/gist-vim'
-Plug 'ruanyl/vim-gh-line'
+Plug 'airblade/vim-gitgutter'
 
 " Smooth Scrolling
 Plug 'psliwka/vim-smoothie'
+
+" :<NUM> Preview
+Plug 'nacro90/numb.nvim'
 
 " Status Bar
 Plug 'vim-airline/vim-airline'
@@ -148,8 +151,10 @@ runtime macros/matchit.vim
 " General Settings  {{{
 
 set secure
-set modeline
+set modeline                    " Note that this creates a security risk
+set modelines=4
 set spelllang=en
+set nospell                     " Don't spellcheck by default. Will turn on for certain filetypes in an augroup
 set mouse=nv                    " Use mouse for pane selection, resizing, and cursor movement.
 set nostartofline               " Don’t reset cursor to start of line when moving around.
 set title                       " Show the filename in the window titlebar
@@ -344,9 +349,21 @@ let g:vista_fzf_preview = ['right:50%']
 
 " END Vista }}}
 
+" Numb.nim {{{
+
+:lua require('numb').setup()
+
+" ENV Numb.nvim }}}
+
 " Appearance }}}
 
 " AutoGroups {{{
+
+augroup SpellCheckTextFiles
+    autocmd!
+    autocmd FileType * set nospell
+    autocmd FileType jrnl,txt,md,markdown set spell
+augroup END
 
 augroup AutoCloseVim
     autocmd!
@@ -427,7 +444,7 @@ augroup END
 
 augroup SetCorrectFiletype
     autocmd!
-    autocmd BufRead,BufNewFile *.md set filetype=pandoc
+    autocmd BufRead,BufNewFile *.md set filetype=markdown
     autocmd BufRead,BufNewFile *.txt set filetype=text
     autocmd BufRead,BufNewFile *.jrnl set filetype=jrnl textwidth=0
 augroup END
@@ -639,8 +656,8 @@ nnoremap <leader>b :Buffers<CR>
 " Git Mappings
 
 " Open selection on github
-nnoremap go :.Gbrowse<CR>
-vnoremap go :'<,'>.Gbrowse<CR>
+nnoremap go :.GBrowse<CR>
+vnoremap go :'<,'>.GBrowse<CR>
 
 " Close buffers and windows more easily
 nnoremap <leader>q :bdelete<cr>
@@ -694,6 +711,9 @@ inoremap <A-j> <Esc>:m .+1<CR>==gi
 inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
+
+" Fix vim-smoothie scrolling mapping conflict with idk?
+noremap <silent> <Plug>(SmoothieUpwards) <cmd>call smoothie#upwards() <CR>
 
 " Make j and k operate on virtual lines, not real lines.
 nnoremap j gj
@@ -900,7 +920,8 @@ let g:bullets_enabled_file_types = [
             \ 'pandoc',
             \ 'text',
             \ 'gitcommit',
-            \ 'scratch'
+            \ 'scratch',
+            \ 'jrnl'
             \]
 
 " END Bullets.vim }}}
@@ -950,7 +971,7 @@ let g:ale_fixers = {
 if uname == "Darwin"
     let g:coc_node_path = "/usr/local/bin/node"
 elseif uname == "Linux"
-    let g:coc_node_path = "/home/alichtman/.config/nvm/versions/node/v14.2.0/bin/node"
+    let g:coc_node_path = "/home/alichtman/.config/nvm/versions/node/v18.3.0/bin/node"
 endif
 
 " Use tab for trigger completion with characters ahead and navigate.
@@ -964,27 +985,23 @@ inoremap <silent><expr> <TAB>
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
 
-" TODO: Use tab to trigger completion with support for snippets.
-" inoremap <silent><expr> <TAB>
-      " \ pumvisible() ? coc#_select_confirm() :
-      " \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-      " \ <SID>check_back_space() ? "\<TAB>" :
-      " \ coc#refresh()
-
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-function! s:check_back_space() abort
+function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-" Use <Tab> and <S-Tab> to navigate the completion list
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)

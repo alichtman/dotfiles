@@ -130,6 +130,10 @@ fi
 
 # END ssh }}}
 
+# ruby / rbenv {{{
+# eval "$(rbenv init - zsh)"
+# }}}
+
 # Completion {{{
 
 # Automatically refresh completions

@@ -16,6 +16,7 @@ export OS="$(uname -s)"
 
 export EDITOR='nvim'
 export PAGER='bat'
+export MANPAGER="sh -c 'col -b | bat -l man -p'"
 export VISUAL='nvim'
 
 ########
@@ -35,6 +36,7 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_DIRS="$XDG_DATA_DIRS:/var/lib/flatpak/exports/share"
 export XDG_DATA_DIRS="$XDG_DATA_DIRS:$HOME/.local/share/flatpak/exports/share"
 export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+export XDG_STATE_HOME="$HOME/.local/state"
 
 ############################
 # House Cleaning (~ cleanup)
@@ -47,6 +49,15 @@ export GDBHISTFILE="$XDG_DATA_HOME"/gdb/history
 export MPLCONFIGDIR="$XDG_CONFIG_HOME"/matplotlib
 export WAKATIME_HOME="$XDG_CONFIG_HOME"/wakatime
 export WINEPREFIX="$XDG_DATA_HOME"/wineprefixes/default
+export CGDB_DIR=$XDG_CONFIG_HOME/cgdb
+export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
+export VAGRANT_HOME="$XDG_DATA_HOME"/vagrant
+export KDEHOME="$XDG_CONFIG_HOME"/kde
+export MPLAYER_HOME="$XDG_CONFIG_HOME"/mplayer
+export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
+export KDEHOME="$XDG_CONFIG_HOME"/kde
+
+export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
 
 # Atom
 export ATOM_HOME="$XDG_DATA_HOME"/atom
@@ -87,12 +98,12 @@ export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME"/bundle
 export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
 
 # Ruby / Gem
-# if [ "$OS" = "Darwin" ]; then
-export GEM_HOME="$XDG_DATA_HOME"/gem
-export GEM_SPEC_CACHE="$XDG_CACHE_HOME"/gem
-# elif [ "$OS" = "Linux" ]; then
-    # unset GGEM_HOME="$XDG_DATA_HOME"/gemEM_HOME
-# fi
+if [ "$OS" = "Darwin" ]; then
+    export GEM_HOME="$XDG_DATA_HOME"/gem
+    export GEM_SPEC_CACHE="$XDG_CACHE_HOME"/gem
+elif [ "$OS" = "Linux" ]; then
+    # export GEM_HOME="$PATH:$HOME/.rvm/bin"
+fi
 
 
 # notmuch
@@ -114,6 +125,9 @@ export NVM_DIR="$HOME/.config/nvm"
 
 # tmux / tpm
 export TMUX_PLUGIN_MANAGER_PATH="$XDG_CONFIG_HOME"/tmux/plugins/
+
+# jrnl
+export JRNL_TEMPLATE_DIR="$HOME/Desktop/Development/jrnl-templates"
 
 # zsh + tools
 export ZDOTDIR="$XDG_CONFIG_HOME"/zsh
@@ -152,7 +166,6 @@ fi
 
 # TODO: https://www.arp242.net/zshrc.html#easier-path
 
-export PATH="$PATH:/home/linuxbrew/.linuxbrew/bin"
 export PATH="$PATH:/home/alichtman/.local/share/cargo/bin" # starship in root shell hack
 export PATH="$PATH:/opt/GoLand/bin/goland.sh"
 export PATH="$PATH:$CARGO_HOME/bin"
@@ -166,6 +179,9 @@ export PATH="$PATH:/usr/local/bin"
 export PATH="$PATH:/usr/local/sbin"
 export PATH="$PATH:/usr/sbin"
 export PATH="$PYENV_ROOT/bin:$PATH"
+export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+export PATH="/home/linuxbrew/.linuxbrew/sbin:$PATH"
+
 
 if [ "$OS" = "Darwin" ]; then
     export PATH="/usr/local/opt/gnu-getopt/bin:$PATH"
@@ -189,9 +205,11 @@ if [ -d "$HOME/bin" ]; then
   fi
 fi
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+# [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+# # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
+export PATH="$HOME/.local/share/gem/bin:$PATH"
+
 
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
@@ -205,6 +223,7 @@ if [ $OS = "Darwin" ]; then
     export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
 fi
 
+pyenv global 3.11.1
 
 #########
 # Ranger
