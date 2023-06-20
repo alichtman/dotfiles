@@ -57,8 +57,6 @@ zinit ice wait'!'
 zinit snippet OMZP::ssh-agent
 zinit ice wait'!'
 zinit snippet OMZP::colored-man-pages
-# zinit ice wait'!'
-# zinit snippet OMZP::vi-mode
 
 # GitHub Plugins
 
@@ -83,10 +81,11 @@ zinit wait lucid for \
  # pick"zsh-vim-mode.plugin.zsh" \
     # softmoth/zsh-vim-mode
 
-rustup completions zsh cargo > $ZDOTDIR/completions/_cargo
+rustup completions zsh cargo > "$ZINIT[HOME_DIR]/completions/_cargo"
 
-# Install my custom completions
-zinit creinstall -Q $ZDOTDIR/completions
+# Install my custom completions.
+# TODO: Remove this silencing once https://github.com/zdharma-continuum/zinit/issues/518 is fixed
+zinit creinstall -Q $ZINIT_HOME/completions 2>&1 > /dev/null
 
 
 # END Plugins }}}

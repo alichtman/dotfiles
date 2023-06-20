@@ -4,6 +4,7 @@
 
 # fzf Integrations {{{
 
+# File Open
 # fo / fos [FUZZY PATTERN] - Open the selected file with $EDITOR / subl
 #   - Bypass fuzzy finder if there's only one match (--select-1)
 #   - Exit if there's no match (--exit-0)

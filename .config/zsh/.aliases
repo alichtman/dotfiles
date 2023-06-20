@@ -57,7 +57,7 @@ alias pipup='pip list --outdated --format=freeze | grep -v "^\-e" | cut -d = -f 
 
 if [ "$OS" = "Darwin" ]; then
     alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor;'
-    alias update='rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\n1Password: $(op update)\n"; vimup; zinit-update; tldr -u; npm update -g;'
+    alias update='rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\n1Password: $(op update)\n"; vimup; zinit-update; -u; npm update -g;'
 elif [ "$OS" = "Linux" ]; then
     alias apt='nala'
     alias aptup='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
@@ -86,6 +86,7 @@ alias vol='volatility --plugins=/Users/alichtman/volatility-plugins'
 
 alias wget="wget --hsts-file=\"$XDG_CACHE_HOME\"/wget-hsts"
 alias ncmpcpp="ncmpcpp ncmpcpp_directory=$XDG_CONFIG_HOME/ncmpcpp/"
+alias yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"'
 
 # END Home Cleanup }}}
 
@@ -173,8 +174,8 @@ elif [ "$OS" = "Linux" ]; then
     alias openRGB='(cd /opt/OpenRGB && sudo ./openrgb)'
     alias obsidian='flatpak run md.obsidian.Obsidian'
     alias keyboard='openrgb -p "Soft Red.orp"'
-    alias led='openrgb -p "Soft Red.orp"'
-    alias leds='openrgb -p "Soft Red.orp"'
+    alias led='polychromatic-cli -d keyboard -c "#FFFFFF" -o static -o brightness -p 100'
+    alias leds='polychromatic-cli -d keyboard -c "#FFFFFF" -o static -o brightness -p 100'
 
 fi
 
@@ -257,6 +258,12 @@ alias youtube='mpsyt'
 
 # END r/unixporn }}}
 
+# htb {{{
+
+alias htb_connect='sudo openvpn ~/Desktop/Development/lab_alichtman.ovpn'
+
+# }}}
+
 # macOS Management {{{
 
 if [ "$OS" = "Darwin" ]; then
@@ -290,3 +297,5 @@ if [ "$OS" = "Linux" ]; then
 fi
 
 # END Linux Management }}}
+
+# vim: ft=zsh

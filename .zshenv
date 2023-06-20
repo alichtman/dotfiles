@@ -56,15 +56,20 @@ export KDEHOME="$XDG_CONFIG_HOME"/kde
 export MPLAYER_HOME="$XDG_CONFIG_HOME"/mplayer
 export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
 export KDEHOME="$XDG_CONFIG_HOME"/kde
+export __GL_SHADER_DISK_CACHE_PATH="$XDG_CACHE_HOME"/nv/GLCache
 
 export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
-
-# Atom
-export ATOM_HOME="$XDG_DATA_HOME"/atom
 
 # Android SDK
 export ANDROID_SDK_HOME="$XDG_CONFIG_HOME"/android
 export ADB_VENDOR_KEY="$XDG_CONFIG_HOME"/android
+
+# AWS -- https://github.com/aws/aws-sdk/issues/30#issuecomment-532208981
+export AWS_CONFIG_FILE="$XDG_CONFIG_HOME/aws/config"
+export AWS_CLI_HISTORY_FILE="$XDG_DATA_HOME/aws/history"
+export AWS_CREDENTIALS_FILE="$XDG_DATA_HOME/aws/credentials"
+# export AWS_WEB_IDENTITY_TOKEN_FILE="$XDG_DATA_HOME/aws/token"
+export AWS_SHARED_CREDENTIALS_FILE="$XDG_DATA_HOME/aws/shared-credentials"
 
 # Docker
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
@@ -77,6 +82,10 @@ export GOPATH="$XDG_DATA_HOME"/go
 
 # Gradle
 export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
+
+# ipfs -- https://github.com/ipfs/kubo/issues/120#issuecomment-1499794153
+export IPFS_PATH="$XDG_DATA_HOME"/ipfs
+
 
 # Pass
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME"/pass
@@ -137,13 +146,6 @@ export _Z_DATA="$XDG_CACHE_HOME"/.z
 export ZINIT_HOME="$XDG_DATA_HOME"/zinit/zinit.git
 export ZPFX="$XDG_CACHE_HOME"/polaris
 
-
-##############
-# Firefox Send
-##############
-
-export FFSEND_COPY
-export FFSEND_API=-
 
 ##############
 # gcc / OS-Dev
@@ -209,6 +211,7 @@ fi
 # # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
 export PATH="$HOME/.local/share/gem/bin:$PATH"
+export PATH="$PATH:$HOME/.local/share/gem/ruby/3.1.0/bin"
 
 
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -223,7 +226,7 @@ if [ $OS = "Darwin" ]; then
     export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
 fi
 
-pyenv global 3.11.1
+pyenv global 3.11.3
 
 #########
 # Ranger
@@ -239,5 +242,8 @@ if [ "$OS" = "Linux" ]; then
     pgrep sxhkd >/dev/null || (bash -c "sxhkd -r $XDG_CACHE_HOME/sxhkd.log &")
     pgrep greenclip >/dev/null || (bash -c "greenclip daemon > /dev/null 2>&1 &")
 fi
+
+# Needed to build things with alsa. Idk why this isn't set by default?
+export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig/"
 
 # vim: ts=4 sw=4 tw=0 et ft=zsh :
