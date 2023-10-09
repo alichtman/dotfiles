@@ -39,7 +39,6 @@ alias rpi-hydrogen='ssh pi@192.168.68.163'
 # Directory Traversal and Finding {{{
 
 alias fd="fd --hidden --exclude '.git'"
-# alias j="z"
 
 # Because I clearly can't fucking type
 alias cdd='cd'
