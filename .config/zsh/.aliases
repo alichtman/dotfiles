@@ -56,7 +56,6 @@ if [ "$OS" = "Darwin" ]; then
 elif [ "$OS" = "Linux" ]; then
     alias apt='nala'
     alias aptup='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
-    alias nalaup='sudo nala update && sudo nala upgrade -y && sudo nala autoremove -y'
     alias update='rustup update stable; aptup; flatpak update -y; vimup; snap refresh; zcomet self-update; tldr -u; npm update -g;pyenv update;'
 fi
 

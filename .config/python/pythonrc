@@ -46,7 +46,11 @@ try:
 except FileNotFoundError: # Probably the parent directory doesn't exist
     histfile.parent.mkdir(parents=True, exist_ok=True)
 
-readline.read_history_file(histfile)
+try:
+    readline.read_history_file(str(histfile))
+except OSError:  # idk why this is happening, file definitely exists
+    pass
+
 # Don't store an obscene amount of history
 readline.set_history_length(5000)
 atexit.register(readline.write_history_file, histfile)
