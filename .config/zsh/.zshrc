@@ -40,55 +40,38 @@ export NOTES=$HOME/Desktop/Development/notes
 
 # END Env Vars }}}
 
-# Plugins {{{
+# zcomet plugins {{{
 
-source $ZINIT_HOME/zinit.zsh
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
+source /opt/zcomet/zcomet.zsh
 
 # oh-my-zsh plugins
-zinit ice wait'!'
-zinit snippet OMZ::lib/git.zsh
-zinit ice wait'!'
-zinit snippet OMZP::git
-zinit ice wait'!'
-zinit snippet OMZP::fzf
-zinit ice wait'!'
-zinit snippet OMZP::ssh-agent
-zinit ice wait'!'
-zinit snippet OMZP::colored-man-pages
 
-# GitHub Plugins
+zcomet load ohmyzsh lib git.zsh
+zcomet snippet OMZ::plugins/git/git.plugin.zsh
+zcomet snippet OMZ::plugins/fzf/fzf.plugin.zsh
+zcomet snippet OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh
+zcomet snippet OMZ::plugins/colored-man-pages/colored-man-pages.plugin.zsh
+# zcomet load agkozak/zsh-z
+zcomet load changyuheng/fz
+zcomet load rupa/z
+zcomet load zsh-users/zsh-completions
+zcomet load zsh-users/zsh-history-substring-search
+zcomet load changyuheng/zsh-interactive-cd
+zcomet load peterhurford/git-it-on.zsh
+# zcomet load softmoth/zsh-vim-mode
+zcomet load zdharma-continuum/fast-syntax-highlighting
+zcomet load zsh-users/zsh-autosuggestions
 
-# https://github.com/zdharma/zinit-configs/blob/a60ff64823778969ce2b66230fd8cfb1a957fe89/psprint/zshrc.zsh#L277
-zinit wait lucid for \
- silent atinit"ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay" \
-    zdharma-continuum/fast-syntax-highlighting \
- atload"!_zsh_autosuggest_start" \
-    zsh-users/zsh-autosuggestions \
- as"completion" \
-    zsh-users/zsh-completions \
- atload"!export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=yellow,fg=white,bold'" \
-    zsh-users/zsh-history-substring-search \
- pick"zsh-interactive-cd.plugin.zsh" \
-    changyuheng/zsh-interactive-cd \
- pick"z.sh" \
-    rupa/z \
- pick"fz.plugin.zsh" \
-    changyuheng/fz \
- pick"git-it-on.plugin.zsh" \
-    peterhurford/git-it-on.zsh #\
- # pick"zsh-vim-mode.plugin.zsh" \
-    # softmoth/zsh-vim-mode
+zcomet compinit
 
-rustup completions zsh cargo > "$ZINIT[HOME_DIR]/completions/_cargo"
+# END zcomet Plugins }}}
 
-# Install my custom completions.
-# TODO: Remove this silencing once https://github.com/zdharma-continuum/zinit/issues/518 is fixed
-zinit creinstall -Q $ZINIT_HOME/completions 2>&1 > /dev/null
+# fz {{{
 
+export FZ_CMD=j
+export FZ_SUBDIR_CMD=jj
 
-# END Plugins }}}
+# }}}
 
 # zsh-history-substring-search {{{
 
@@ -110,14 +93,9 @@ fi
 bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-down
 
+export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=yellow,fg=black,bold'
+
 # END zsh-history-substring-search }}}
-
-# z and fz {{{
-
-FZ_CMD=j
-FZ_SUBDIR_CMD=jj
-
-# END z and fz }}}
 
 # ssh {{{
 
@@ -133,7 +111,12 @@ fi
 # eval "$(rbenv init - zsh)"
 # }}}
 
-# Completion {{{
+# Completions {{{
+
+CUSTOM_COMPLETIONS="$ZDOTDIR/completions"
+[ -d "$CUSTOM_COMPLETIONS" ] || mkdir "$CUSTOM_COMPLETIONS"
+rustup completions zsh cargo > "$CUSTOM_COMPLETIONS/_cargo"
+zcomet fpath $CUSTOM_COMPLETIONS
 
 # Automatically refresh completions
 zstyle ':completion:*' rehash true
@@ -156,7 +139,7 @@ setopt globdots
 
 # homebrew completions
 if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+  zcomet fpath $(brew --prefix)/share/zsh/site-functions
 fi
 
 # pip zsh completion
@@ -171,8 +154,7 @@ function _pip_completion {
 compctl -K _pip_completion pip
 
 # type '...' to get '../..'
-# Please don't ask me how this works. I have absolutely no idea.
-# Mikel Magnusson <mikachu@gmail.com> wrote this.
+# No idea how this works. Mikel Magnusson <mikachu@gmail.com> wrote this.
 function _rationalise-dot() {
   local MATCH MBEGIN MEND
   if [[ $LBUFFER =~ '(^|/| |    |'$'\n''|\||;|&)\.\.$' ]]; then

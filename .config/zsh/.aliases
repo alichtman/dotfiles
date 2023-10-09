@@ -39,10 +39,7 @@ alias rpi-hydrogen='ssh pi@192.168.68.163'
 # Directory Traversal and Finding {{{
 
 alias fd="fd --hidden --exclude '.git'"
-
-# Autojump with j and jj
-alias j='z'
-alias jj='zz'
+# alias j="z"
 
 # Because I clearly can't fucking type
 alias cdd='cd'
@@ -51,18 +48,17 @@ alias cdd='cd'
 
 # Updates {{{
 
-alias zinit-update='zinit delete --all; zinit self-update;' # Plugins and snippets will be installed on next zshrc source
 alias vimup='nvim "+PlugUpdate" "+PlugUpgrade" "+CocUpdate" "+qall";'
 alias pipup='pip list --outdated --format=freeze | grep -v "^\-e" | cut -d = -f 1  | xargs -n1 pip install -U'
 
 if [ "$OS" = "Darwin" ]; then
     alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor;'
-    alias update='rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\n1Password: $(op update)\n"; vimup; zinit-update; -u; npm update -g;'
+    alias update='rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\n1Password: $(op update)\n"; vimup; zcomet self-update; -u; npm update -g;'
 elif [ "$OS" = "Linux" ]; then
     alias apt='nala'
     alias aptup='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
     alias nalaup='sudo nala update && sudo nala upgrade -y && sudo nala autoremove -y'
-    alias update='rustup update stable; aptup; flatpak update -y; vimup; snap refresh; zinit-update; tldr -u; npm update -g;pyenv update;'
+    alias update='rustup update stable; aptup; flatpak update -y; vimup; snap refresh; zcomet self-update; tldr -u; npm update -g;pyenv update;'
 fi
 
 

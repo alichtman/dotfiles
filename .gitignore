@@ -6,5 +6,6 @@
 .config/zsh/.zinit
 .config/tmux/plugins
 .config/tmux/resurrect
-.pypirc
+.config/zsh/.zcomet
+.config/zsh/.zcompcache
 .ssh/*

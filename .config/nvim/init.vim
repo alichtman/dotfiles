@@ -81,15 +81,16 @@ Plug 'nightsense/snow'
 Plug 'mhartington/oceanic-next'
 Plug 'reedes/vim-colors-pencil'
 Plug 'meain/hima-vim'
-Plug 'ghifarit53/daycula-vim' , {'branch' : 'main'}
 
 " General Appearance
+Plug 'nvim-tree/nvim-web-devicons'
 Plug 'ryanoasis/vim-devicons'
 Plug 'mhinz/vim-startify'
+Plug 'folke/trouble.nvim'
 
 " Focus
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/limelight.vim'
+Plug 'folke/zen-mode.nvim'
+Plug 'folke/twilight.nvim'
 
 " Show leading spaces
 Plug 'Yggdroot/indentLine'
@@ -135,6 +136,7 @@ Plug 'jremmen/vim-ripgrep'
 
 " Quick Jump
 Plug 'easymotion/vim-easymotion'
+Plug 'jinh0/eyeliner.nvim'
 
 " Persistent Scratch Buffers
 Plug 'mtth/scratch.vim'
@@ -154,7 +156,8 @@ Plug 'mbbill/undotree'
 " Unix Tools
 Plug 'tpope/vim-eunuch'
 
-Plug 'alichtman/open-close.vim'
+" Plug 'alichtman/open-close.vim'
+Plug '~/Desktop/Development/projects/vim-plugins/open-close.vim'
 Plug 'alichtman/cycle-casing.vim'
 
 call plug#end()
@@ -467,12 +470,6 @@ augroup NoPasteAfterLeavingInsertMode
     au InsertLeave * silent! set nopaste
 augroup END
 
-augroup RunLimelightWithGoyo
-    autocmd!
-    autocmd User GoyoEnter Limelight
-    autocmd User GoyoLeave Limelight!
-augroup END
-
 augroup HighlightCurrentWord
     autocmd!
     autocmd CursorHold * silent call CocActionAsync('highlight')
@@ -562,8 +559,7 @@ cmap !i RunInInteractiveShell
 nnoremap <leader>sp :ScratchPreview<CR>
 
 " Find files using Telescope command-line sugar.
-nnoremap <C-p>      <cmd>Telescope find_files<cr>
-nnoremap <C-p><C-p> <cmd>Telescope git_files<cr>
+nnoremap <C-P>      <cmd>:lua vim.find_files_from_project_git_root()<CR>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 " nnoremap /          <cmd>Telescope live_grep<cr>
 " nnoremap *          <cmd>Telescope grep_string<cr>
@@ -599,7 +595,7 @@ nnoremap <leader>D :Dict<cr>
 vnoremap <leader>D :Dict<cr>
 
 " Distraction Free Mode
-nnoremap <silent> <leader>z :Goyo<cr>
+nnoremap <silent> <leader>z :ZenMode<cr>
 
 " Traverse buffer list more easily.
 nnoremap <leader>` :Telescope marks<CR>
@@ -768,6 +764,17 @@ let g:chadtree_settings = { 'theme.text_colour_set': 'nerdtree_syntax_dark' }
 
 " END }}}
 
+" Eyeliner {{{
+
+lua << EOF
+require'eyeliner'.setup {
+  highlight_on_key = true, -- show highlights only after keypress
+  dim = true               -- dim all other characters if set to true (recommended!)
+}
+EOF
+
+" }}}
+
 " vim-easymotion {{{
 
 " Turn on case insensitive feature
@@ -894,6 +901,24 @@ require('telescope').setup{
   extensions = {
   }
 }
+
+function vim.find_files_from_project_git_root()
+  local function is_git_repo()
+    vim.fn.system("git rev-parse --is-inside-work-tree")
+    return vim.v.shell_error == 0
+  end
+  local function get_git_root()
+    local dot_git_path = vim.fn.finddir(".git", ".;")
+    return vim.fn.fnamemodify(dot_git_path, ":h")
+  end
+  local opts = {}
+  if is_git_repo() then
+    opts = {
+      cwd = get_git_root(),
+    }
+  end
+  require("telescope.builtin").find_files(opts)
+end
 EOF
 
 " END telescope }}}
@@ -1033,7 +1058,8 @@ endfunction
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Mapping for rename current word
-nmap <leader>rn <Plug>(coc-rename)
+nmap <F2>       <Plug>(coc-rename)
+nmap <leader>fr <Plug>(coc-references)
 
 " Mapping for format selected region
 xmap <leader>f <Plug>(coc-format-selected)
