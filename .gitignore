@@ -9,3 +9,4 @@
 .config/zsh/.zcomet
 .config/zsh/.zcompcache
 .ssh/*
+.pypirc
