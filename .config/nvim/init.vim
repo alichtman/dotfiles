@@ -20,7 +20,7 @@ let uname = substitute(system('uname'), '\n', '', '')
 
 " Plugins {{{
 
-call plug#begin('~/.local/share/nvim/plugged')
+call plug#begin()
 
 " Syntax Highlighting
 Plug 'sheerun/vim-polyglot'
@@ -43,7 +43,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 " Assistance
-Plug 'github/copilot.vim'
+Plug 'github/copilot.vim', {'branch': 'release'}
 
 " Shell Commands in ENV
 Plug 'christoomey/vim-run-interactive'
@@ -56,7 +56,7 @@ Plug 'alichtman/sane-clipboard.vim'
 
 " File explorers
 Plug 'scrooloose/nerdtree'
-Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
+" Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
 
 " Telescope
 Plug 'nvim-lua/plenary.nvim'
@@ -81,6 +81,7 @@ Plug 'nightsense/snow'
 Plug 'mhartington/oceanic-next'
 Plug 'reedes/vim-colors-pencil'
 Plug 'meain/hima-vim'
+Plug 'ghifarit53/daycula-vim' , {'branch' : 'main'}
 
 " General Appearance
 Plug 'nvim-tree/nvim-web-devicons'
@@ -145,7 +146,7 @@ Plug 'mtth/scratch.vim'
 Plug 'scrooloose/nerdcommenter'
 
 " Time Tracking
-" Plug 'wakatime/vim-wakatime'
+Plug 'wakatime/vim-wakatime'
 
 " Write to readonly file as root
 Plug 'lambdalisue/suda.vim'
@@ -156,8 +157,7 @@ Plug 'mbbill/undotree'
 " Unix Tools
 Plug 'tpope/vim-eunuch'
 
-" Plug 'alichtman/open-close.vim'
-Plug '~/Desktop/Development/projects/vim-plugins/open-close.vim'
+Plug 'alichtman/open-close.vim'
 Plug 'alichtman/cycle-casing.vim'
 
 call plug#end()
@@ -168,6 +168,8 @@ runtime macros/matchit.vim
 " }}}
 
 " General Settings  {{{
+
+let g:loaded_perl_provider = 0
 
 set secure
 set modeline                    " Note that this creates a security risk
@@ -392,6 +394,11 @@ augroup SpellCheckTextFiles
     autocmd!
     autocmd FileType * set nospell
     autocmd FileType jrnl,txt,md,markdown set spell
+augroup END
+
+augroup SetXMLSyntaxForPlist
+    autocmd!
+    au BufRead,BufNewFile *.plist set ft=xml
 augroup END
 
 " Folding {{{
@@ -703,9 +710,9 @@ let g:startify_lists = [
             \ ]
 
 let g:startify_bookmarks = [
-            \ {'a': '~/.vimrc'},
-            \ {'b': '~/.zshrc'},
-            \ {'c': '~/.tmux.conf'},
+            \ {'a': '~/.config/nvim/init.vim'},
+            \ {'b': '~/.config/zsh/.zshrc'},
+            \ {'c': '~/.config/tmux/tmux.conf'},
             \ {'d': '~/Desktop/personal/'},
             \ {'e': '~/Desktop/Development/notes'} ]
 

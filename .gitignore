@@ -4,6 +4,7 @@
 .config/ranger/plugins/*
 .config/zsh/.zcompdump*
 .config/zsh/.zinit
+.config/zsh/.zsh_history
 .config/tmux/plugins
 .config/tmux/resurrect
 .config/zsh/.zcomet

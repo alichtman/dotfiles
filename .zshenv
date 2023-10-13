@@ -57,7 +57,6 @@ export MPLAYER_HOME="$XDG_CONFIG_HOME"/mplayer
 export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
 export KDEHOME="$XDG_CONFIG_HOME"/kde
 export __GL_SHADER_DISK_CACHE_PATH="$XDG_CACHE_HOME"/nv/GLCache
-export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
 
 export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
 
@@ -147,6 +146,22 @@ export _Z_DATA="$XDG_CACHE_HOME"/.z
 export ZINIT_HOME="$XDG_DATA_HOME"/zinit/zinit.git
 export ZPFX="$XDG_CACHE_HOME"/polaris
 
+
+##############
+# gcc / OS-Dev
+##############
+
+# if [ "$OS" = "Darwin" ]; then
+    # export CC=/usr/local/bin/gcc-9
+    # export LD=/usr/local/bin/gcc-9
+    # export OS_DEV_PREFIX="/Users/alichtman/bin/i386elfgcc"
+    # export TARGET=i386-elf
+    # export PATH="$OS_DEV_PREFIX/bin:$PATH"
+# elif [ "$OS" = "Linux" ]; then
+    # export CC=/usr/bin/gcc-9
+    # export LD=/usr/bin/gcc-9
+# fi
+
 #############
 # PATH Config
 #############
@@ -211,14 +226,7 @@ if [ $OS = "Darwin" ]; then
     export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
 fi
 
-pyenv global 3.11.3
-
-########
-# Hatch
-########
-
-export HATCH_INDEX_USER=__token__
-# Token specified in ~/.secrets
+pyenv global 3.11.4
 
 #########
 # Ranger

@@ -58,7 +58,7 @@ zcomet load zsh-users/zsh-completions
 zcomet load zsh-users/zsh-history-substring-search
 zcomet load changyuheng/zsh-interactive-cd
 zcomet load peterhurford/git-it-on.zsh
-# zcomet load softmoth/zsh-vim-mode
+ # zcomet load softmoth/zsh-vim-mode
 zcomet load zdharma-continuum/fast-syntax-highlighting
 zcomet load zsh-users/zsh-autosuggestions
 
@@ -92,8 +92,6 @@ fi
 # Bind j and k for in vim mode
 bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-down
-
-export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=yellow,fg=black,bold'
 
 # END zsh-history-substring-search }}}
 
@@ -139,7 +137,7 @@ setopt globdots
 
 # homebrew completions
 if type brew &>/dev/null; then
-  zcomet fpath $(brew --prefix)/share/zsh/site-functions
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 fi
 
 # pip zsh completion
@@ -154,7 +152,8 @@ function _pip_completion {
 compctl -K _pip_completion pip
 
 # type '...' to get '../..'
-# No idea how this works. Mikel Magnusson <mikachu@gmail.com> wrote this.
+# Please don't ask me how this works. I have absolutely no idea.
+# Mikel Magnusson <mikachu@gmail.com> wrote this.
 function _rationalise-dot() {
   local MATCH MBEGIN MEND
   if [[ $LBUFFER =~ '(^|/| |    |'$'\n''|\||;|&)\.\.$' ]]; then
@@ -279,4 +278,7 @@ execute_cmd_if_exists tls
 
 # END Startup Tools }}}
 
+if [ "$OS" = "Darwin" ]; then
+	test -e "${ZDOTDIR}/.iterm2_shell_integration.zsh" && source "${ZDOTDIR}/.iterm2_shell_integration.zsh" || true
+fi
 # vim: foldmethod=marker foldcolumn=1 et
