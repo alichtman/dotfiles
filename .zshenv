@@ -226,7 +226,13 @@ if [ $OS = "Darwin" ]; then
     export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
 fi
 
-pyenv global 3.11.4
+# Python Env
+
+pyenv global 3.11.3
+
+# Go Env
+
+export GO111MODULE="on"
 
 #########
 # Ranger

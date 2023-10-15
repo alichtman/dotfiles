@@ -29,7 +29,7 @@ Plug 'zdharma-continuum/zinit-vim-syntax'
 Plug 'wren/jrnl.vim'
 Plug 'prisma/vim-prisma'
 
-" Linting and Completion
+" Linting, Completion and Highlighting
 Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -38,6 +38,7 @@ Plug 'nvim-treesitter/nvim-treesitter-context'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'psf/black', { 'branch': 'stable' }
 Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
+Plug 'baskerville/vim-sxhkdrc'
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -146,7 +147,7 @@ Plug 'mtth/scratch.vim'
 Plug 'scrooloose/nerdcommenter'
 
 " Time Tracking
-Plug 'wakatime/vim-wakatime'
+" Plug 'wakatime/vim-wakatime'
 
 " Write to readonly file as root
 Plug 'lambdalisue/suda.vim'
