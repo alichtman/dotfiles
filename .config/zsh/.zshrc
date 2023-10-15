@@ -40,6 +40,16 @@ export NOTES=$HOME/Desktop/Development/notes
 
 # END Env Vars }}}
 
+# ssh {{{
+
+if [ "$OS" = "Darwin" ]; then
+    zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab rpi-hydrogen
+elif [ "$OS" = "Linux" ]; then
+    zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab alichtman-MBP
+fi
+
+# END ssh }}}
+
 # zcomet plugins {{{
 
 source /opt/zcomet/zcomet.zsh
@@ -95,15 +105,6 @@ bindkey -M vicmd 'j' history-substring-search-down
 
 # END zsh-history-substring-search }}}
 
-# ssh {{{
-
-if [ "$OS" = "Darwin" ]; then
-    zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab rpi-hydrogen alichtman-Gitea
-elif [ "$OS" = "Linux" ]; then
-    zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab alichtman-MBP alichtman-Gitea
-fi
-
-# END ssh }}}
 
 # ruby / rbenv {{{
 # eval "$(rbenv init - zsh)"
