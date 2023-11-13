@@ -1,16 +1,15 @@
 " .vimrc for Neovim on macOS using iTerm2
 " Written by: Aaron Lichtman (and the internet)
 
-" I've spent 10,000 fucking hours on this thing. I hope someone else gets some
-" use out of this.
+" I've spent 10,000 fucking hours on this thing.
+" I hope someone else gets some use out of this.
 
 " TODO {{{
 
-" 1. Figure out why termguicolors causes color words to be higlighted in their color.
-" 2. Configure ALE
-" 3. Properly configure C and C++ formatting.
-" 5. Remove unused default colorschemes
-" 6. Map opening correct man page to H
+" 1. Configure ALE
+" 2. Properly configure C and C++ formatting.
+" 4. Remove unused default colorschemes
+" 5. Map opening correct man page to H
 
 " END TODO }}}
 
@@ -38,7 +37,6 @@ Plug 'nvim-treesitter/nvim-treesitter-context'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'psf/black', { 'branch': 'stable' }
 Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
-Plug 'baskerville/vim-sxhkdrc'
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -93,6 +91,9 @@ Plug 'folke/trouble.nvim'
 " Focus
 Plug 'folke/zen-mode.nvim'
 Plug 'folke/twilight.nvim'
+
+" Highlight copied line
+Plug 'markonm/hlyank.vim'
 
 " Show leading spaces
 Plug 'Yggdroot/indentLine'
@@ -483,6 +484,11 @@ augroup HighlightCurrentWord
     autocmd CursorHold * silent call CocActionAsync('highlight')
 augroup end
 
+augroup CreateDirBeforeWritingIfNeeded
+    autocmd!
+    autocmd BufWritePre * :call s:MkNonExistentDir(expand('<afile>'), +expand('<abuf>'))
+augroup END
+
 " END AutoGroups- }}}
 
 " Functions {{{
@@ -506,6 +512,16 @@ command! ReplaceAppleQuotes call ReplaceAppleQuotes()
 function! ExecuteMacroOverVisualRange() abort
   echo "@".getcmdline()
   execute ":'<,'>normal @".nr2char(getchar())
+endfunction
+
+" https://stackoverflow.com/a/4294176/8740440
+function s:MkNonExistentDir(file, buf)
+    if empty(getbufvar(a:buf, '&buftype')) && a:file!~#'\v^\w+\:\/'
+        let dir=fnamemodify(a:file, ':h')
+        if !isdirectory(dir)
+            call mkdir(dir, 'p')
+        endif
+    endif
 endfunction
 
 " END Functions }}}
@@ -566,7 +582,7 @@ cmap !i RunInInteractiveShell
 " Toggle Scratchpad
 nnoremap <leader>sp :ScratchPreview<CR>
 
-" Find files using Telescope command-line sugar.
+" Find files using Telescope command-line sugar
 nnoremap <C-P>      <cmd>:lua vim.find_files_from_project_git_root()<CR>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 " nnoremap /          <cmd>Telescope live_grep<cr>
@@ -668,6 +684,12 @@ nnoremap <silent> <leader>mpp :Pandoc pdf<cr>
 
 " Run macro over visual range with @REG
 xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
+
+" Match VSCode commenting hotkeys
+nnoremap <A-/> <plug>NERDCommenterToggle
+" NOTE: This behavior depends on the comment state of the top-most line. If it
+" is commented, all selected lines are commented, and vice-versa
+vnoremap <A-/> <plug>NERDCommenterToggle<CR>gv
 
 " END Remappings }}}
 
@@ -1124,3 +1146,5 @@ elseif uname == "Linux"
 endif
 
 " END Gist }}}
+
+" vim: foldmethod=marker :

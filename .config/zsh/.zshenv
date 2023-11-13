@@ -42,6 +42,8 @@ export XDG_STATE_HOME="$HOME/.local/state"
 # House Cleaning (~ cleanup)
 ############################
 
+export WEGORC="$XDG_CONFIG_HOME"/wegorc
+export IRBRC="$XDG_CONFIG_HOME"/irb/irbrc
 export ELECTRUMDIR="$XDG_DATA_HOME"/electrum
 export GRIPHOME="$XDG_CONFIG_HOME"/grip
 export LESSHISTFILE="$XDG_CACHE_HOME"/lesshst
@@ -245,7 +247,6 @@ export RANGER_LOAD_DEFAULT_RC=FALSE
 ###############
 
 if [ "$OS" = "Linux" ]; then
-    pgrep sxhkd >/dev/null || (bash -c "sxhkd -r $XDG_CACHE_HOME/sxhkd.log &")
     pgrep greenclip >/dev/null || (bash -c "greenclip daemon > /dev/null 2>&1 &")
 fi
 

@@ -15,12 +15,12 @@
 # $ ls and Friends {{{
 
 if [ "$OS" = "Darwin" ]; then
-alias l='lsd -1A --group-dirs first -I=.DS_Store'
-alias ls='lsd -1A --group-dirs first -I=.DS_Store'
-alias tree='ls --tree -I=.DS_Store'
+    alias l='lsd -1A --group-dirs first -I=.DS_Store'
+    alias ls='lsd -1A --group-dirs first -I=.DS_Store'
+    alias tree='ls --tree -I=.DS_Store'
 elif [ "$OS" = "Linux" ]; then
-alias ls='lsd -1A --group-dirs first'
-alias tree='ls --tree'
+    alias ls='lsd -1A --group-dirs first'
+    alias tree='ls --tree'
 fi
 
 alias LS='ls'
@@ -28,13 +28,6 @@ alias ll='lsd -1Al --group-dirs first'
 alias l='lsd -1Al --group-dirs first'
 
 # END $ ls and Friends }}}
-
-# SSH {{{
-
-# I have no idea why the ssh config file isn't taking care of this but I don't care enough
-alias rpi-hydrogen='ssh pi@192.168.68.163'
-
-# END SSH }}}
 
 # Directory Traversal and Finding {{{
 
@@ -49,15 +42,16 @@ alias cdd='cd'
 
 alias vimup='nvim "+PlugUpdate" "+PlugUpgrade" "+CocUpdate" "+qall";'
 alias pipup='pip list --outdated --format=freeze | grep -v "^\-e" | cut -d = -f 1  | xargs -n1 pip install -U'
+alias zcomet_up='zcomet self-update && zcomet update'
 
 if [ "$OS" = "Darwin" ]; then
-alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor;'
-alias update='rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\n1Password: $(op update)\n"; vimup; zinit-update; -u; npm update -g;'
+    alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor;'
+    alias update='rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\n1Password: $(op update)\n"; vimup; zcomet_up; -u; npm update -g;'
 elif [ "$OS" = "Linux" ]; then
-alias apt='nala'
-alias aptup='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
-alias nalaup='sudo nala update && sudo nala upgrade -y && sudo nala autoremove -y'
-alias update='rustup update; aptup; flatpak update -y; vimup; snap refresh; zinit-update; tldr -u; npm update -g;pyenv update;'
+    alias apt='nala'
+    alias aptup='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
+    alias nalaup='sudo nala update && sudo nala upgrade -y && sudo nala autoremove -y'
+    alias update='rustup update; aptup; flatpak update -y; vimup; snap refresh; zcomet_up; tldr -u; npm update -g;'
 fi
 
 
@@ -84,13 +78,6 @@ alias ncmpcpp="ncmpcpp ncmpcpp_directory=$XDG_CONFIG_HOME/ncmpcpp/"
 alias yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"'
 
 # END Home Cleanup }}}
-
-# Base conversion {{{
-
-alias rc='radix-calc'
-alias rcc='radix-calc --all'
-
-# END Base conversion }}}
 
 # git / GitHub {{{
 
@@ -154,24 +141,23 @@ alias sudo='sudo '
 alias tags='ctags -R .'
 
 if [ "$OS" = "Darwin" ]; then
-alias yank='pbcopy'
-alias run='launch'
-# This hack fixes some weird tmux + zsh bug
-alias fg='setopt monitor && fg'
-alias trash='trash -F'
+    alias yank='pbcopy'
+    alias run='launch'
+    # This hack fixes some weird tmux + zsh bug
+    alias fg='setopt monitor && fg'
+    alias trash='trash -F'
 elif [ "$OS" = "Linux" ]; then
-alias run='rofi -show run'
-alias yank='xsel -ib'
-alias paste-img='xclip -selection clipboard -t image/png -o > '
-alias open='xdg-open'
-alias trash='trash-put'
-alias reboot_to_bios='systemctl reboot --firmware-setup'
-alias openRGB='(cd /opt/OpenRGB && sudo ./openrgb)'
-alias obsidian='flatpak run md.obsidian.Obsidian'
-alias keyboard='openrgb -p "Soft Red.orp"'
-alias led='polychromatic-cli -d keyboard -c "#FFFFFF" -o static -o brightness -p 100'
-alias leds='polychromatic-cli -d keyboard -c "#FFFFFF" -o static -o brightness -p 100'
-
+    alias run='rofi -show run'
+    alias yank='xsel -ib'
+    alias paste-img='xclip -selection clipboard -t image/png -o > '
+    alias open='xdg-open'
+    alias trash='trash-put'
+    alias reboot_to_bios='systemctl reboot --firmware-setup'
+    alias openRGB='(cd /opt/OpenRGB && sudo ./openrgb)'
+    alias obsidian='flatpak run md.obsidian.Obsidian'
+    alias keyboard='openrgb -p "Soft Red.orp"'
+    alias led='polychromatic-cli -d keyboard -c "#FFFFFF" -o static -o brightness -p 100'
+    alias leds='polychromatic-cli -d keyboard -c "#FFFFFF" -o static -o brightness -p 100'
 fi
 
 alias rm='trash'
@@ -232,7 +218,7 @@ alias :q="exit"
 alias aliases="vim $XDG_CONFIG_HOME/zsh/.aliases"
 alias zfunctions="vim $XDG_CONFIG_HOME/zsh/.zfunctions"
 alias zshrc="vim $XDG_CONFIG_HOME/zsh/.zshrc"
-alias zshenv="vim $HOME/.zshenv"
+alias zshenv="vim $XDG_CONFIG_HOME/zsh/.zshenv"
 alias src-zshrc="source $XDG_CONFIG_HOME/zsh/.zshrc"
 alias vimrc="vim $XDG_CONFIG_HOME/nvim/init.vim"
 alias tmux.conf="vim $XDG_CONFIG_HOME/tmux/tmux.conf"
@@ -241,6 +227,7 @@ alias tmux.conf="vim $XDG_CONFIG_HOME/tmux/tmux.conf"
 
 # r/unixporn {{{
 
+alias gitstats='onefetch'
 alias mandelbrot='bash ~/bin/mandelbrot'
 alias matrix='unimatrix -s 93'
 alias news='newsroom'
@@ -262,24 +249,24 @@ alias htb_connect='sudo openvpn ~/Desktop/Development/lab_alichtman.ovpn'
 # macOS Management {{{
 
 if [ "$OS" = "Darwin" ]; then
-# Murder various things when they break
-alias kill-touchbar='sudo pkill "Touch Bar agent";sudo killall "ControlStrip";'
-alias kill-dock='killall Dock'
+    # Murder various things when they break
+    alias kill-touchbar='sudo pkill "Touch Bar agent";sudo killall "ControlStrip";'
+    alias kill-dock='killall Dock'
 
-# Time Machine Optimization
-alias unthrottle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=0;'
-alias throttle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=1;'
+    # Time Machine Optimization
+    alias unthrottle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=0;'
+    alias throttle-time-machine='sudo sysctl debug.lowpri_throttle_enabled=1;'
 
-# Desktop
-alias show-desktop='defaults write com.apple.finder CreateDesktop true; killall Finder'
-alias hide-desktop='defaults write com.apple.finder CreateDesktop false; killall Finder'
+    # Desktop
+    alias show-desktop='defaults write com.apple.finder CreateDesktop true; killall Finder'
+    alias hide-desktop='defaults write com.apple.finder CreateDesktop false; killall Finder'
 
-# Updates
-alias reset-ignored-updates='sudo softwareupdate --reset-ignored'
+    # Updates
+    alias reset-ignored-updates='sudo softwareupdate --reset-ignored'
 
-# Volume
-alias mute="osascript -e 'set volume output muted true'"
-alias unmute="osascript -e 'set volume output muted false'"
+    # Volume
+    alias mute="osascript -e 'set volume output muted true'"
+    alias unmute="osascript -e 'set volume output muted false'"
 fi
 
 # END macOS Management }}}
@@ -287,8 +274,8 @@ fi
 # Linux Management {{{
 
 if [ "$OS" = "Linux" ]; then
-alias sxhkd='sxhkd >/dev/null 2>&1 &'
-alias restart_pulseaudio='pulseaudio -k && pulseaudio -D'
+    alias sxhkd='sxhkd >/dev/null 2>&1 &'
+    alias restart_pulseaudio='pulseaudio -k && pulseaudio -D'
 fi
 
 # END Linux Management }}}
