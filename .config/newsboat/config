@@ -1,0 +1,30 @@
+# vim keybindings for browsing
+bind-key l open
+bind-key h quit
+bind-key k up
+bind-key j down
+
+# arrow key bindings for browsing
+bind-key RIGHT open
+bind-key LEFT quit
+
+# Refresh on start
+auto-reload yes
+
+datetime-format "%D"
+
+# Colors from "gruvbox" colorscheme https://github.com/morhetz/gruvbox
+color article                              color223 color236
+color background                           color100 color236
+color info                                 color142 color235
+color listfocus                            color214 color239
+color listfocus_unread                     color214 color96
+color listnormal                           color246 color237
+color listnormal_unread                    color175 color237
+highlight article "^Feed:.*"               color175 color237
+highlight article "^Title:.*"              color214 color237 bold
+highlight article "^Author:.*"             color167 color237
+highlight article "^Link:.*"               color109 color237
+highlight article "^Date:.*"               color142 color237
+highlight article "\\[[0-9]\\+\\]"         color208 color237 bold
+highlight article "\\[[^0-9].*[0-9]\\+\\]" color167 color237 bold
