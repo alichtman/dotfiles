@@ -576,6 +576,9 @@ inoremap kj <Esc>
 " Quickly save, only writing the file if there are changes
 nnoremap <leader>w :up<CR>
 
+" Open link under cursor
+" nnoremap <silent> gx :!firefox <c-r><c-a><CR>
+
 " Run shell command using my regular shell env
 cmap !i RunInInteractiveShell
 

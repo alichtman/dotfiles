@@ -1,6 +1,7 @@
 [alias]
 	uncommit = reset --soft HEAD^
 	unstage = git reset HEAD
+	edit = !$EDITOR $(git status --short | awk '$1 ~ /^M|A|U/ {print $2}' )
 [filter "lfs"]
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
