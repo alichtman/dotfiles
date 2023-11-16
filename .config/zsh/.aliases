@@ -187,7 +187,6 @@ function tnew() {
         tmux switch-client -t "$NEW_SESSION"
     fi
 }
-# alias tnew='tmux switchc -t `tmux new -dP`'
 alias ta='tmux new-session -As'
 alias tkss='tmux kill-session -t'
 alias tksv='tmux kill-server'
