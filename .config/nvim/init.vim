@@ -578,6 +578,8 @@ nnoremap <leader>w :up<CR>
 
 " Open link under cursor
 " nnoremap <silent> gx :!firefox <c-r><c-a><CR>
+" https://www.reddit.com/r/neovim/comments/ro6oye/open_link_from_neovim/
+nnoremap gx <CMD>execute '!firefox ' .. shellescape(expand('<cfile>'), v:true)<CR>
 
 " Run shell command using my regular shell env
 cmap !i RunInInteractiveShell

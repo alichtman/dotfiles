@@ -50,6 +50,18 @@ fi
 
 # END ssh }}}
 
+# tmux {{{
+
+# export ZSH_TMUX_AUTOSTART=true
+# export ZSH_TMUX_AUTOCONNECT=false
+# export ZSH_TMUX_CONFIG="$XDG_CONFIG_HOME/tmux/tmux.conf"
+#
+# if [ "$OS" = "Darwin" ]; then
+    # export ZSH_TMUX_ITERM2=true
+# fi
+
+# }}}
+
 # zcomet plugins {{{
 
 source /opt/zcomet/zcomet.zsh
@@ -59,6 +71,7 @@ source /opt/zcomet/zcomet.zsh
 zcomet load ohmyzsh lib git.zsh
 zcomet snippet OMZ::plugins/git/git.plugin.zsh
 zcomet snippet OMZ::plugins/fzf/fzf.plugin.zsh
+# zcomet snippet OMZ::plugins/tmux/tmux.plugin.zsh
 zcomet snippet OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh
 zcomet snippet OMZ::plugins/colored-man-pages/colored-man-pages.plugin.zsh
 # zcomet load agkozak/zsh-z
@@ -176,7 +189,8 @@ autoload -U compinit && compinit -d $XDG_CACHE_HOME/zcompdump/default
 
 # General zsh Behavior {{{
 
-set termguicolors
+# Allow comments in interactive shell
+setopt interactive_comments
 
 # cd without needing "cd"
 setopt auto_cd
@@ -186,6 +200,8 @@ unsetopt nomatch
 
 # Append a trailing `/' to all directory names resulting from globbing
 setopt mark_dirs
+
+set termguicolors
 
 # Shift+Tab to get reverse menu completion
 bindkey '^[[Z' reverse-menu-complete
@@ -275,11 +291,26 @@ function execute_cmd_if_exists() {
 }
 
 execute_cmd_if_exists year-progress
-execute_cmd_if_exists tls
 
-# END Startup Tools }}}
 
 if [ "$OS" = "Darwin" ]; then
 	test -e "${ZDOTDIR}/.iterm2_shell_integration.zsh" && source "${ZDOTDIR}/.iterm2_shell_integration.zsh" || true
 fi
+
+# If tmux is not running already, start it in the Background
+if ! pgrep "tmux" > /dev/null
+then
+    tmux new-session -d -s default
+else
+    # TODO: Need to make sure we're not in a typing-sensitive environment (like vim or a python repl)
+    # tmux send -t default "/usr/bin/cat $ZDOTDIR/reattached-to-default-tmux-sesion-notice.txt" ENTER
+    # tmux send -t default tls ENTER
+    tmux attach-session -t default
+fi
+
+# List tmux sessions
+# execute_cmd_if_exists tls
+
+# END Startup Tools }}}
+
 # vim: foldmethod=marker foldcolumn=1 et

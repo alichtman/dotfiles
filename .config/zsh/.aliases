@@ -183,8 +183,13 @@ function tnew() {
     if [ -z "$1" ]; then
         tmux switch-client -t `tmux new -dP`
     else
-        NEW_SESSION=`tmux new-session -dP -s "$1"`
-        tmux switch-client -t "$NEW_SESSION"
+       has_session=$(tmux has-session -t "$1")
+       if (exit $?); then
+            tmux switch-client -t "$1"
+       else
+           NEW_SESSION=`tmux new-session -dP -s "$1"`
+           tmux switch-client -t "$NEW_SESSION"
+       fi
     fi
 }
 alias ta='tmux new-session -As'
