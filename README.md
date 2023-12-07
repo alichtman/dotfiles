@@ -1,4 +1,4 @@
-# Aaron's Dotfiles
+# `alichtman`'s Dotfiles
 
 I manage my dotfiles from `macOS` and `Debian-based Linux` machines simultaneously, so these dotfiles were written with compatibility in mind. The `XDG Base Directory Specification` was followed as much as possible.
 
