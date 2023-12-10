@@ -6,7 +6,7 @@
 # 1. Sort out vim bindings
 #
 # }}}
-zmodload zsh/zprof
+
 OS="$(uname -s)"
 
 # Prompt {{{
@@ -311,8 +311,6 @@ year-progress
 if [ "$OS" = "Darwin" ]; then
 	test -e "${ZDOTDIR}/.iterm2_shell_integration.zsh" && source "${ZDOTDIR}/.iterm2_shell_integration.zsh" || true
 fi
-
-zprof
 
 # If tmux is not running already, start it in the Background
 if ! pgrep "tmux" > /dev/null
