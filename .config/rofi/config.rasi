@@ -1,0 +1,11 @@
+configuration {
+  show-icons:         true;
+  icon-theme:         "Paper";
+  cycle:              true;
+  font:               "SF Mono 24";
+  hide-scrollbar:     true;
+  disable-history:    false;
+  modi:               "drun";
+  display-drun:       "apps";
+  columns: 2;
+}

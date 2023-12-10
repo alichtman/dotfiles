@@ -589,6 +589,7 @@ nnoremap <leader>sp :ScratchPreview<CR>
 
 " Find files using Telescope command-line sugar
 nnoremap <C-P>      <cmd>:lua vim.find_files_from_project_git_root()<CR>
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 " nnoremap /          <cmd>Telescope live_grep<cr>
 " nnoremap *          <cmd>Telescope grep_string<cr>

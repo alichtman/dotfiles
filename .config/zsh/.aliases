@@ -230,7 +230,7 @@ alias aliases="vim $XDG_CONFIG_HOME/zsh/.aliases"
 alias zfunctions="vim $XDG_CONFIG_HOME/zsh/.zfunctions"
 alias zshrc="vim $XDG_CONFIG_HOME/zsh/.zshrc"
 alias zshenv="vim $XDG_CONFIG_HOME/zsh/.zshenv"
-alias src-zshrc="source $XDG_CONFIG_HOME/zsh/.zshrc"
+alias srczshrc="source $XDG_CONFIG_HOME/zsh/.zshrc"
 alias vimrc="vim $XDG_CONFIG_HOME/nvim/init.vim"
 alias tmux.conf="vim $XDG_CONFIG_HOME/tmux/tmux.conf"
 

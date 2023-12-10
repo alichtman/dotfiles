@@ -6,7 +6,7 @@
 # 1. Sort out vim bindings
 #
 # }}}
-
+zmodload zsh/zprof
 OS="$(uname -s)"
 
 # Prompt {{{
@@ -85,7 +85,6 @@ zcomet load peterhurford/git-it-on.zsh
 zcomet load zdharma-continuum/fast-syntax-highlighting
 zcomet load zsh-users/zsh-autosuggestions
 
-zcomet compinit
 
 # END zcomet Plugins }}}
 
@@ -118,17 +117,14 @@ bindkey -M vicmd 'j' history-substring-search-down
 
 # END zsh-history-substring-search }}}
 
-
 # ruby / rbenv {{{
 # eval "$(rbenv init - zsh)"
 # }}}
 
 # Completions {{{
 
-CUSTOM_COMPLETIONS="$ZDOTDIR/completions"
-[ -d "$CUSTOM_COMPLETIONS" ] || mkdir "$CUSTOM_COMPLETIONS"
-rustup completions zsh cargo > "$CUSTOM_COMPLETIONS/_cargo"
-zcomet fpath $CUSTOM_COMPLETIONS
+# https://gist.github.com/ctechols/ca1035271ad134841284?permalink_comment_id=3401477#gistcomment-3401477
+skip_global_compinit=1
 
 # Automatically refresh completions
 zstyle ':completion:*' rehash true
@@ -181,9 +177,19 @@ bindkey . _rationalise-dot
 # without this, typing a . aborts incremental history search
 bindkey -M isearch . self-insert
 
+rustup completions zsh cargo > /usr/local/share/zsh-completions/_cargo
+
 # Load completions
 fpath=(/usr/local/share/zsh-completions $fpath)
-autoload -U compinit && compinit -d $XDG_CACHE_HOME/zcompdump/default
+
+autoload -Uz compinit
+if [ "$(find $ZDOTDIR/.zcompdump -mtime +1)" ] ; then
+  zcomet compinit
+  zcomet compdump
+fi
+# zcomet compinit
+compinit -d "${ZDOTDIR}/.zcompdump"
+
 
 # END Completion }}}
 
@@ -221,6 +227,22 @@ export SAVEHIST=$HISTSIZE
 export HISTFILE="$XDG_CACHE_HOME/.zsh_history"
 
 # END History }}}
+
+# nnn {{{
+
+export NNN_TMPFILE='/tmp/.lastd' # cd on exit
+export NNN_FIFO="/tmp/nnn.fifo"
+export NNN_ARCHIVE="\\.(7z|bz2|gz|tar|tgz|zip)$"
+export NNN_PLUG='f:finder;o:fzopen;p:preview-tabbed;d:diffs;t:nmount;v:imgview;u:upload;x:!chmod +x $nnn'
+export NNN_ORDER='t:/home/user/Downloads;S:/usr/bin'
+export NNN_TRASH=1 # trash-cli
+export NNN_HELP='pwy paris'
+
+# OneDark Colorscheme
+BLK="04" CHR="04" DIR="04" EXE="00" REG="00" HARDLINK="00" SYMLINK="06" MISSING="00" ORPHAN="01" FIFO="0F" SOCK="0F" OTHER="02"
+export NNN_FCOLORS="$BLK$CHR$DIR$EXE$REG$HARDLINK$SYMLINK$MISSING$ORPHAN$FIFO$SOCK$OTHER"
+
+# }}}
 
 # Vim Mode {{{
 
@@ -284,18 +306,13 @@ unset file
 
 # Startup Tools {{{
 
-function execute_cmd_if_exists() {
-    if hash "$1" 2>/dev/null; then
-        "$1"
-    fi
-}
-
-execute_cmd_if_exists year-progress
-
+year-progress
 
 if [ "$OS" = "Darwin" ]; then
 	test -e "${ZDOTDIR}/.iterm2_shell_integration.zsh" && source "${ZDOTDIR}/.iterm2_shell_integration.zsh" || true
 fi
+
+zprof
 
 # If tmux is not running already, start it in the Background
 if ! pgrep "tmux" > /dev/null
@@ -305,7 +322,9 @@ else
     # TODO: Need to make sure we're not in a typing-sensitive environment (like vim or a python repl)
     # tmux send -t default "/usr/bin/cat $ZDOTDIR/reattached-to-default-tmux-sesion-notice.txt" ENTER
     # tmux send -t default tls ENTER
-    tmux attach-session -t default
+    if [ -z "$TMUX" ]; then
+        tmux attach-session -t default
+    fi
 fi
 
 # List tmux sessions

@@ -18,6 +18,7 @@
         ".config/python": {},
         ".config/radare2/radare2rc": {},
         ".config/ranger": {},
+        ".config/rofi": {},
         ".config/shallow-backup.json": {},
         ".config/starship.toml": {},
         ".config/tmux": {},
