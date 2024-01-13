@@ -233,13 +233,16 @@ export HISTFILE="$XDG_CACHE_HOME/.zsh_history"
 export NNN_TMPFILE='/tmp/.lastd' # cd on exit
 export NNN_FIFO="/tmp/nnn.fifo"
 export NNN_ARCHIVE="\\.(7z|bz2|gz|tar|tgz|zip)$"
-export NNN_PLUG='f:finder;o:fzopen;p:preview-tabbed;d:diffs;t:nmount;v:imgview;u:upload;x:!chmod +x $nnn'
+export NNN_PLUG='f:finder;o:fzopen;O:!xdg-open $nnn;p:preview-tabbed;d:diffs;t:nmount;v:imgview;u:upload;x:!chmod +x $nnn'
 export NNN_ORDER='t:/home/user/Downloads;S:/usr/bin'
 export NNN_TRASH=1 # trash-cli
 export NNN_HELP='pwy paris'
 
 # OneDark Colorscheme
-BLK="04" CHR="04" DIR="04" EXE="00" REG="00" HARDLINK="00" SYMLINK="06" MISSING="00" ORPHAN="01" FIFO="0F" SOCK="0F" OTHER="02"
+# BLK="04" CHR="04" DIR="04" EXE="00" REG="00" HARDLINK="00" SYMLINK="06" MISSING="00" ORPHAN="01" FIFO="0F" SOCK="0F" OTHER="02"
+# export NNN_FCOLORS="$BLK$CHR$DIR$EXE$REG$HARDLINK$SYMLINK$MISSING$ORPHAN$FIFO$SOCK$OTHER"
+
+BLK="0B" CHR="0B" DIR="04" EXE="06" REG="01" HARDLINK="06" SYMLINK="06" MISSING="00" ORPHAN="09" FIFO="06" SOCK="0B" OTHER="06"
 export NNN_FCOLORS="$BLK$CHR$DIR$EXE$REG$HARDLINK$SYMLINK$MISSING$ORPHAN$FIFO$SOCK$OTHER"
 
 # }}}

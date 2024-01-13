@@ -23,8 +23,6 @@ call plug#begin()
 
 " Syntax Highlighting
 Plug 'sheerun/vim-polyglot'
-Plug 'kovetskiy/sxhkd-vim'
-Plug 'zdharma-continuum/zinit-vim-syntax'
 Plug 'wren/jrnl.vim'
 Plug 'prisma/vim-prisma'
 
@@ -95,7 +93,7 @@ Plug 'folke/twilight.nvim'
 " Highlight copied line
 Plug 'markonm/hlyank.vim'
 
-" Show leading spaces
+" Show leading spaces -- NOT NEEDED IN NEW CONFIG
 Plug 'Yggdroot/indentLine'
 
 " Register Preview
@@ -351,6 +349,7 @@ let g:thematic#themes = {
 " indentLine {{{
 
 " Show leading spaces
+" NOT NEEDED IN NEW CONFIG!
 let g:indentLine_leadingSpaceEnabled = 1
 let g:indentLine_leadingSpaceChar = '·'
 let g:indentLine_conceallevel = 0
@@ -366,17 +365,6 @@ let g:webdevicons_conceal_nerdtree_brackets = 0
 
 " END Vim Dev Icons }}}
 
-" Vista {{{
-
-" NOTE: Won't work for ctags, only the LSP executives
-" (https://github.com/liuchengxu/vista.vim#options)
-" let g:vista_default_executive = 'ctags'
-" let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
-" let g:vista#renderer#enable_icon = 1
-" let g:vista_fzf_preview = ['right:50%']
-
-" END Vista }}}
-
 " Numb.nim {{{
 
 :lua require('numb').setup()
@@ -387,20 +375,10 @@ let g:webdevicons_conceal_nerdtree_brackets = 0
 
 " AutoGroups {{{
 
-augroup setFoldMethodMarkerOnVimrc
-    autocmd!
-    autocmd FileType vim set foldmethod=marker
-augroup END
-
 augroup SpellCheckTextFiles
     autocmd!
     autocmd FileType * set nospell
     autocmd FileType jrnl,txt,md,markdown set spell
-augroup END
-
-augroup SetXMLSyntaxForPlist
-    autocmd!
-    au BufRead,BufNewFile *.plist set ft=xml
 augroup END
 
 " Folding {{{
@@ -409,6 +387,7 @@ augroup Folding
     autocmd!
     " TODO: What I really want is for this to apply to zshrc, vimrc and
     " tmux.conf, not all vim and tmux fts. Should be included in a modeline
+    autocmd FileType vim set foldmethod=marker
     autocmd FileType vim,tmux setlocal foldmethod=marker foldcolumn=2
     autocmd FileType python setlocal foldmethod=indent
 augroup END
@@ -417,6 +396,8 @@ augroup END
 
 " Automatically use absolute line numbers when we’re in insert mode
 " and relative numbers when we’re in normal mode.
+
+" Not needed in new config
 augroup LineNumbers
     autocmd!
     autocmd InsertEnter * :set number
@@ -434,9 +415,12 @@ augroup END
 
 augroup SetCorrectFiletype
     autocmd!
+    autocmd BufRead,BufNewFile *.plist set ft=xml
     autocmd BufRead,BufNewFile *.md set filetype=markdown
     autocmd BufRead,BufNewFile *.txt set filetype=text
     autocmd BufRead,BufNewFile *.jrnl set filetype=jrnl textwidth=0
+    autocmd BufNewFile,BufFilePre,BufRead *.js *.ts set tabstop=2
+
 augroup END
 
 augroup GitCommitFormat
@@ -455,9 +439,7 @@ augroup pandocSyntax
     au! BufNewFile,BufFilePre,BufRead *.md,*.jrnl set syntax=on
 augroup END
 
-augroup JavascriptSpaceing
-    autocmd!
-    au! BufNewFile,BufFilePre,BufRead *.js *.ts set tabstop=2
+
 augroup MarkdownConcealing
     autocmd!
     autocmd FileType markdown,pandoc set conceallevel=0
@@ -678,7 +660,6 @@ nnoremap <silent> <leader>s :set spell!<CR>
 " <C-n> remap for toggling filetree is provided by open-close.vim
 nnoremap <C-n> :call ToggleFileTree()<cr>
 nnoremap <leader>u :UndotreeToggle<cr>
-" nnoremap <Leader>v :Vista!!<CR>
 nnoremap <Leader>v :lua require'telescope.builtin'.treesitter{}<CR>
 
 " Turn off search highlighting
@@ -699,6 +680,8 @@ vnoremap <A-/> <plug>NERDCommenterToggle<CR>gv
 
 " END Remappings }}}
 
+" TODO: PORTED THROUGH HERE!
+
 " Writing {{{
 
 " Note that this dictionary is purely for spelling correction and does not
@@ -718,6 +701,8 @@ let g:pandoc#filetypes#pandoc_markdown = 0
 " END vim-pandoc }}}
 
 " vim-pandoc-syntax {{{
+
+" TODO: Port?
 
 let g:pandoc#syntax#conceal#urls = 0
 let g:pandoc#syntax#conceal#blacklist = [ "codeblock_start", "codeblock_delim", "image", "block" ]

@@ -13,6 +13,7 @@
         ".config/newsboat/urls": {},
         ".config/newsboat/config": {},
         ".config/nvim": {},
+        ".config/nvim-lazyvim": {},
         ".config/pycodestyle": {},
         ".config/pylintrc": {},
         ".config/python": {},

@@ -49,7 +49,7 @@
 [github]
 	user = alichtman
 [gpg]
-	program = gpg
+	program = gpg2
 [interactive]
 	diffFilter = diff-so-fancy --patch
 [blame]
