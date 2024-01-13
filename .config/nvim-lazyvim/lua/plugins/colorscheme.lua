@@ -1,17 +1,35 @@
 vim.opt.termguicolors = true
-vim.g.gruvbox_contrast_dark = "dark"
-vim.g.palenight_terminal_italics = 1
-
-vim.g.daycula_current_word = "bold"
-
-vim.g.everforest_background = "hard"
-vim.g.everforest_better_performance = 1
-vim.g.everforest_enable_italic = 1
-
--- TODO: Add all of the other colorschemes, and something like thematic
 
 -- Ignore colorschemes that I'll never use
-vim.opt.wildignore = vim.opt.wildignore + { "blue.vim", "darkblue.vim", "industry.vim", "zaibatsu.vim", "zellner.vim" }
+vim.opt.wildignore = vim.opt.wildignore
+  + {
+    "blue.vim",
+    "darkblue.vim",
+    "default.vim",
+    "delek.vim",
+    "desert.vim",
+    "elflord.vim",
+    "evening.vim",
+    "lunaperche.vim",
+    "habamax.vim",
+    "industry.vim",
+    "koehler.vim",
+    "morning.vim",
+    "murphy.vim",
+    "ron.vim",
+    "ron.vim",
+    "pablo.vim",
+    "slate.vim",
+    "vim",
+    "rose-pine.vim",
+    "sorbet.vim",
+    "torte.vim",
+    "wildcharm.vim",
+    "zaibatsu.vim",
+    "zellner.vim",
+  }
+
+-- NOTE: If you want colorschemes to show up in the picker, you CAN NOT lazy load them
 
 return {
   {
@@ -43,12 +61,57 @@ return {
       dim_inactive = false,
       transparent_mode = false,
     },
+    config = function()
+      vim.g.gruvbox_contrast_dark = "dark"
+      require("lualine").setup({
+        options = {
+          theme = "gruvbox",
+        },
+      })
+    end,
   },
 
-  { "shaunsingh/oxocarbon.nvim" },
+  {
+    "sainnhe/everforest",
+    lazy = false,
+    config = function()
+      vim.g.everforest_background = "hard"
+      vim.g.everforest_better_performance = 1
+      vim.g.everforest_enable_italic = 1
+      require("lualine").setup({
+        options = {
+          theme = "everforest",
+        },
+      })
+    end,
+  },
+  {
+    "drewtempelmeyer/palenight.vim",
+    lazy = false,
+    config = function()
+      vim.g.palenight_terminal_italics = 1
+      require("lualine").setup({
+        options = {
+          theme = "palenight",
+        },
+      })
+    end,
+  },
+  { "mhartington/oceanic-next", name = "OceanicNext", lazy = false },
+  { "reedes/vim-colors-pencil", lazy = false },
+  {
+    "ghifarit53/daycula-vim",
+    lazy = false,
+    config = function()
+      vim.g.daycula_current_word = "bold"
 
-  { "rose-pine/neovim", name = "rose-pine" },
-
+      require("lualine").setup({
+        options = {
+          theme = "nightfly",
+        },
+      })
+    end,
+  },
   {
     "folke/tokyonight.nvim",
     lazy = true,
@@ -69,29 +132,6 @@ return {
           "startuptime",
           "Outline",
         },
-        on_colors = function(c)
-          -- local hsluv = require("tokyonight.hsluv")
-          -- local function randomColor(color)
-          --   if color ~= "NONE" then
-          --     local hsl = hsluv.hex_to_hsluv(color)
-          --     hsl[1] = math.random(0, 360)
-          --     return hsluv.hsluv_to_hex(hsl)
-          --   end
-          --   return color
-          -- end
-          -- local function set(colors)
-          --   if type(colors) == "table" then
-          --     for k, v in pairs(colors) do
-          --       if type(v) == "string" then
-          --         colors[k] = randomColor(v)
-          --       elseif type(v) == "table" then
-          --         set(v)
-          --       end
-          --     end
-          --   end
-          -- end
-          -- set(c)
-        end,
         on_highlights = function(hl, c)
           hl.CursorLineNr = { fg = c.orange, bold = true }
           -- hl.LineNr = { fg = c.orange, bold = true }
@@ -108,5 +148,12 @@ return {
         end,
       }
     end,
+  },
+
+  {
+    "LazyVim/LazyVim",
+    opts = {
+      colorscheme = "gruvbox",
+    },
   },
 }

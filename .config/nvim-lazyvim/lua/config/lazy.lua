@@ -13,9 +13,6 @@ require("lazy").setup({
     {
       "LazyVim/LazyVim",
       import = "lazyvim.plugins",
-      opts = {
-        colorscheme = { "gruvbox" },
-      },
     },
     { import = "lazyvim.plugins.extras.coding.copilot" },
     -- import any extras modules here

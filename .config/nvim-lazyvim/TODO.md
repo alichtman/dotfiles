@@ -1,14 +1,11 @@
--   configure lualine
--   get commenting working
--   bullets.vim
--   treesitter config
--   Auto-close vim when the only buffer remaining is neo-tree
--   telescope
--   suda.vim
--   python
--   completion / linting
-    -   tab complete
--   All the open TODOs
--   It crashes occasionally
--   set foldmethod to indent on python files
--   vim-illuminate highlight background
+# TODOs
+
+- configure lualine
+- bullets.vim
+- treesitter config
+- Auto-close vim when the only buffer remaining is neo-tree
+- suda.vim
+- python
+- completion / linting
+- All the open TODOs
+- It crashes occasionally

@@ -105,7 +105,7 @@ vim.keymap.set("x", "@", '":norm @" . getcharstr() . "<cr>"', { expr = true })
 -- vnoremap <A-/> <plug>NERDCommenterToggle<CR>gv
 
 -- TODO: Doesn't work
-vim.cmd("nmap s <Plug>(easymotion-overwin-f2)")
+--vim.cmd("nmap s <Plug>(easymotion-overwin-f2)")
 
 -- If you write with a visual block selected, ignore the "write partial file" feature
 vim.cmd([[ cabbrev <expr> w getcmdtype()==':' && getcmdline() == "'<,'>w" ? '<c-u>w' : 'w' ]])

@@ -1,9 +1,7 @@
 -- Abbreviations {{{
 
--- TODO: Doesn't work!
-
 -- Insert timestamp
-vim.cmd('iabbrev <expr> dts strftime("%a, %b %d, %Y -- %X")')
+vim.cmd("iabbrev dts " .. os.date("%a, %b %d, %Y -- %X"), { expr = true })
 
 -- Spelling corrections
 
@@ -13,12 +11,10 @@ vim.cmd.iabbrev({
   "by",
 })
 
-vim.cmd({
+vim.cmd.iabbrev({
   "<buffer>",
   "ni",
   "in",
 })
-
-vim.cmd("iabbrev <buffer> true True")
 
 -- END Abbreviations }}}

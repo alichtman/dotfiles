@@ -52,9 +52,9 @@ return {
                 enabled = true,
                 auto_trigger = true,
                 keymap = {
-                    accept = "<A-l>",
-                    accept_line = "<A-;>",
-                    accept_word = "<A-,>",
+                    accept = "<C-l>",
+                    accept_line = "<C-;>",
+                    accept_word = "<C-,>",
                 }
             },
             panel = {
@@ -63,9 +63,9 @@ return {
                 keymap = {
                     jump_prev = "[[",
                     jump_next = "]]",
-                    accept = "<A-l>",
-                    accept_line = "<A-;>",
-                    accept_word = "<A-,>",
+                    accept = "<C-l>",
+                    accept_line = "<C-;>",
+                    accept_word = "<C-,>",
                     refresh = "gr",
                     open = "<M-CR>",
                 },
