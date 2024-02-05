@@ -17,7 +17,7 @@ XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 
 # greenclip clipboard history
 # source: https://github.com/erebe/greenclip
-COMMANDS["clipboard"]="rofi -modi 'clipboard:$HOME/bin/greenclip print' -show clipboard"
+COMMANDS["clipboard"]="$XDG_CONFIG_HOME/rofi/scripts/rofi-gpaste"
 
 COMMANDS["windows"]='rofi -show window'
 
@@ -52,24 +52,20 @@ COMMANDS["locate"]="$XDG_CONFIG_HOME/rofi/scripts/rofi-locate.sh"
 ##
 # Generate menu
 ##
-function print_menu()
-{
-    for key in "${!COMMANDS[@]}"
-    do
-      echo "$key"
-    done
+function print_menu() {
+	for key in "${!COMMANDS[@]}"; do
+		echo "$key"
+	done
 }
 
 ##
 # Show rofi.
 ##
-function start()
-{
-    # print_menu | rofi -dmenu -p "?=>"
-    print_menu | sort | rofi -dmenu -mesg ">>> Your collection of rofi integrations" -i -p "rofi-bangs"
+function start() {
+	# print_menu | rofi -dmenu -p "?=>"
+	print_menu | sort | rofi -dmenu -mesg ">>> Your collection of rofi integrations" -i -p "rofi-bangs"
 
 }
-
 
 # Run it
 value="$(start)"
@@ -82,19 +78,17 @@ choice=${value%%\ *}
 ##
 # Cancelled? bail out
 ##
-if test -z "${choice}"
-then
-    exit
+if test -z "${choice}"; then
+	exit
 fi
 
 # check if choice exists
-if test ${COMMANDS[$choice]+isset}
-then
-    # Execute the choice
-    eval echo "Executing: ${COMMANDS[$choice]}"
-    eval "${COMMANDS[$choice]}"
+if test ${COMMANDS[$choice]+isset}; then
+	# Execute the choice
+	eval echo "Executing: ${COMMANDS[$choice]}"
+	eval "${COMMANDS[$choice]}"
 else
-    eval  "$choice" | rofi
- # prefer my above so I can use this same script to also launch apps like geany or leafpad etc (DK)
- #   echo "Unknown command: ${choice}" | rofi -dmenu -p "error"
+	eval "$choice" | rofi
+	# prefer my above so I can use this same script to also launch apps like geany or leafpad etc (DK)
+	#   echo "Unknown command: ${choice}" | rofi -dmenu -p "error"
 fi

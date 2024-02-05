@@ -5,7 +5,7 @@ colors:
   title: blue
 default_hour: 9
 default_minute: 0
-editor: nvim
+editor: lazyvim.sh
 encrypt: false
 highlight: true
 indent_character: "|"
@@ -16,4 +16,4 @@ linewrap: auto
 tagsymbols: "@"
 template: false
 timeformat: "%Y-%m-%d %H:%M"
-version: v4.0.1
+version: v4.1

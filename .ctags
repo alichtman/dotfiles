@@ -1,7 +1,0 @@
---recurse=yes
---tag-relative=yes
---exclude=.DS_Store
---exclude=*.git*
---exclude=*.pyc
-
---python-kinds=-i

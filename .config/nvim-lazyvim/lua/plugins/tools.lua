@@ -1,11 +1,5 @@
 return {
 
-  { -- TODO: Doesn't work!
-    "nacro90/numb.nvim",
-    config = function(_)
-      require("numb").setup()
-    end,
-  },
   { "ggandor/leap.nvim" },
 
   -- Unix Tools

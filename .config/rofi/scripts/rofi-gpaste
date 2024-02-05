@@ -1,0 +1,381 @@
+#!/bin/bash
+# Rofi frontend for GPaste.
+# ---
+# @author:  Yusuf Aktepe <yusuf@yusufaktepe.com>
+# @url:     https://github.com/yusufaktepe/rofi-gpaste
+# @license: GPL-3.0
+# ---
+# Dependencies:
+#   rofi, gpaste, xclip, xdotool, sed, coreutils, zenity
+
+# Key bindings
+Kb_Clear='Alt+c'
+Kb_Toggle='Alt+p'
+Kb_Delete='Alt+d'
+Kb_Edit='Alt+e'
+Kb_Archive='Alt+s'
+Kb_Hist='Alt+h'
+Kb_Paste='Alt+Return'
+Kb_QR='Alt+q'
+Kb_Save='Alt+o'
+Kb_Backup='Alt+B'
+Kb_Switch_Main='Alt+1'
+Kb_Switch_Archive='Alt+2'
+Kb_LaunchGUI='F1'
+
+Editor=xdg-open       # Editor to use for Edit action
+ImageViewer=xdg-open  # Image Viewer to use for images/qr codes
+PromptPrefix=' '     # Prefix symbol/text for rofi prompt
+
+# Rofi command
+_rofi() {
+	# Increase window width by adding:
+	#     -theme-str 'window {width: 60%;}'
+	rofi -dmenu -i -l 10 "$@"
+}
+
+ConfigFile=${XDG_CONFIG_HOME:-$HOME/.config}/rofi-gpaste.conf
+[ -f "$ConfigFile" ] && source "$ConfigFile"
+
+Script=${0##*/}
+GpasteDir=${XDG_DATA_HOME:-$HOME/.local/share}/gpaste
+
+usage() {
+	while read -r Usage; do
+		printf '%b\n' "$Usage"
+	done <<-EOF
+		Usage: $Script [OPT]
+
+		\r  -c, --clear        - Clear history
+		\r  -H, --histories    - Histories menu
+		\r  -i, --input        - Read stdin into clipboard
+		\r  -d, --delete [1-9] - Delete clipboard item by index
+		\r  -p, --paste [1-9]  - Paste clipboard item by index
+		\r  -s, --selpaste     - Paste selection
+		\r  -S, --seltoclip    - Move selection to clipboard
+		\r  -t, --toggle       - Toggle tracking clipboard changes
+		\r  -D, --debug [OPT]  - Run script in debug mode
+		\r  -h, --help         - Displays this help information
+		\r  *                  - Pass option(s) to \`gpaste-client\`
+
+		\r If no option is given, rofi menu is displayed.
+
+		\r  Rofi shortcuts:
+		\r    - Clear history                 - $Kb_Clear
+		\r    - Toggle tracking changes       - $Kb_Toggle
+		\r    - Delete selected item          - $Kb_Delete
+		\r    - Edit selected item            - $Kb_Edit
+		\r    - Archive selected item         - $Kb_Archive
+		\r    - Backup current history        - $Kb_Backup
+		\r    - List and switch histories     - $Kb_Hist
+		\r    - Paste selected item           - $Kb_Paste
+		\r    - Display QR code               - $Kb_QR
+		\r    - Save selected item to a file  - $Kb_Save
+		\r    - Switch to main clipboard      - $Kb_Switch_Main
+		\r    - Switch to clipboard archive   - $Kb_Switch_Archive
+		\r    - Launch GPaste GUI             - $Kb_LaunchGUI
+		\r    - Activate selected item OR
+		\r      add user input to clipboard   - Return
+		\r
+
+		\r    Histories menu
+		\r      - Delete selected history     - $Kb_Delete
+		\r      - Rename selected history     - $Kb_Edit
+		\r      - Return to active history    - $Kb_Hist
+		\r      - Switch to history OR
+		\r        create new one with input   - Return
+
+	EOF
+}
+
+# Start the daemon if it's not running
+pidof -q gpaste-daemon || setsid -f gpaste-client daemon >/dev/null 2>&1
+
+dep_check() {
+	for Dep in "$@"; do
+		command -v "$Dep" 1>/dev/null || {
+			printf 'Err: %s\n' "Dependency '$Dep' not met."
+			exit 1
+		}
+	done
+}
+
+print_history() {
+	# Hide UUIDs and leading whitespace
+	while IFS=: read -r _ Item; do
+		[ -z "$Item" ] && break
+		printf '%.1000s\n' "${Item#"${Item%%[![:space:]]*}"}"
+	done <<< "$(gpaste-client --oneline)"
+}
+
+print_item() {
+	# Remove blank lines from the beginning/end
+	Item=$(gpaste-client --use-index get "$1")
+	printf '%s\n' "${Item#"${Item%%[![:space:]]*}"}"
+}
+
+item() {
+	local Action=$1; shift
+	[ "$1" -eq -1 ] && exit 1
+	gpaste-client --use-index "$Action" "$@" 2>/dev/null
+}
+
+get_uuid() {
+	IFS=: read -r UUID _ <<< "$(gpaste-client --oneline | sed -n $(($1+1))p)"
+}
+
+check_image() {
+	Status=$(dconf read /org/gnome/GPaste/images-support)
+	${Status:-false} || return 1
+
+	Index=$1; shift
+
+	read -r Line <<< "$(print_item "$Index")"
+	[[ $Line =~ ^(\[Image, [0-9]+ x [0-9]+ \(.*:[0-9]+\)])$ ]] && {
+		ImgFile=$(gpaste-client --use-index --raw get "$Index")
+		Image=true
+	}
+
+	${Image:=false} && {
+		[ "$1" = --disable ] && {
+			printf 'Err: %s\n' "'$2' shortcut is not available for images."
+			exit 1
+		}
+		return 0
+	}
+}
+
+edit_item() {
+	[ "$1" -eq -1 ] && exit 1
+
+	check_image "$1" && {
+		[ -e "$ImgFile" ] && setsid -f $ImageViewer "$ImgFile" >/dev/null 2>&1
+		exit
+	}
+
+	get_uuid "$1" # Use UUID instead of Index (Index may shift during edit)
+
+	TmpFile=$(mktemp "/tmp/$Script.XXXX")
+	Item=$(print_item "$1" | tee "$TmpFile")
+
+	gpaste-client stop # Stop tracking to prevent index from shifting
+
+	# Check if we need a terminal window
+	if [ -t 2 ]; then
+		${EDITOR:-$Editor} "$TmpFile"
+	else
+		$Editor "$TmpFile" >/dev/null 2>&1
+	fi
+
+	gpaste-client start
+
+	TmpFileCont=$(< "$TmpFile")
+	if [ -z "${TmpFileCont#"${TmpFileCont%%[![:space:]]*}"}" ]; then
+		gpaste-client delete "$UUID" 2>/dev/null
+	elif [ "$Item" != "$TmpFileCont" ]; then
+		gpaste-client replace "$UUID" -- "$TmpFileCont" 2>/dev/null || {
+			# If UUID no longer exists, create a new one instead
+			Ret=$? # 126: Argument list too long
+			[ $Ret = 126 ] && gpaste-client delete "$UUID" 2>/dev/null
+			gpaste-client < "$TmpFile"
+			Index=
+		}
+	fi
+	rm -f "$TmpFile"
+}
+
+archive_item() {
+	[ "$1" -eq -1 ] && exit 1
+
+	[ "$HistName" = archive ] && return
+
+	check_image "$1" --disable Archive
+
+	Item=$(print_item "$1")
+	gpaste-client switch-history archive
+	gpaste-client add -- "$Item"
+	gpaste-client switch-history history
+}
+
+toggle_track() {
+	Status=$(dconf read /org/gnome/GPaste/track-changes)
+
+	{ ${Status:-true} && gpaste-client stop ;} || gpaste-client start
+}
+
+paste_clip() {
+	dep_check xdotool xclip
+
+	item select "$1" && check_image 0
+
+	# Send 'Ctrl+v' or 'Shift+Insert' depending on the active window
+	# Because `xdotool type` is unreliable and slow
+	WM_CLASS=$(xdotool getactivewindow getwindowclassname)
+
+	case ${WM_CLASS,,} in
+		alacritty|kitty|st*|*term|*terminal|konsole|terminator|urxvt|zutty)
+			{ [ -n "$ImgFile" ] && xclip -r <<< "$ImgFile" ;} ||
+				xclip -o -selection c | xclip -r
+			xdotool key --delay 0 --clearmodifiers Shift+Insert ;;
+		*)
+			xdotool key --delay 0 --clearmodifiers Ctrl+v ;;
+	esac
+}
+
+paste_selection() {
+	dep_check xdotool xclip
+
+	sleep .5
+	xdotool type --delay 0 --clearmodifiers -- "$(xclip -o 2>/dev/null)"
+}
+
+qr_code() {
+	[ "$1" -eq -1 ] && exit 1
+
+	dep_check qrencode
+	check_image "$1" --disable 'QR Code'
+
+	TmpQR=$(mktemp --suffix=.png "/tmp/${Script}_qr.XXXX")
+	print_item "$1" | qrencode -s 10 -d 300 -v 8 -l H -o "$TmpQR"
+
+	$ImageViewer "$TmpQR" >/dev/null 2>&1 && rm -f "$TmpQR"
+}
+
+save_item() {
+	[ "$1" -eq -1 ] && exit 1
+
+	dep_check zenity
+	check_image "$1" && { [ -e "$ImgFile" ] && Suffix=.png || exit ;}
+
+	File=$(zenity --file-selection --filename="$HOME/$Suffix" \
+		--save --confirm-overwrite --title "Save Clip" 2>/dev/null)
+
+	[ -n "$File" ] && {
+		$Image && cp "$ImgFile" "$File" && return
+		print_item "$1" > "$File"
+	}
+}
+
+clear_history() {
+	[ "$HistName" = archive ] &&
+		Confirm=$(printf 'Yes\nNo' | _rofi -no-custom -p "Clear $HistName?")
+
+	[ "${Confirm:-Yes}" = Yes ] && {
+		gpaste-client empty
+		for Sel in p c; do printf '' | xclip -selection $Sel; done
+		gpaste-client switch-history history
+	}
+}
+
+backup_history() {
+	BackupName=${HistName}_$(date +%Y-%m-%d_%H-%M-%S)
+	gpaste-client backup-history "$BackupName"
+}
+
+rename_history() {
+	HistRename=$(_rofi -p "${PromptPrefix}Rename: $HistSelected ❯" -filter "$HistSelected")
+	[ -n "$HistRename" ] && [ "$HistSelected" != "$HistRename"  ] &&
+		mv "$GpasteDir/$1.xml" "$GpasteDir/$HistRename.xml"
+}
+
+menu_histories() {
+	HistSelected=$(
+		gpaste-client list-histories | _rofi -format 'i:s' \
+			-p "${PromptPrefix}Histories" \
+			-selected-row "${HistIndex:-0}" \
+			-kb-custom-1 "$Kb_Delete" \
+			-kb-custom-2 "$Kb_Edit" \
+			-kb-custom-3 "$Kb_Hist"
+	)
+	Ret=$?
+	Index=${HistSelected%%:*}
+	HistSelected=${HistSelected#*:}
+
+	case $Ret in
+		10) gpaste-client delete-history "$HistSelected"; HistIndex=$Index exec "$0" -H ;;
+		11) rename_history "$HistSelected"; HistIndex=$Index exec "$0" -H ;;
+		12) exec "$0" ;;
+		0)  [ -n "$HistSelected" ] && gpaste-client switch-history "$HistSelected"; exec "$0" ;;
+		*)  exit $Ret
+	esac
+}
+
+menu() {
+	HistName=$(gpaste-client get-history)
+
+	Clip=$(
+		print_history | _rofi -format 'i:s' \
+			-p "${PromptPrefix}$HistName" \
+			-selected-row "${Index:-0}" \
+			-kb-custom-1 "$Kb_Clear" \
+			-kb-custom-2 "$Kb_Toggle" \
+			-kb-custom-3 "$Kb_Delete" \
+			-kb-custom-4 "$Kb_Edit" \
+			-kb-custom-5 "$Kb_Archive" \
+			-kb-custom-6 "$Kb_Backup" \
+			-kb-custom-7 "$Kb_Hist" \
+			-kb-custom-8 "$Kb_Paste" \
+			-kb-custom-9 "$Kb_QR" \
+			-kb-custom-10 "$Kb_Save" \
+			-kb-custom-11 "$Kb_Switch_Main" \
+			-kb-custom-12 "$Kb_Switch_Archive" \
+			-kb-custom-13 "$Kb_LaunchGUI"
+	)
+	Ret=$?
+	Index=${Clip%%:*}
+
+	[ -z "$Index" ] && exit
+
+	case $Ret in
+		10) clear_history ;;
+		11) toggle_track ;;
+		12) item delete "$Index"; Index=$Index exec "$0" ;;
+		13) edit_item "$Index"; Index=$Index exec "$0" ;;
+		14) archive_item "$Index"; Index=$Index exec "$0" ;;
+		15) backup_history; Index=$Index exec "$0" ;;
+		16) menu_histories ;;
+		17) paste_clip "$Index" ;;
+		18) qr_code "$Index" ;;
+		19) save_item "$Index" ;;
+		20) gpaste-client switch-history history; exec "$0" ;;
+		21) gpaste-client switch-history archive; exec "$0" ;;
+		22) gpaste-client ui ;;
+		0)  { [ "$Index" -lt 0 ] && printf '%s' "${Clip#*:}" | gpaste-client ;} || item select "$Index" ;;
+		*)  exit $Ret
+	esac
+}
+
+is_index() {
+	[ -n "${1##*[!1-9]*}" ] || {
+		printf '%s\n' "Please provide an index [1-9]+"
+		exit 1
+	}
+}
+
+case $1 in
+	-c|--clear)
+		clear_history ;;
+	-H|--histories)
+		menu_histories ;;
+	-d|--delete)
+		is_index "$2" && item delete $(($2-1)) ;;
+	-p|--paste)
+		is_index "$2" && paste_clip $(($2-1)) ;;
+	-s|--selpaste)
+		paste_selection ;;
+	-S|--seltoclip)
+		xclip -o | gpaste-client ;;
+	-t|--toggle)
+		toggle_track ;;
+	-i|--input)
+		gpaste-client >/dev/null ;;
+	-D|--debug)
+		shift; set -x; export SHELLOPTS; exec $0 "$@" ;;
+	-h|--help)
+		usage ;;
+	"")
+		menu ;;
+	*)
+		gpaste-client "$@"
+esac
+

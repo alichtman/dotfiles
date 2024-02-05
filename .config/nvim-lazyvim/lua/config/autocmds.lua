@@ -47,6 +47,17 @@ vim.api.nvim_create_autocmd("FileType", {
 -- augroup END
 -- END Spellcheck }}}
 
+-- Remove Trailing Whitespace {{{
+
+vim.api.nvim_create_augroup("RemoveTrailingWhitespace", {})
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+  group = "RemoveTrailingWhitespace",
+  pattern = { "*" },
+  command = [[%s/\s\+$//e]],
+})
+
+-- END Remove Trailing Whitespace }}}
+
 -- Indentation {{{
 
 vim.api.nvim_create_augroup("Indentation", {})

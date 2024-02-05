@@ -140,3 +140,10 @@ vim.opt.dictionary = "/usr/share/dict/words"
 vim.opt.thesaurus = "~/.config/nvim/thesaurus/mthesaur.txt"
 
 -- END Dictionary and Thesaurus }}}
+
+-- Suda {{{
+
+-- This shouldn't have to be set here, but it doesn't work in the suda.lua config
+vim.g.suda_smart_edit = 1
+
+-- END Suda }}}

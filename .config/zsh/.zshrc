@@ -80,7 +80,6 @@ zcomet load rupa/z
 zcomet load zsh-users/zsh-completions
 zcomet load zsh-users/zsh-history-substring-search
 zcomet load changyuheng/zsh-interactive-cd
-zcomet load peterhurford/git-it-on.zsh
  # zcomet load softmoth/zsh-vim-mode
 zcomet load zdharma-continuum/fast-syntax-highlighting
 zcomet load zsh-users/zsh-autosuggestions
@@ -307,9 +306,10 @@ unset file
 
 # END Sourcing Other Files }}}
 
-# Startup Tools {{{
+# Startup Tools / Sequence {{{
 
 year-progress
+tls
 
 if [ "$OS" = "Darwin" ]; then
 	test -e "${ZDOTDIR}/.iterm2_shell_integration.zsh" && source "${ZDOTDIR}/.iterm2_shell_integration.zsh" || true
@@ -324,6 +324,9 @@ else
     # tmux send -t default "/usr/bin/cat $ZDOTDIR/reattached-to-default-tmux-sesion-notice.txt" ENTER
     # tmux send -t default tls ENTER
     if [ -z "$TMUX" ]; then
+        # If default session doesn't exist, create it
+        tmux has-session -t default || tmux new-session -d -s default
+        # then attach to it
         tmux attach-session -t default
     fi
 fi

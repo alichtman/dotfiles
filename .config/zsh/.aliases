@@ -81,8 +81,7 @@ alias yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"'
 
 # git / GitHub {{{
 
-alias git='hub'
-alias pr='hub pull-request'
+alias gitit="gh browse > /dev/null 2>&1"
 alias changelog='github_changelog_generator'
 alias mdpreview='grip -b'
 

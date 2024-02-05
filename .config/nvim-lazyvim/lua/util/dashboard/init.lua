@@ -13,13 +13,7 @@ function M.setup()
   end
 end
 
-function M.status()
-  return require("util.dashboard.config").get_theme().statusline
-end
-
 function M.show()
-  local theme = require("util.dashboard.config").get_theme()
-
   local buf = vim.api.nvim_get_current_buf()
   vim.bo[buf].filetype = "dashboard"
   M.set_options()
@@ -29,17 +23,13 @@ function M.show()
     {
       text = string.rep("\n", 10),
     },
-    {
-      text = theme.header .. string.rep("\n", 2),
-      hl_group = "DashboardHeader",
-    },
+    {},
     {
       text = "🎉 Neovim loaded "
         .. stats.count
         .. " plugins in "
         .. (math.floor(stats.startuptime * 100 + 0.5) / 100)
-        .. "ms"
-        .. theme.statusline,
+        .. "ms",
       hl_group = "DashboardFooter",
     },
   }

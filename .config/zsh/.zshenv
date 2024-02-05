@@ -42,6 +42,7 @@ export XDG_STATE_HOME="$HOME/.local/state"
 # House Cleaning (~ cleanup)
 ############################
 
+export BUNDLE_USER_HOME="$XDG_CACHE_HOME"/bundle
 export WEGORC="$XDG_CONFIG_HOME"/wegorc
 export IRBRC="$XDG_CONFIG_HOME"/irb/irbrc
 export ELECTRUMDIR="$XDG_DATA_HOME"/electrum
@@ -233,7 +234,7 @@ fi
 # If pyenv is on PATH, load it and set the python interpreter version.
 if hash pyenv; then
     eval "$(pyenv init -)"
-    pyenv global 3.12.0
+    pyenv global 3.11.3
 fi
 
 # Go Env
@@ -251,7 +252,8 @@ export RANGER_LOAD_DEFAULT_RC=FALSE
 ###############
 
 if [ "$OS" = "Linux" ]; then
-    pgrep greenclip >/dev/null || (bash -c "greenclip daemon > /dev/null 2>&1 &")
+    # I use gpaste now
+    #pgrep greenclip >/dev/null || (bash -c "greenclip daemon > /dev/null 2>&1 &")
 fi
 
 # Needed to build things with alsa. Idk why this isn't set by default?

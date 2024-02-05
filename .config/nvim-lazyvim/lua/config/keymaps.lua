@@ -88,24 +88,12 @@ vim.keymap.set("i", "<Down>", "<C-o>gj", { noremap = true, buffer = true, silent
 -- Toggle spell check
 vim.keymap.set("n", "[]s", ":set spell!<CR>", { desc = "Toggle spell check" })
 
--- TODO: Set up remappings for the file tree
--- nnoremap <C-n> :call ToggleFileTree()<cr>
-
 -- TODO: Markdown Preview
 -- nnoremap <silent> <leader>mp :GripStop<cr> :GripStart<cr>
 -- nnoremap <silent> <leader>mpp :Pandoc pdf<cr>
 
 -- Run macro over visual range with @REG
 vim.keymap.set("x", "@", '":norm @" . getcharstr() . "<cr>"', { expr = true })
-
--- Match VSCode commenting hotkeys
--- nnoremap <A-/> <plug>NERDCommenterToggle
---  NOTE: This behavior depends on the comment state of the top-most line. If it
--- is commented, all selected lines are commented, and vice-versa
--- vnoremap <A-/> <plug>NERDCommenterToggle<CR>gv
-
--- TODO: Doesn't work
---vim.cmd("nmap s <Plug>(easymotion-overwin-f2)")
 
 -- If you write with a visual block selected, ignore the "write partial file" feature
 vim.cmd([[ cabbrev <expr> w getcmdtype()==':' && getcmdline() == "'<,'>w" ? '<c-u>w' : 'w' ]])
