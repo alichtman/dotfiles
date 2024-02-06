@@ -34,7 +34,7 @@ vim.opt.wildignore = vim.opt.wildignore
 return {
   {
     "ellisonleao/gruvbox.nvim",
-    name = "gruvbox",
+    dependencies = { "nvim-lualine/lualine.nvim" },
     lazy = false, -- make sure we load this during startup if it is your main colorscheme
     priority = 1000, -- make sure to load this before all the other start plugins
     opts = {
@@ -65,7 +65,8 @@ return {
       vim.g.gruvbox_contrast_dark = "dark"
       require("lualine").setup({
         options = {
-          theme = "gruvbox",
+          theme = "palenight",
+          --theme = "nightfly",
         },
       })
     end,

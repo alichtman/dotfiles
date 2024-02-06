@@ -203,21 +203,6 @@ vim.api.nvim_create_autocmd("InsertLeave", {
 
 -- END NoPasteAfterLeavingInsertMode }}}
 
--- HighlightCurrentWord {{{
-
--- TODO: Not sure if I need this anymore?
-
--- vim.api.nvim_create_augroup('HighlightCurrentWord', {})
--- vim.api.nvim_create_autocmd('CursorHold', {
--- group = 'HighlightCurrentWord',
--- pattern = { '*' },
--- callback = function()
--- vim.cmd('silent call CocActionAsync("highlight")')
--- end
--- })
---
--- END HighlightCurrentWord }}}
-
 -- Auto Close vim {{{
 
 vim.api.nvim_create_augroup("AutoCloseVim", {})

@@ -90,6 +90,7 @@ vim.opt.hlsearch = true -- Highlight search terms
 vim.opt.ignorecase = true -- Case insensitive search
 vim.opt.inccommand = "nosplit" -- Show regex replacement changes as you're typing
 vim.opt.smartcase = true -- Case sensitive if we type an uppercase
+vim.opt.mousemodel = "extend"
 
 -- END Search }}}
 

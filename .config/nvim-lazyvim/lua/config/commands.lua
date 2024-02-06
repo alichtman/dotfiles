@@ -24,6 +24,7 @@ end, { bang = true })
 vim.api.nvim_create_user_command("Wq", function()
   vim.cmd("wq")
 end, { bang = true })
+
 vim.api.nvim_create_user_command("W", function()
   vim.cmd("w")
 end, { bang = true })

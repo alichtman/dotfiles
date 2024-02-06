@@ -8,7 +8,8 @@ return {
 
   init = function()
     vim.g.scratch_no_mappings = 1
-    vim.g.scratch_persistence_file = "~/scratchpad/vim-scratchpad.txt"
+    vim.g.scratch_persistence_file = "$XDG_DATA_HOME/vim-scratchpad.txt"
+    vim.g.scratch_insert_autohide = 0
     vim.g.scratch_autohide = 0
   end,
 }

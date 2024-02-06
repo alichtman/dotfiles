@@ -4,11 +4,7 @@
 
 local Util = require("lazyvim.util")
 
--- Disable right-click menu
-vim.keymap.set("n", "<RightMouse>", "<Nop>", { noremap = true, silent = true })
-
 -- Quickly edit important configs
-
 vim.keymap.set("n", "<leader>ev", Util.telescope.config_files(), { silent = true, desc = "Edit vim config" })
 vim.keymap.set("n", "<leader>sv", "<cmd>lua ReloadConfig()<CR>", { noremap = true, silent = false })
 
@@ -51,9 +47,6 @@ vim.keymap.set("n", "<leader>w", ":up<CR>")
 
 -- Open URL under cursor with gx
 vim.keymap.set("n", "gx", "<esc>:URLOpenUnderCursor<CR>")
-
--- TODO
--- " nnoremap /          <cmd>Telescope live_grep<cr>
 
 -- Don't touch unnamed register when pasting over visual selection
 vim.keymap.set("x", "p", function()

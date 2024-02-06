@@ -22,6 +22,7 @@ vim.print = _G.dd
 pcall(require, "config.env")
 
 require("config.reload")
+require("config.commands")
 require("config.lazy")
 require("config.abbreviations")
 
