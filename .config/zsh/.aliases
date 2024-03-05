@@ -213,9 +213,8 @@ alias tasks='task next'
 
 # Editors {{{
 
-alias lazyvim='NVIM_APPNAME=nvim-lazyvim nvim'
-alias oldvim='NVIM_APPNAME=nvim nvim'
-alias vim='lazyvim'
+alias oldvim='NVIM_APPNAME=nvim-old nvim'
+alias vim='nvim'
 alias vimdiff='nvim -d'
 alias xcode='open -a Xcode'
 

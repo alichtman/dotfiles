@@ -13,7 +13,7 @@
         ".config/newsboat/urls": {},
         ".config/newsboat/config": {},
         ".config/nvim": {},
-        ".config/nvim-lazyvim": {},
+        ".config/nvim-old": {},
         ".config/pycodestyle": {},
         ".config/pylintrc": {},
         ".config/python": {},
@@ -27,7 +27,6 @@
         ".config/zathura/zathurarc": {},
         ".config/zsh": {},
         "/etc/zsh/zshenv": {},
-        ".ctags": {},
         ".config/.ghci": {},
         ".ssh": {},
         ".config/task/taskrc": {}
