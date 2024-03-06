@@ -27,6 +27,7 @@
         ".config/zathura/zathurarc": {},
         ".config/zsh": {},
         "/etc/zsh/zshenv": {},
+        "/etc/zsh/zshrc": {},
         ".config/.ghci": {},
         ".ssh": {},
         ".config/task/taskrc": {}
