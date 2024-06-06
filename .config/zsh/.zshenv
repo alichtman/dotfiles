@@ -234,7 +234,7 @@ fi
 # If pyenv is on PATH, load it and set the python interpreter version.
 if hash pyenv; then
     eval "$(pyenv init -)"
-    pyenv global 3.11.3
+    pyenv global 3.12.3
 fi
 
 # Go Env

@@ -26,8 +26,14 @@
         ".config/tuir/tuir.cfg": {},
         ".config/zathura/zathurarc": {},
         ".config/zsh": {},
-        "/etc/zsh/zshenv": {},
-        "/etc/zsh/zshrc": {},
+        "/etc/zsh/zshenv": {
+            "backup_condition": "uname -a | grep Linux",
+			"reinstall_condition": "uname -a | grep Linux"
+        },
+        "/etc/zsh/zshrc": {
+            "backup_condition": "uname -a | grep Linux",
+			"reinstall_condition": "uname -a | grep Linux"
+        },
         ".config/.ghci": {},
         ".ssh": {},
         ".config/task/taskrc": {}
