@@ -45,7 +45,7 @@ export NOTES=$HOME/Desktop/Development/notes
 if [ "$OS" = "Darwin" ]; then
     zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab rpi-hydrogen
 elif [ "$OS" = "Linux" ]; then
-    zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab alichtman-MBP
+    zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab alichtman-MBP alichtman-Codeberg
 fi
 
 # END ssh }}}
@@ -64,7 +64,17 @@ fi
 
 # zcomet plugins {{{
 
-source /opt/zcomet/zcomet.zsh
+# clone zcomet if needed
+ZCOMET_REPO="${XDG_DATA_HOME:-$HOME/.local/share}/zcomet"
+ZCOMET_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/zcomet"
+if [ ! -d "$ZCOMET_REPO" ]; then
+    git clone git@github.com:agkozak/zcomet.git "$ZCOMET_REPO"
+fi
+
+source $XDG_DATA_HOME/zcomet/zcomet.zsh
+
+# Put zcomet repo and snippet downloads in the cache directory
+zstyle ':zcomet:*' home-dir $ZCOMET_CACHE
 
 # oh-my-zsh plugins
 
@@ -176,18 +186,19 @@ bindkey . _rationalise-dot
 # without this, typing a . aborts incremental history search
 bindkey -M isearch . self-insert
 
-rustup completions zsh cargo > /usr/local/share/zsh-completions/_cargo
-
 # Load completions
 fpath=(/usr/local/share/zsh-completions $fpath)
 
+ZCOMPDUMP_DIR="$XDG_CACHE_HOME"/zsh
+[[ -d $ZCOMPDUMP_DIR ]] || mkdir -p $ZCOMPDUMP_DIR
+
 autoload -Uz compinit
-if [ "$(find $ZDOTDIR/.zcompdump -mtime +1)" ] ; then
+if [ "$(find $ZCOMPDUMP_DIR/.zcompdump -mtime +1)" ] ; then
   zcomet compinit
   zcomet compdump
 fi
 # zcomet compinit
-compinit -d "${ZDOTDIR}/.zcompdump"
+compinit -d "$ZCOMPDUMP_DIR"/.zcompdump
 
 
 # END Completion }}}
@@ -330,9 +341,6 @@ else
         tmux attach-session -t default
     fi
 fi
-
-# List tmux sessions
-# execute_cmd_if_exists tls
 
 # END Startup Tools }}}
 

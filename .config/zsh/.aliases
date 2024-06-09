@@ -238,13 +238,15 @@ alias tmux.conf="vim $XDG_CONFIG_HOME/tmux/tmux.conf"
 
 # r/unixporn {{{
 
+alias neofetch='fastfetch'
+alias fetch='fastfetch'
 alias gitstats='onefetch'
 alias mandelbrot='bash ~/bin/mandelbrot'
 alias matrix='unimatrix -s 93'
 alias news='newsroom'
 alias pipes='pipes.sh -f 75 -t 3 -B'
 alias reddit='tuir'
-alias spotify='spt'
+alias spotify='spotify_player'
 alias trip='yes "$(seq 231 -1 16)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
 alias weather='curl wttr.in'
 alias youtube='mpsyt'

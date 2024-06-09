@@ -94,7 +94,7 @@ export IPFS_PATH="$XDG_DATA_HOME"/ipfs
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME"/pass
 
 # Python
-export PYENV_ROOT=/usr/local/var/pyenv
+export PYENV_ROOT=/usr/local/bin/pyenv
 export PYLINTHOME="$XDG_CACHE_HOME"/pylint.d
 export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/pythonrc
 
@@ -234,18 +234,12 @@ fi
 # If pyenv is on PATH, load it and set the python interpreter version.
 if hash pyenv; then
     eval "$(pyenv init -)"
-    pyenv global 3.12.3
+    pyenv global 3.12.4
 fi
 
 # Go Env
 
 export GO111MODULE="on"
-
-#########
-# Ranger
-#########
-
-export RANGER_LOAD_DEFAULT_RC=FALSE
 
 ###############
 # Startup Tasks

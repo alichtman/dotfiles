@@ -1,5 +1,6 @@
 # TODOs
 
+- basedpyright for python intellisense?
 - litecorrect
 - configure lualine
   - sorta done
