@@ -10,13 +10,13 @@
 
 export OS="$(uname -s)"
 
-#########
-# Editors
-#########
+####################
+# Editors and Pagers
+####################
 
 export EDITOR='nvim'
 export PAGER='bat'
-export MANPAGER="sh -c 'col -b | bat -l man -p'"
+export MANPAGER='nvim +Man!'
 export VISUAL='nvim'
 
 ########
@@ -41,6 +41,11 @@ export XDG_STATE_HOME="$HOME/.local/state"
 ############################
 # House Cleaning (~ cleanup)
 ############################
+
+export npm_config_userconfig=$XDG_CONFIG_HOME/npm/config
+export npm_config_cache=$XDG_CACHE_HOME/npm
+export npm_config_prefix=$XDG_DATA_HOME/npm
+export PATH=$PATH:$XDG_DATA_HOME/npm/bin
 
 export BUNDLE_USER_HOME="$XDG_CACHE_HOME"/bundle
 export WEGORC="$XDG_CONFIG_HOME"/wegorc
@@ -172,7 +177,7 @@ export ZPFX="$XDG_CACHE_HOME"/polaris
 # TODO: https://www.arp242.net/zshrc.html#easier-path
 
 export PATH="$PATH:/home/alichtman/.local/share/cargo/bin" # starship in root shell hack
-export PATH="$PATH:/opt/GoLand/bin/goland.sh"
+export PATH="$PATH:$XDG_DATA_HOME/npm/bin"
 export PATH="$PATH:$CARGO_HOME/bin"
 export PATH="$PATH:$GOPATH/bin"
 export PATH="$PATH:$HOME/.local/bin"

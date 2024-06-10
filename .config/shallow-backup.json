@@ -27,7 +27,6 @@
     "/etc/zshenv": {},
     "/etc/zshrc": {},
     ".config/.ghci": {},
-    ".ssh": {},
     ".config/task/taskrc": {}
   },
   "root-gitignore": [

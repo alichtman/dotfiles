@@ -114,8 +114,9 @@ function resource() (
 	    unset file
     }
 
-    _source_files $HOME/.{secrets,zshenv}
-    _source_files $XDG_CONFIG_HOME/zsh/.{zprofile,aliases,zshrc,zfunctions}
+    _source_files $HOME/.secrets
+    _source_files $ZDOTDIR/.zshenv
+    _source_files $ZDOTDIR/.{zprofile,aliases,zshrc,zfunctions}
 )
 
 # END Dotfiles }}}

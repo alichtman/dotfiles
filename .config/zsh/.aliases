@@ -169,12 +169,6 @@ alias jrnl='dijo -c "track-up jrnl" && jrnl'
 
 # END Habit Tracking
 
-# Debian Packaging {{{
-
-alias dquilt="quilt --quiltrc=$XDG_CONFIG_HOME/.quiltrc-dpkg"
-
-# END Debian Packaging }}}
-
 # tmux {{{
 
 alias ts='tmux switch-client -t'
@@ -213,7 +207,6 @@ alias tasks='task next'
 
 # Editors {{{
 
-alias oldvim='NVIM_APPNAME=nvim-old nvim'
 alias vim='nvim'
 alias vimdiff='nvim -d'
 alias xcode='open -a Xcode'
@@ -231,7 +224,7 @@ alias zfunctions="vim $XDG_CONFIG_HOME/zsh/.zfunctions"
 alias zshrc="vim $XDG_CONFIG_HOME/zsh/.zshrc"
 alias zshenv="vim $XDG_CONFIG_HOME/zsh/.zshenv"
 alias srczshrc="source $XDG_CONFIG_HOME/zsh/.zshrc"
-alias vimrc="vim $XDG_CONFIG_HOME/nvim/init.vim"
+alias vimrc="vim $XDG_CONFIG_HOME/nvim/"
 alias tmux.conf="vim $XDG_CONFIG_HOME/tmux/tmux.conf"
 
 # END Configs }}}
@@ -246,7 +239,6 @@ alias matrix='unimatrix -s 93'
 alias news='newsroom'
 alias pipes='pipes.sh -f 75 -t 3 -B'
 alias reddit='tuir'
-alias spotify='spotify_player'
 alias trip='yes "$(seq 231 -1 16)" | while read i; do printf "\x1b[48;5;${i}m\n"; sleep .02; done'
 alias weather='curl wttr.in'
 alias youtube='mpsyt'
@@ -288,7 +280,6 @@ fi
 
 if [ "$OS" = "Linux" ]; then
     alias sxhkd='sxhkd >/dev/null 2>&1 &'
-    alias restart_pulseaudio='pulseaudio -k && pulseaudio -D'
 fi
 
 # END Linux Management }}}
