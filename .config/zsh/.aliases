@@ -137,8 +137,6 @@ alias mbsync="mbsync -c $XDG_CONFIG_HOME/isync/mbsyncrc"
 # https://unix.stackexchange.com/a/148548
 alias sudo='sudo '
 
-alias tags='ctags -R .'
-
 if [ "$OS" = "Darwin" ]; then
     alias yank='pbcopy'
     alias run='launch'
@@ -146,7 +144,7 @@ if [ "$OS" = "Darwin" ]; then
     alias fg='setopt monitor && fg'
     alias trash='trash -F'
 elif [ "$OS" = "Linux" ]; then
-    alias run='rofi -show run'
+    alias run='wofi -show drun'
     alias yank='xsel -ib'
     alias paste-img='xclip -selection clipboard -t image/png -o > '
     alias open='xdg-open'
