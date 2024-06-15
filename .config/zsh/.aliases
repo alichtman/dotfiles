@@ -144,6 +144,7 @@ if [ "$OS" = "Darwin" ]; then
     alias fg='setopt monitor && fg'
     alias trash='trash -F'
 elif [ "$OS" = "Linux" ]; then
+    alias gpt='chatgpt'
     alias run='wofi -show drun'
     alias yank='xsel -ib'
     alias paste-img='xclip -selection clipboard -t image/png -o > '

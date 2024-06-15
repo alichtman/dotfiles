@@ -1,4 +1,5 @@
 return {
+  -- TODO: Migrate to built in commenting support: https://github.com/neovim/neovim/blob/20f22f75ee629ae2db4cd99e730fa0af26553177/runtime/doc/various.txt#L566
   {
     "scrooloose/nerdcommenter",
     cmd = { "NERDCommenterToggle" },

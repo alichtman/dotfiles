@@ -1,14 +1,6 @@
 # .zshrc for macOS and Linux
 # Aaron Lichtman (@alichtman)
 
-# TODO {{{
-#
-# 1. Sort out vim bindings
-#
-# }}}
-
-OS="$(uname -s)"
-
 # Prompt {{{
 
 # Config in ~/.config/starship.toml
@@ -62,21 +54,23 @@ fi
 
 # }}}
 
-# zcomet plugins {{{
+# zcomet setup {{{
 
-# clone zcomet if needed
+# clone zcomet if needed {{{
 ZCOMET_REPO="${XDG_DATA_HOME:-$HOME/.local/share}/zcomet"
 ZCOMET_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/zcomet"
 if [ ! -d "$ZCOMET_REPO" ]; then
     git clone git@github.com:agkozak/zcomet.git "$ZCOMET_REPO"
 fi
+# END clone zcomet if needed }}}
 
 source $XDG_DATA_HOME/zcomet/zcomet.zsh
 
-# Put zcomet repo and snippet downloads in the cache directory
+# Put zcomet repo, snippet downloads, and compinit cache in the cache directory
 zstyle ':zcomet:*' home-dir $ZCOMET_CACHE
+zstyle ':zcomet:compinit' dump-file "$ZCOMET_CACHE/zcompdump"
 
-# oh-my-zsh plugins
+# zcomet plugins {{{
 
 zcomet load ohmyzsh lib git.zsh
 zcomet snippet OMZ::plugins/git/git.plugin.zsh
@@ -84,7 +78,8 @@ zcomet snippet OMZ::plugins/fzf/fzf.plugin.zsh
 # zcomet snippet OMZ::plugins/tmux/tmux.plugin.zsh
 zcomet snippet OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh
 zcomet snippet OMZ::plugins/colored-man-pages/colored-man-pages.plugin.zsh
-# zcomet load agkozak/zsh-z
+
+# Other plugins
 zcomet load changyuheng/fz
 zcomet load rupa/z
 zcomet load zsh-users/zsh-completions
@@ -94,43 +89,9 @@ zcomet load changyuheng/zsh-interactive-cd
 zcomet load zdharma-continuum/fast-syntax-highlighting
 zcomet load zsh-users/zsh-autosuggestions
 
-
 # END zcomet Plugins }}}
 
-# fz {{{
-
-export FZ_CMD=j
-export FZ_SUBDIR_CMD=jj
-
-# }}}
-
-# zsh-history-substring-search {{{
-
-setopt HIST_IGNORE_ALL_DUPS
-
-# Bind up and down arrow keys
-
-if [ "$OS" = "Darwin" ]; then
-    bindkey '^[[A' history-substring-search-up
-    bindkey '^[[B' history-substring-search-down
-elif [ "$OS" = "Linux" ]; then
-    # https://superuser.com/a/1296543
-    # key dict is defined in /etc/zsh/zshrc
-    bindkey "$key[Up]" history-substring-search-up
-    bindkey "$key[Down]" history-substring-search-down
-fi
-
-# Bind j and k for in vim mode
-bindkey -M vicmd 'k' history-substring-search-up
-bindkey -M vicmd 'j' history-substring-search-down
-
-# END zsh-history-substring-search }}}
-
-# ruby / rbenv {{{
-# eval "$(rbenv init - zsh)"
-# }}}
-
-# Completions {{{
+# zsh completions {{{
 
 # https://gist.github.com/ctechols/ca1035271ad134841284?permalink_comment_id=3401477#gistcomment-3401477
 skip_global_compinit=1
@@ -159,19 +120,51 @@ if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 fi
 
-# pip zsh completion
-function _pip_completion {
-  local words cword
-  read -Ac words
-  read -cn cword
-  reply=( $( COMP_WORDS="$words[*]" \
-             COMP_CWORD=$(( cword-1 )) \
-             PIP_AUTO_COMPLETE=1 $words[1] ) )
-}
-compctl -K _pip_completion pip
+# Load completions
+fpath=(/usr/local/share/zsh-completions $fpath)
 
-# type '...' to get '../..'
-# Please don't ask me how this works. I have absolutely no idea.
+zcomet compinit
+
+# END zsh completions }}}
+
+# END zcomet setup }}}
+
+# changyuheng/fz {{{
+
+export FZ_CMD=j
+export FZ_SUBDIR_CMD=jj
+
+# }}}
+
+# zsh-history-substring-search {{{
+
+setopt HIST_IGNORE_ALL_DUPS
+
+# Bind up and down arrow keys
+
+if [ "$OS" = "Darwin" ]; then
+    bindkey '^[[A' history-substring-search-up
+    bindkey '^[[B' history-substring-search-down
+elif [ "$OS" = "Linux" ]; then
+    # https://superuser.com/a/1296543
+    # key dict is defined in /etc/zshrc
+    bindkey "$key[Up]" history-substring-search-up
+    bindkey "$key[Down]" history-substring-search-down
+fi
+
+# Bind j and k for in vim mode
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
+
+# END zsh-history-substring-search }}}
+
+# ruby / rbenv {{{
+# eval "$(rbenv init - zsh)"
+# }}}
+
+# Make ... work like cd ../.. {{{
+
+# I don't understand how this works, but it is one of my favorite zsh snippets ever
 # Mikel Magnusson <mikachu@gmail.com> wrote this.
 function _rationalise-dot() {
   local MATCH MBEGIN MEND
@@ -186,22 +179,7 @@ bindkey . _rationalise-dot
 # without this, typing a . aborts incremental history search
 bindkey -M isearch . self-insert
 
-# Load completions
-fpath=(/usr/local/share/zsh-completions $fpath)
-
-ZCOMPDUMP_DIR="$XDG_CACHE_HOME"/zsh
-[[ -d $ZCOMPDUMP_DIR ]] || mkdir -p $ZCOMPDUMP_DIR
-
-autoload -Uz compinit
-if [ "$(find $ZCOMPDUMP_DIR/.zcompdump -mtime +1)" ] ; then
-  zcomet compinit
-  zcomet compdump
-fi
-# zcomet compinit
-compinit -d "$ZCOMPDUMP_DIR"/.zcompdump
-
-
-# END Completion }}}
+# END Make .... work like cd ../.. }}}
 
 # General zsh Behavior {{{
 
@@ -247,10 +225,6 @@ export NNN_PLUG='f:finder;o:fzopen;O:!xdg-open $nnn;p:preview-tabbed;d:diffs;t:n
 export NNN_ORDER='t:/home/user/Downloads;S:/usr/bin'
 export NNN_TRASH=1 # trash-cli
 export NNN_HELP='pwy paris'
-
-# OneDark Colorscheme
-# BLK="04" CHR="04" DIR="04" EXE="00" REG="00" HARDLINK="00" SYMLINK="06" MISSING="00" ORPHAN="01" FIFO="0F" SOCK="0F" OTHER="02"
-# export NNN_FCOLORS="$BLK$CHR$DIR$EXE$REG$HARDLINK$SYMLINK$MISSING$ORPHAN$FIFO$SOCK$OTHER"
 
 BLK="0B" CHR="0B" DIR="04" EXE="06" REG="01" HARDLINK="06" SYMLINK="06" MISSING="00" ORPHAN="09" FIFO="06" SOCK="0B" OTHER="06"
 export NNN_FCOLORS="$BLK$CHR$DIR$EXE$REG$HARDLINK$SYMLINK$MISSING$ORPHAN$FIFO$SOCK$OTHER"
