@@ -1,6 +1,6 @@
 local Util = require("lazyvim.util")
 
-# https://github.com/SethGunnells/dotfiles/blob/b3fae694b114e213b63f6a45efd7ee98e00430f5/nvim/lua/plugins/telescope.lua#L49-L76
+-- https://github.com/SethGunnells/dotfiles/blob/b3fae694b114e213b63f6a45efd7ee98e00430f5/nvim/lua/plugins/telescope.lua#L49-L76
 local function get_git_root_opts()
   local opts = {}
   if is_git_repo() then
