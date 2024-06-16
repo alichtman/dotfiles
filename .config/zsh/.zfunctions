@@ -37,6 +37,7 @@ n ()
 alias nnn="n"
 
 # }}}
+
 # fzf Integrations {{{
 
 # File Open
@@ -47,12 +48,6 @@ function fo() {
 	local files
 	IFS=$'\n' files=($(fzf --preview="cat {}" --preview-window=right:70%:wrap --query="$1" --multi --select-1 --exit-0))
 	[[ -n "$files" ]] && ${EDITOR} "${files[@]}"
-}
-
-function fos() {
-	local files
-	IFS=$'\n' files=($(fzf --preview="cat {}" --preview-window=right:70%:wrap --query="$1" --multi --select-1 --exit-0))
-	[[ -n "$files" ]] && subl "${files[@]}"
 }
 
 
@@ -86,7 +81,7 @@ function gi() {
 }
 
 # Prettier diffs
-function pdiff() {
+function prettydiff() {
 	diff -u $1 $2 | diff-so-fancy
 }
 
@@ -94,12 +89,18 @@ function pdiff() {
 
 # Dotfiles {{{
 
-# Grab dotfiles list from shallow-backup config and throw it in a fzf selector for editing
-function dots() {
-    cat ~/.config/shallow-backup.conf | jq '.dotfiles' | jq 'keys' | jq -r '.[]' | fzf --bind "enter:execute(nvim ~/{})"
+# FZF file selector to edit config files with vim
+function config() {
+	fd . "$XDG_CONFIG_HOME" | sed "s|$XDG_CONFIG_HOME/||" |
+	    fzf \
+	    --preview-window=right:70%:wrap \
+        --bind "enter:become(vim $XDG_CONFIG_HOME/{})" --exit-0 \
+        --walker-skip .git,node_modules,target \
+        --preview "bat -n --color=always $XDG_CONFIG_HOME/{}"
 }
+alias cfg=config
 
-# Source most config files.
+# Refresh zsh config env
 function resource() (
     # The outer function definition with () makes this behave like nested python functions. https://stackoverflow.com/a/31316688/8740440
     function _source_files () {
@@ -114,33 +115,13 @@ function resource() (
 	    unset file
     }
 
-    _source_files $HOME/.secrets
-    _source_files $ZDOTDIR/.zshenv
+    # MUST be first
+    _source_files "$ZDOTDIR/.zshenv"
     _source_files $ZDOTDIR/.{zprofile,aliases,zshrc,zfunctions}
+    _source_files "$XDG_CONFIG_HOME/.secrets"
 )
 
 # END Dotfiles }}}
-
-# Ranger {{{
-
-# cd on exit from ranger with Q
-function ranger {
-    local IFS=$'\t\n'
-    local tempfile="$(mktemp -t tmp.XXXXXX)"
-    local ranger_cmd=(
-        command
-        ranger
-        --cmd="map Q chain shell echo %d > "$tempfile"; quitall"
-    )
-
-    ${ranger_cmd[@]} "$@"
-    if [[ -f "$tempfile" ]] && [[ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]]; then
-        cd -- "$(cat "$tempfile")" || return
-    fi
-    command rm -f -- "$tempfile" 2>/dev/null
-}
-
-# END Ranger }}}
 
 # Misc {{{
 
@@ -207,8 +188,10 @@ function csvviewer() {
 
 # macOS fuzzy app launcher
 # This function breaks the syntax highlighting so it's at the end lmao
-function launch() {
-    open -a "$(find /Applications /System/Applications/ /System/Applications/Utilities -name '*app' -maxdepth 1 -exec basename {} .app \; | fzf --query "$1")"
-}
+if [ "$OS" = "Darwin" ]; then
+    function launch() {
+        open -a "$(find /Applications /System/Applications/ /System/Applications/Utilities -name '*app' -maxdepth 1 -exec basename {} .app \; | fzf --query "$1")"
+    }
+fi
 
 # vim: set filetype=zsh foldmethod=marker:

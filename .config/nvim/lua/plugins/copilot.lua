@@ -35,6 +35,6 @@ return {
         ratio = 0.4,
       },
     },
-    filetypes = { markdown = true, jrnl = false, help = true },
+    filetypes = { markdown = true, jrnl = false, help = false },
   },
 }

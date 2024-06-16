@@ -1,6 +1,12 @@
 local Util = require("lazyvim.util")
 
 -- https://github.com/SethGunnells/dotfiles/blob/b3fae694b114e213b63f6a45efd7ee98e00430f5/nvim/lua/plugins/telescope.lua#L49-L76
+--
+local function is_git_repo()
+  vim.fn.system("git rev-parse --is-inside-work-tree")
+  return vim.v.shell_error == 0
+end
+
 local function get_git_root_opts()
   local opts = {}
   if is_git_repo() then
@@ -35,7 +41,6 @@ return {
     "folke/flash.nvim",
     event = "VeryLazy",
     vscode = true,
-    ---@type Flash.Config
     opts = {},
         -- stylua: ignore
         keys = {
@@ -57,10 +62,10 @@ return {
         "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>",
         desc = "Switch Buffer",
       },
-      --{ "<C-P>", make_find_files(false), desc = "Telescope - Find Files (CWD)" },
-      --{ "<C-p>", make_find_files(true), desc = "Telescope - Find Files (Git Root)" },
-      --{ "<C-p>", Util.pick.telescope("find_files"), desc = "Find Files (git root)" },
-      -- find
+      -- TODO: Does not work
+      { "<C-P>", make_find_files(false), desc = "Telescope - Find Files (Git root)" },
+      { "<C-p>", make_find_files(true), desc = "Telescope - Find Files (CWD)" },
+      -- { "<C-p>", Util.pick.telescope("find_files"), desc = "Find Files (git root)" },
       --{ "<leader>fg", Util.telescope("live_grep"), desc = "Grep (root dir)" },
       --{ "<leader>fG", Util.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
     },

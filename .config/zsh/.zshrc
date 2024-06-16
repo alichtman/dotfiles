@@ -129,6 +129,16 @@ zcomet compinit
 
 # END zcomet setup }}}
 
+# pyenv {{{
+
+# If pyenv is on PATH, load it and set the python interpreter version.
+if hash pyenv; then
+    eval "$(pyenv init -)"
+    pyenv global 3.12.4
+fi
+
+# END pyenv}}}
+
 # changyuheng/fz {{{
 
 export FZ_CMD=j
@@ -281,7 +291,8 @@ setopt RM_STAR_WAIT
 
 # Sourcing Other Files {{{
 
-[ -f "$HOME/.secrets" ] && source "$HOME/.secrets"
+SECRETS_FILE="$XDG_CONFIG_HOME/.secrets"
+[ -f "$SECRETS_FILE" ] && source "$SECRETS_FILE"
 
 # Load other dotfiles
 for file in $XDG_CONFIG_HOME/zsh/.{aliases,zfunctions}; do

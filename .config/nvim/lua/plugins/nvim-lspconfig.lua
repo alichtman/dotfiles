@@ -1,5 +1,8 @@
 return {
   "neovim/nvim-lspconfig",
+  opts = {
+    servers = {},
+  },
   init = function()
     local keys = require("lazyvim.plugins.lsp.keymaps").get()
     -- disable K for hover becuase it interferes with K to move things to a new line

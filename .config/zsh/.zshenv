@@ -234,13 +234,6 @@ if [ $OS = "Darwin" ]; then
     export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
 fi
 
-# pyenv
-
-# If pyenv is on PATH, load it and set the python interpreter version.
-if hash pyenv; then
-    eval "$(pyenv init -)"
-    pyenv global 3.12.4
-fi
 
 # Go Env
 
