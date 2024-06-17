@@ -261,3 +261,24 @@ vim.api.nvim_create_autocmd("QuitPre", {
 -- augroup END
 
 -- }}}
+
+-- Uninstall and reinstall pyright the first time a python file is opened this session {{{
+-- https://www.reddit.com/r/neovim/comments/1dhmxmd/lsp_doesnt_activate_unless_its_installed_during/
+
+local mason_updated = false
+vim.api.nvim_create_augroup("MasonPyrightUpdate", {})
+
+vim.api.nvim_create_autocmd("BufReadPost", {
+  group = "MasonPyrightUpdate",
+  pattern = "*.py",
+  callback = function()
+    if not mason_updated then
+      -- TODO Figure out how to run these in the background
+      vim.cmd("MasonUninstall pyright")
+      vim.cmd("MasonInstall pyright")
+      mason_updated = true
+    end
+  end,
+})
+
+-- }}}
