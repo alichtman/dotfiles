@@ -329,4 +329,11 @@ fi
 
 # END Startup Tools }}}
 
+# nvm {{{
+
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+# }}}
+
 # vim: foldmethod=marker foldcolumn=1 et

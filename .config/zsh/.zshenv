@@ -44,7 +44,6 @@ export XDG_STATE_HOME="$HOME/.local/state"
 
 export npm_config_userconfig=$XDG_CONFIG_HOME/npm/config
 export npm_config_cache=$XDG_CACHE_HOME/npm
-export npm_config_prefix=$XDG_DATA_HOME/npm
 export PATH=$PATH:$XDG_DATA_HOME/npm/bin
 
 export BUNDLE_USER_HOME="$XDG_CACHE_HOME"/bundle

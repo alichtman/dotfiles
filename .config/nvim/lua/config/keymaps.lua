@@ -8,6 +8,11 @@ local configPath = vim.fn.stdpath("config")
 vim.keymap.set("n", "<leader>ev", function()
   require("telescope.builtin").find_files({ cwd = configPath })
 end, { silent = true, desc = "Edit vim config" })
+
+vim.keymap.set("n", "<leader>ec", function()
+  require("telescope.builtin").find_files({ cwd = "~/.config/" })
+end, { silent = true, desc = "Edit config files" })
+
 vim.keymap.set("n", "<leader>sv", "<cmd>lua ReloadConfig()<CR>", { noremap = true, silent = false })
 
 -- Don't overwrite copy register when deleting with x or X
