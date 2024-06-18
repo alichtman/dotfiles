@@ -1,3 +1,3 @@
 return {
-    "wren/jrnl.vim",
-  }
+	"wren/jrnl.vim",
+}

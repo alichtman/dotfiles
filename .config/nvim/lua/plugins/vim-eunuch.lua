@@ -1,4 +1,4 @@
-return  {
-    "tpope/vim-eunuch",
-    cmd = { "Delete", "Move", "Rename", "Chmod", "Mkdir" },
-  }
+return {
+  "tpope/vim-eunuch",
+  cmd = { "Delete", "Move", "Rename", "Chmod", "Mkdir" },
+}

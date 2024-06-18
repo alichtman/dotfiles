@@ -41,32 +41,32 @@ vim.opt.tags = "tags"
 vim.opt.wildmenu = true
 vim.opt.wildmode = "full"
 vim.opt.wildignore = {
-  "svn",
-  "CVS",
-  ".git",
-  "*.pyc",
-  "*.o",
-  "*.a",
-  "*.class",
-  "*.mo",
-  "*.la",
-  "*.so",
-  "*.obj",
-  "*.swp",
-  "*.jpg",
-  "*.png",
-  "*.xpm",
-  "*.gif",
-  "*.pdf",
-  "*.bak",
-  "*.beam",
-  "*/tmp/*",
-  "*.zip",
-  "log/**",
-  "node_modules/**",
-  "target/**",
-  "tmp/**",
-  "*.rbc",
+	"svn",
+	"CVS",
+	".git",
+	"*.pyc",
+	"*.o",
+	"*.a",
+	"*.class",
+	"*.mo",
+	"*.la",
+	"*.so",
+	"*.obj",
+	"*.swp",
+	"*.jpg",
+	"*.png",
+	"*.xpm",
+	"*.gif",
+	"*.pdf",
+	"*.bak",
+	"*.beam",
+	"*/tmp/*",
+	"*.zip",
+	"log/**",
+	"node_modules/**",
+	"target/**",
+	"tmp/**",
+	"*.rbc",
 }
 
 -- Undo {{{
@@ -110,12 +110,12 @@ vim.opt.colorcolumn = "81,121" -- 80 and 120 character guidelines
 -- Show “invisible” characters
 vim.opt.list = true
 vim.opt.listchars = {
-  eol = "¬",
-  tab = "▸-", -- tab REQUIRES a string of two characters: https://github.com/neovim/neovim/issues/26988
-  extends = "»",
-  precedes = "«",
-  trail = "·",
-  space = "·",
+	eol = "¬",
+	tab = "▸-", -- tab REQUIRES a string of two characters: https://github.com/neovim/neovim/issues/26988
+	extends = "»",
+	precedes = "«",
+	trail = "·",
+	space = "·",
 }
 
 -- Indentation {{{

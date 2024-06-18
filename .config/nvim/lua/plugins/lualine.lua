@@ -8,12 +8,12 @@ return {
     -- configure lualine with modified theme
     lualine.setup({
       options = {
-        theme = 'gruvbox_dark',
+        theme = "gruvbox_dark",
       },
       sections = {
-        lualine_a = {'mode'},
-        lualine_b = {'branch', 'diff', 'diagnostics'},
-        lualine_c = {'filename'},
+        lualine_a = { "mode" },
+        lualine_b = { "branch", "diff", "diagnostics" },
+        lualine_c = { "filename" },
         lualine_x = {
           { "encoding" },
           { "fileformat", icons_enabled = false },
