@@ -20,6 +20,7 @@ vim.opt.autoread = true -- Autoread changed files
 vim.opt.showmode = false -- Don't show mode under statusline w/ mode
 vim.opt.scrolloff = 6 -- Minimal num of lines to keep above/below cursor
 vim.opt.number = true -- Enable line numbers
+vim.opt.relativenumber = true -- Enable relative line numbers
 vim.opt.cmdheight = 1 -- Better display for messages
 vim.opt.updatetime = 300 -- Smaller updatetime for CursorHold & CursorHoldI
 vim.opt.cursorline = true -- Highlight current line
