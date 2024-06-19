@@ -9,6 +9,7 @@ return {
     "nvim-tree/nvim-web-devicons",
     "folke/todo-comments.nvim",
   },
+  cmd = "Telescope",
   keys = {
     {
       "<C-p>",
