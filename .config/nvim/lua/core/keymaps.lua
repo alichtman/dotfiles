@@ -88,6 +88,9 @@ vim.keymap.set("i", "<Down>", "<C-o>gj", { noremap = true, buffer = true, silent
 -- Toggle spell check
 vim.keymap.set("n", "[]s", ":set spell!<CR>", { desc = "Toggle spell check" })
 
+-- Clear search highlights
+vim.keymap.set("n", "<leader>/", ":nohlsearch<CR>", { desc = "Clear search highlights" })
+
 -- TODO: Markdown Preview
 -- nnoremap <silent> <leader>mp :GripStop<cr> :GripStart<cr>
 -- nnoremap <silent> <leader>mpp :Pandoc pdf<cr>

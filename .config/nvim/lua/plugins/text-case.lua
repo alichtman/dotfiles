@@ -5,7 +5,8 @@ return {
     require("textcase").setup({})
     require("telescope").load_extension("textcase")
   end,
+  cmd = { "TextCase", "TextCaseOpenTelescope" },
   keys = {
-    { "<C-u>", "<cmd>TextCaseOpenTelescope<CR>", mode = { "v" }, desc = "Telescope" },
+    { "<leader>ct", "<cmd>TextCaseOpenTelescope<CR>", mode = { "v" }, desc = "Telescope" },
   },
 }

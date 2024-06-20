@@ -6,7 +6,7 @@ return {
       "<leader>go",
       ":GBrowse<cr>",
       mode = { "n", "v" },
-      desc = "[G]it [B]rowse file",
+      desc = "Open file in Github",
     },
     { "<leader>gs", ":Git<cr>", mode = { "n", "v" }, desc = "[G]it [S]tatus" },
   },

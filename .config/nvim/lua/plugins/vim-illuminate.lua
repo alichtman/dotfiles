@@ -9,6 +9,9 @@ return {
         "NvimTree",
         "undotree",
         "alpha",
+        "TelescopePrompt",
+        "markdown",
+        "jrnl",
       },
     })
     vim.api.nvim_create_augroup("highlight_symbol_under_cursor", { clear = true })

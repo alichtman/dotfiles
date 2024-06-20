@@ -15,13 +15,15 @@ return {
       "  ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║ ",
       "  ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝ ",
       "                                                     ",
+      "                     @alichtman                      ",
     }
 
     -- Set menu
     dashboard.section.buttons.val = {
-      dashboard.button(",fr", "󰱼  Recent Files", "<cmd>Telescope oldfiles<CR>"),
-      dashboard.button(",ff", "󰱼  Files in CWD", "<cmd>Telescope find_files<CR>"),
-      dashboard.button("q", "  Quit NVIM", "<cmd>qa<CR>"),
+      dashboard.button("LDR fr", "󰱼  Recent Files", "<cmd>Telescope oldfiles<CR>"),
+      dashboard.button("LDR ff", "󰱼  Files in CWD", "<cmd>Telescope find_files<CR>"),
+      dashboard.button("LDR ev", "  Edit vim config file", "<leader>ev"),
+      dashboard.button("ZQ", "  Quit", "ZQ"),
     }
 
     -- Send config to alpha

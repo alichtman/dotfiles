@@ -36,6 +36,7 @@ return {
           text_align = "left",
         },
       },
+      always_show_bufferline = false,
     },
   },
   config = function(_, opts)
