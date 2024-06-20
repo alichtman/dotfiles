@@ -1,9 +1,5 @@
--- Options are automatically loaded before lazy.nvim startup
--- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
--- Add any additional options here
-
 -- General Options {{{
---
+
 vim.g.mapleader = ","
 vim.g.loaded_perl_provider = 0
 vim.opt.encoding = "utf-8"
@@ -34,10 +30,20 @@ vim.opt.shortmess:append({ c = true }) -- Don't give ins-completion-menu message
 vim.opt.backspace = { "start", "eol", "indent" } -- Make delete in insert mode behave as expected.
 vim.opt.fillchars:append("fold:.") -- Make folds pretty.
 vim.opt.tags = "tags"
+vim.opt.clipboard = "unnamedplus" -- Use system clipboard
+
+-- Use gtf to jump to files with these extensions
+vim.opt.suffixesadd:append(".md,.c,.h,.cpp,.py,.tex")
 
 -- END General Options }}}
 
--- Tab completion menu
+-- Colorscheme {{{
+
+vim.cmd("colorscheme retrobox")
+
+-- }}}
+
+-- Tab completion menu {{{
 vim.opt.wildmenu = true
 vim.opt.wildmode = "full"
 vim.opt.wildignore = {
@@ -69,18 +75,14 @@ vim.opt.wildignore = {
   "*.rbc",
 }
 
+-- END Tab completion menu }}}
+
 -- Undo {{{
 
 vim.opt.undolevels = 1000 -- store a bunch of undo history
 vim.opt.undofile = true
 
 -- END Undo }}}
-
--- Use gtf to jump to files with these extensions
-vim.opt.suffixesadd:append(".md,.c,.h,.cpp,.py,.tex")
-
--- Don't treat hyphens and underscores like whitespace in searches
-vim.opt.iskeyword:append({ "-", "_" })
 
 -- Search {{{
 
@@ -92,6 +94,8 @@ vim.opt.ignorecase = true -- Case insensitive search
 vim.opt.inccommand = "nosplit" -- Show regex replacement changes as you're typing
 vim.opt.smartcase = true -- Case sensitive if we type an uppercase
 vim.opt.mousemodel = "extend"
+-- Don't treat hyphens / underscores like whitespace in searches
+vim.opt.iskeyword:append({ "-", "_" })
 
 -- END Search }}}
 
@@ -107,7 +111,7 @@ vim.opt.colorcolumn = "81,121" -- 80 and 120 character guidelines
 
 -- END Line breaks }}}
 
--- Show “invisible” characters
+-- Show “invisible” characters {{{
 vim.opt.list = true
 vim.opt.listchars = {
   eol = "¬",
@@ -117,6 +121,8 @@ vim.opt.listchars = {
   trail = "·",
   space = "·",
 }
+
+--- END Show “invisible” characters }}}
 
 -- Indentation {{{
 
@@ -132,9 +138,12 @@ vim.opt.autoindent = true -- copy indent from current line when starting a new l
 
 -- END Indentation }}}
 
--- Make vertical splits prettier
+-- Make vertical splits prettier {{{
+
 vim.opt.fillchars = { vert = "┃" }
 vim.cmd("highlight VertSplit guifg=11")
+
+-- END Make vertical splits prettier }}}
 
 -- Dictionary and Thesaurus {{{
 

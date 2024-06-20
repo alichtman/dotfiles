@@ -2,7 +2,6 @@
 
 - Completions are totally broken in some files. nvim-cmp c-j and c-k and c-l not working!!!
 
-- basedpyright for python intellisense?
 - litecorrect
 - configure lualine
   - sorta done
