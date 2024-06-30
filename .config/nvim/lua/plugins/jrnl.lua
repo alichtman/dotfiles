@@ -1,4 +1,4 @@
 return {
-  -- "wren/jrnl.vim",
+  -- "alichtman/jrnl.vim",
   { dir = "~/Desktop/Development/open-source-contributions/jrnl.vim" },
 }
