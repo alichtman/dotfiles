@@ -11,7 +11,6 @@
     ".config/newsboat/urls": {},
     ".config/newsboat/config": {},
     ".config/nvim": {},
-    ".config/nvim-lazyvim": {},
     ".config/pycodestyle": {},
     ".config/pylintrc": {},
     ".config/python": {},
@@ -57,7 +56,6 @@
     "/Users/alichtman/Library/Application Support/Code/User/settings.json": "vscode/settings",
     "/Users/alichtman/Library/Application Support/Code/User/Snippets": "vscode/Snippets",
     "/Users/alichtman/Library/Application Support/Code/User/keybindings.json": "vscode/keybindings",
-    "/Users/alichtman/.atom": "atom",
     "/Users/alichtman/Library/Preferences/com.apple.Terminal.plist": "terminal_plist"
   }
 }
