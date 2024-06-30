@@ -23,6 +23,7 @@ return {
       dashboard.button("LDR fr", "󰱼  Recent Files", "<cmd>Telescope oldfiles<CR>"),
       dashboard.button("LDR ff", "󰱼  Files in CWD", "<cmd>Telescope find_files<CR>"),
       dashboard.button("LDR ev", "  Edit vim config file", "<leader>ev"),
+      dashboard.button(":Lazy", "  Lazy.nvim", "<cmd>Lazy<CR>"),
       dashboard.button("ZQ", "  Quit", "ZQ"),
     }
 

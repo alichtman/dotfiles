@@ -19,9 +19,10 @@ return {
     vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
       group = "highlight_symbol_under_cursor",
       callback = function()
-        vim.api.nvim_set_hl(0, "IlluminatedWordText", { link = "IncSearch" })
-        vim.api.nvim_set_hl(0, "IlluminatedWordRead", { link = "IncSearch" })
-        vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { link = "IncSearch" })
+        local formatting_opts = { fg = "#ff8700", bold = true }
+        vim.api.nvim_set_hl(0, "IlluminatedWordText", formatting_opts)
+        vim.api.nvim_set_hl(0, "IlluminatedWordRead", formatting_opts)
+        vim.api.nvim_set_hl(0, "IlluminatedWordWrite", formatting_opts)
       end,
       desc = "Highlight symbol under cursor",
     })

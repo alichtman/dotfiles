@@ -118,6 +118,7 @@ if [ "$OS" = "Darwin" ]; then
     export GEM_HOME="$XDG_DATA_HOME"/gem
     export GEM_SPEC_CACHE="$XDG_CACHE_HOME"/gem
 elif [ "$OS" = "Linux" ]; then
+    export GEM_HOME="$XDG_DATA_HOME"/gem
     # export GEM_HOME="$PATH:$HOME/.rvm/bin"
 fi
 
@@ -178,6 +179,7 @@ export ZPFX="$XDG_CACHE_HOME"/polaris
 export PATH="$PATH:/home/alichtman/.local/share/cargo/bin" # starship in root shell hack
 export PATH="$PATH:$XDG_DATA_HOME/npm/bin"
 export PATH="$PATH:$CARGO_HOME/bin"
+export PATH="$GEM_HOME/bin:$PATH"
 export PATH="$PATH:$GOPATH/bin"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.poetry/bin"

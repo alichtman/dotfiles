@@ -128,6 +128,7 @@ alias notes='fzf-notes'
 alias mutt='neomutt'
 alias ping='prettyping --nolegend'
 alias please='sudo $(fc -ln -1)' # Rerun last command with sudo
+alias rss='newsboat'
 alias public_ip='ipconfig getifaddr en0'
 alias scratch='nvim ~/scratchpad/scratch'
 alias server='echo "Server IP Address copied to clipboard" && echo "`public_ip`" | yank && sudo python3 -m http.server 80'

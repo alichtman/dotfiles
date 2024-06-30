@@ -5,7 +5,7 @@ return {
   keys = {
     { "<leader>bP", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
     -- { "<leader>bD", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete Non-Pinned Buffers" },
-    { "<leader>bo", "<Cmd>BufferLineCloseOthers<CR>", desc = "Delete Other Buffers" },
+    { "<leader>bdo", "<Cmd>BufferLineCloseOthers<CR>", desc = "Delete Other Buffers" },
     { "<leader>br", "<Cmd>BufferLineCloseRight<CR>", desc = "Delete Buffers to the Right" },
     { "<leader>bl", "<Cmd>BufferLineCloseLeft<CR>", desc = "Delete Buffers to the Left" },
     { "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
@@ -18,25 +18,23 @@ return {
   opts = {
     options = {
       diagnostics = "nvim_lsp",
-      -- TODO: Set up bufferline diagnostics
-      -- diagnostics_indicator = function(_, _, diag)
-      --   local icons = LazyVim.config.icons.diagnostics
-      --   local ret = (diag.error and icons.Error .. diag.error .. " " or "")
-      --     .. (diag.warning and icons.Warn .. diag.warning or "")
-      --   return vim.trim(ret)
-      -- end,
+      diagnostics_indicator = function(count, level)
+        local icon = level:match("error") and " " or ""
+        return " " .. icon .. count
+      end,
       indicator = {
         style = "icon",
       },
       offsets = {
         {
           filetype = "NvimTree",
-          text = "NvimTree",
+          text = "File Explorer",
           highlight = "Directory",
-          text_align = "left",
+          text_align = "center",
         },
       },
       always_show_bufferline = false,
+      auto_toggle_bufferline = true,
     },
   },
   config = function(_, opts)
