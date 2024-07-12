@@ -2,12 +2,8 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
-local configPath = vim.fn.stdpath("config")
-
 -- Quickly edit important configs
-vim.keymap.set("n", "<leader>ev", function()
-  require("telescope.builtin").find_files({ cwd = configPath })
-end, { silent = true, desc = "Edit vim config" })
+vim.keymap.set("n", "<leader>ev", ":EditVimConfig<CR>", { silent = true, desc = "Edit vim config" })
 
 vim.keymap.set("n", "<leader>ec", function()
   require("telescope.builtin").find_files({ cwd = "~/.config/" })
@@ -21,27 +17,6 @@ vim.keymap.set("n", "X", '"_X', { noremap = true })
 
 -- Read modeline
 vim.keymap.set("n", "<leader>mr", ":doautocmd BufRead<cr>")
-
--- Banish "not an editor command" errors
-vim.api.nvim_create_user_command("WQ", function()
-  vim.cmd("wq")
-end, { bang = true })
-vim.api.nvim_create_user_command("Wq", function()
-  vim.cmd("wq")
-end, { bang = true })
-
-vim.api.nvim_create_user_command("W", function()
-  vim.cmd("w")
-end, { bang = true })
-vim.api.nvim_create_user_command("Q", function()
-  vim.cmd("q")
-end, { bang = true })
-vim.api.nvim_create_user_command("QA", function()
-  vim.cmd("qa")
-end, { bang = true })
-vim.api.nvim_create_user_command("Qa", function()
-  vim.cmd("qa")
-end, { bang = true })
 
 -- Make U (redo) do the opposite of u (undo)
 vim.keymap.set("n", "U", "<C-r>")

@@ -1,0 +1,3 @@
+git:
+  paging:
+    pager: diff-so-fancy
