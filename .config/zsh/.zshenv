@@ -154,22 +154,6 @@ export _Z_DATA="$XDG_CACHE_HOME"/.z
 export ZINIT_HOME="$XDG_DATA_HOME"/zinit/zinit.git
 export ZPFX="$XDG_CACHE_HOME"/polaris
 
-
-##############
-# gcc / OS-Dev
-##############
-
-# if [ "$OS" = "Darwin" ]; then
-    # export CC=/usr/local/bin/gcc-9
-    # export LD=/usr/local/bin/gcc-9
-    # export OS_DEV_PREFIX="/Users/alichtman/bin/i386elfgcc"
-    # export TARGET=i386-elf
-    # export PATH="$OS_DEV_PREFIX/bin:$PATH"
-# elif [ "$OS" = "Linux" ]; then
-    # export CC=/usr/bin/gcc-9
-    # export LD=/usr/bin/gcc-9
-# fi
-
 #############
 # PATH Config
 #############
@@ -177,12 +161,13 @@ export ZPFX="$XDG_CACHE_HOME"/polaris
 # TODO: https://www.arp242.net/zshrc.html#easier-path
 
 export PATH="$PATH:/home/alichtman/.local/share/cargo/bin" # starship in root shell hack
+export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$XDG_DATA_HOME/npm/bin"
 export PATH="$PATH:$CARGO_HOME/bin"
 export PATH="$GEM_HOME/bin:$PATH"
 export PATH="$PATH:$GOPATH/bin"
 export PATH="$PATH:$HOME/.local/bin"
-export PATH="$PATH:PYENV_ROOT/bin"
+export PATH="$PATH:$PYENV_ROOT/bin"
 export PATH="$PATH:$HOME/.poetry/bin"
 export PATH="$PATH:$HOME/Applications"
 export PATH="$PATH:/sbin"
