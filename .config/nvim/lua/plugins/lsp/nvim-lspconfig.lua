@@ -103,6 +103,17 @@ return {
         -- configure lua server (with special settings)
         lspconfig["lua_ls"].setup({
           capabilities = capabilities,
+          root_dir = function(filename, bufnr)
+            lspconfig.util.root_pattern(
+              ".luarc.json",
+              ".luacheckrc",
+              ".stylua.toml",
+              "stylua.toml",
+              "selene.toml",
+              "init.lua",
+              ".git"
+            )(filename)
+          end,
           settings = {
             Lua = {
               -- make the language server recognize "vim" global
