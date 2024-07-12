@@ -3,6 +3,7 @@
   "lowest_supported_version": "5.0.0a",
   "dotfiles": {
     ".config/fzf-notes": {},
+    ".config/bat/config": {},
     ".config/git/config": {},
     ".config/git/gitignore_global": {},
     ".config/irb/irbrc": {},

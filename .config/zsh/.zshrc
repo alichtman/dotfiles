@@ -27,7 +27,6 @@ export BETTER_EXCEPTIONS=1     # Python Better Exceptions
 export FORCE_COLOR=1
 
 export HOMEBREW_NO_ANALYTICS=1
-export BAT_THEME="TwoDark"
 export NOTES=$HOME/Desktop/Development/notes
 
 # END Env Vars }}}
