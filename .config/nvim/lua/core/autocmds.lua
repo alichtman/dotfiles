@@ -167,6 +167,9 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt.textwidth = 72 -- Force the cursor onto a new line after 72 characters
     vim.opt.colorcolumn = "+1" -- Color the 73rd column
     vim.opt.colorcolumn = "+51" -- And the 51st column (for titles)
+    -- Gruvbox-themed git commit colors. I disagree with the retrobox diff colors.
+    vim.api.nvim_set_hl(0, "diffAdded", { fg = "#3fc346" })
+    vim.api.nvim_set_hl(0, "diffRemoved", { fg = "#f43c31" })
   end,
 })
 
