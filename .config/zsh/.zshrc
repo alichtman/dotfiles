@@ -71,6 +71,7 @@ zstyle ':zcomet:compinit' dump-file "$ZCOMET_CACHE/zcompdump"
 
 # zcomet plugins {{{
 
+zcomet load ohmyzsh lib async_prompt.zsh
 zcomet load ohmyzsh lib git.zsh
 zcomet snippet OMZ::plugins/git/git.plugin.zsh
 zcomet snippet OMZ::plugins/fzf/fzf.plugin.zsh
