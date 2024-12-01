@@ -160,7 +160,7 @@ export ZPFX="$XDG_CACHE_HOME"/polaris
 
 # TODO: https://www.arp242.net/zshrc.html#easier-path
 
-export PATH="$PATH:/home/alichtman/.local/share/cargo/bin" # starship in root shell hack
+export PATH="/home/alichtman/.local/share/cargo/bin:$PATH" # starship in root shell hack. Do not replace with $HOME
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$XDG_DATA_HOME/npm/bin"
 export PATH="$PATH:$CARGO_HOME/bin"
@@ -172,11 +172,12 @@ export PATH="$PATH:$HOME/.poetry/bin"
 export PATH="$PATH:$HOME/Applications"
 export PATH="$PATH:/sbin"
 export PATH="$PATH:/usr/local"
-export PATH="$PATH:/usr/local/bin"
 export PATH="$PATH:/usr/local/sbin"
 export PATH="$PATH:/usr/sbin"
 export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
 export PATH="/home/linuxbrew/.linuxbrew/sbin:$PATH"
+export PATH="/usr/bin:$PATH"
+export PATH="/usr/local/bin:$PATH"
 
 
 if [ "$OS" = "Darwin" ]; then
@@ -224,6 +225,10 @@ fi
 # Go Env
 
 export GO111MODULE="on"
+
+# Source cargo env if we can
+. "$HOME/.local/share/cargo/env" 2>/dev/null || true
+
 
 ###############
 # Startup Tasks
