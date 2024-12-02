@@ -7,6 +7,13 @@ vim.api.nvim_create_user_command("EditVimConfig", function()
   require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
 end, { desc = "Edit Vim configuration" })
 
+-- Edit zsh configuration
+-- Add the following line to your shell config file:
+-- alias zshrc='vim "+:EditZshConfig"'
+vim.api.nvim_create_user_command("EditZshConfig", function()
+  require("telescope.builtin").find_files({ hidden = true, prompt_title = " Config ", cwd = "~/.config/zsh/" })
+end, { desc = "Edit zsh configuration" })
+
 vim.api.nvim_create_user_command("ReplaceAppleQuotes", function()
   vim.api.nvim_command('silent! %s/[“”]/"/g')
   vim.api.nvim_command("silent! %s/[’]/'/g")

@@ -2,6 +2,20 @@
 # zsh Functions #
 #################
 
+# rpmextract {{{
+
+# It would be really nice if Fedora shipped with something like this built in
+# https://stackoverflow.com/a/18787544
+rpmextract() {
+    if [ -z "$1" ]; then
+        echo "Usage: rpmextract <file.rpm>"
+        return 1
+    fi
+    rpm2cpio "$1" | cpio -idmv
+}
+
+# }}}
+
 # nnn Integrations {{{
 
 n ()

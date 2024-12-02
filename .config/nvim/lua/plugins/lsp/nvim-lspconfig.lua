@@ -99,6 +99,12 @@ return {
           filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
         })
       end,
+      ["clangd"] = function()
+        require("lspconfig").clangd.setup({
+          filetypes = { "c", "cpp", "objc", "objcpp" },
+        })
+      end,
+
       ["lua_ls"] = function()
         -- configure lua server (with special settings)
         lspconfig["lua_ls"].setup({

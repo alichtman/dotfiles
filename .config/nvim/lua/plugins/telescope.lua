@@ -47,7 +47,7 @@ return {
 
     -- set keymaps
     local keymap = vim.keymap -- for conciseness
-    keymap.set("n", "<leader>fg", builtin.git_files, { desc = "Fuzzy find files in cwd" })
+    keymap.set("n", "<leader>fg", builtin.git_files, { desc = "Fuzzy find files in git dir" })
     keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Fuzzy find files in cwd" })
     keymap.set("n", "<leader>fr", builtin.oldfiles, { desc = "Fuzzy find recent files" })
     keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })

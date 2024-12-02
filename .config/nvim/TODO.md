@@ -6,3 +6,4 @@
 - which-key needs to be set up
 - All the open TODOs
 - Find a register plugin like vim.peekaboo, maybe https://github.com/gennaro-tedesco/nvim-peekup
+- unpin lualine

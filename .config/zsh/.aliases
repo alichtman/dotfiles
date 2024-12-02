@@ -40,18 +40,22 @@ alias cdd='cd'
 
 # Updates {{{
 
-alias vimup='nvim "+PlugUpdate" "+PlugUpgrade" "+CocUpdate" "+qall";'
+alias vimup='nvim --headless "+Lazy! sync" +qa'
 alias pipup='pip list --outdated --format=freeze | grep -v "^\-e" | cut -d = -f 1  | xargs -n1 pip install -U'
 alias zcomet_up='zcomet self-update && zcomet update'
 
 if [ "$OS" = "Darwin" ]; then
     alias brewup='brew update; brew upgrade; brew cask upgrade; brew cleanup; brew doctor;'
-    alias update='rustup update; cargo install-update -a; brewup; apm upgrade --no-confirm; echo -n "\n1Password: $(op update)\n"; vimup; zcomet_up; -u; npm update -g;'
+    alias update='rustup update; cargo install-update -a; brewup; echo -n "\n1Password: $(op update)\n"; vimup; zcomet_up; -u; npm update -g;'
 elif [ "$OS" = "Linux" ]; then
-    alias apt='nala'
-    alias aptup='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
-    alias nalaup='sudo nala update && sudo nala upgrade -y && sudo nala autoremove -y'
-    alias update='rustup update; aptup; flatpak update -y; vimup; snap refresh; zcomet_up; tldr -u; npm update -g;'
+    if [ -f /etc/lsb-release ] && grep -q "Ubuntu" /etc/lsb-release; then
+        alias apt='nala'
+        alias aptup='sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y'
+        alias nalaup='sudo nala update && sudo nala upgrade -y && sudo nala autoremove -y'
+        alias update='rustup update; aptup; flatpak update -y; vimup; snap refresh; zcomet_up; tldr -u; npm update -g;'
+    else
+        alias update='sudo dnf update; rustup update; flatpak update -y; vimup; snap refresh; zcomet_up; tldr -u; npm update -g;'
+    fi
 fi
 
 
@@ -119,6 +123,13 @@ alias ncmpcpp='ncmpcpp --screen browser'
 alias music='ncmpcpp'
 
 #
+# }}}
+
+
+# Source Control {{{
+
+alias hg='sl'
+
 # }}}
 
 # Convenience {{{
@@ -231,9 +242,8 @@ alias :q="exit"
 # Configs {{{
 
 alias aliases="vim $XDG_CONFIG_HOME/zsh/.aliases"
+alias zshrc='vim "+:EditZshConfig"'
 alias zfunctions="vim $XDG_CONFIG_HOME/zsh/.zfunctions"
-alias zshrc="vim $XDG_CONFIG_HOME/zsh/.zshrc"
-alias zshenv="vim $XDG_CONFIG_HOME/zsh/.zshenv"
 alias srczshrc="source $XDG_CONFIG_HOME/zsh/.zshrc"
 alias vimrc='vim "+:EditVimConfig"'
 alias nvimrc='vimrc'
