@@ -28,7 +28,7 @@
   "lazygit.nvim": { "branch": "main", "commit": "56760339a81cd1540d5a72fd9d93010a2677b55d" },
   "leap.nvim": { "branch": "main", "commit": "c6bfb191f1161fbabace1f36f578a20ac6c7642c" },
   "lspkind.nvim": { "branch": "master", "commit": "a700f1436d4a938b1a1a93c9962dc796afbaef4d" },
-  "lualine.nvim": { "branch": "master", "commit": "2a5bae925481f999263d6f5ed8361baef8df4f83" },
+  "lualine.nvim": { "branch": "alichtman/add_filepermissions", "commit": "0d5f3b7081a0a86c48ec5c466ffcce1051219f26" },
   "markview.nvim": { "branch": "main", "commit": "72cd34279e94ee96ee33bdf30a87b00e6d45319d" },
   "mason-lspconfig.nvim": { "branch": "main", "commit": "8e46de9241d3997927af12196bd8faa0ed08c29a" },
   "mason-tool-installer.nvim": { "branch": "main", "commit": "c5e07b8ff54187716334d585db34282e46fa2932" },

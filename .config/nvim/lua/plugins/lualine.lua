@@ -2,6 +2,7 @@ return {
   {
     -- dir = "/home/alichtman/Desktop/Development/open-source-contributions/lualine.nvim",
     "alichtman/lualine.nvim",
+    branch = "alichtman/add_filepermissions",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       -- https://github.com/nvim-lualine/lualine.nvim/issues/1312
