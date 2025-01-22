@@ -107,7 +107,7 @@ vim.opt.linebreak = false
 vim.opt.breakindent = true
 vim.opt.breakindentopt = "min:40"
 vim.cmd("highlight ColorColumn ctermbg=237")
-vim.opt.colorcolumn = "81,121" -- 80 and 120 character guidelines
+-- vim.opt.colorcolumn = "81,121" -- 80 and 120 character guidelines
 
 -- END Line breaks }}}
 
