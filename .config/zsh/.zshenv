@@ -98,7 +98,7 @@ export IPFS_PATH="$XDG_DATA_HOME"/ipfs
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME"/pass
 
 # Python
-export PYENV_ROOT=/usr/local/bin/pyenv
+export PYENV_ROOT=/usr/local/share/pyenv
 export PYLINTHOME="$XDG_CACHE_HOME"/pylint.d
 export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/pythonrc
 
@@ -243,3 +243,4 @@ fi
 export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig/"
 
 # vim: ts=4 sw=4 tw=0 et ft=zsh :
+. "/Users/alichtman/.local/share/cargo/env"
