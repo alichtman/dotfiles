@@ -4,7 +4,7 @@ vim.g.mapleader = ","
 vim.g.loaded_perl_provider = 0
 vim.opt.encoding = "utf-8"
 
-vim.opt.autochdir = true
+vim.opt.autochdir = false
 vim.opt.secure = true
 vim.opt.modeline = true -- Note that this creates a security risk
 vim.opt.modelines = 4

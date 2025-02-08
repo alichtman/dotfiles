@@ -19,7 +19,7 @@ return {
           component_separators = { left = "", right = "" },
         },
         sections = {
-          lualine_a = { "mode", { "filepermissions", octal = true } },
+          lualine_a = { "mode" }, -- { "filepermissions", octal = true } },
           lualine_b = { "branch", "diff", "diagnostics", "filename", "harpoon2" },
           lualine_c = {},
           lualine_x = {},

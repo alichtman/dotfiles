@@ -1,7 +1,7 @@
 return {
   -- dir = "~/Desktop/Development/open-source-contributions/zen-mode.nvim",
-  "alichtman/zen-mode.nvim",
-  -- "folke/zen-mode.nvim",
+  -- "alichtman/zen-mode.nvim",
+  "folke/zen-mode.nvim",
   dependencies = { "folke/twilight.nvim" },
   cmd = "ZenMode",
   opts = {

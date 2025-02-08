@@ -15,7 +15,15 @@ return {
       {
         "<leader>ha",
         function()
+          local harpoon = require("harpoon")
+          local curr_harpoon_count = harpoon:list():length()
           require("harpoon"):list():add()
+          local new_harpoon_count = harpoon:list():length()
+          if new_harpoon_count > curr_harpoon_count then
+            vim.notify("Harpoon added", vim.log.levels.INFO)
+          else
+            vim.notify("Harpoon not added", vim.log.levels.ERROR)
+          end
         end,
         desc = "Harpoon File",
       },
