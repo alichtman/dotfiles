@@ -151,7 +151,6 @@ export FZ_SUBDIR_CMD=jj
 setopt HIST_IGNORE_ALL_DUPS
 
 # Bind up and down arrow keys
-
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
@@ -254,6 +253,7 @@ bindkey -M vicmd "^?" backward-delete-char
 bindkey -M viins "^?" backward-delete-char
 
 # Set cursor shape to block for normal + visual mode, and beam for insert mode {{{
+# https://github.com/LukeSmithxyz/voidrice/blob/master/.config/zsh/.zshrc#L40-L51
 function zle-keymap-select () {
     case $KEYMAP in
         vicmd) echo -ne '\e[1 q';;      # block
@@ -262,12 +262,10 @@ function zle-keymap-select () {
 }
 zle -N zle-keymap-select
 zle-line-init() {
-    zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
     echo -ne "\e[5 q"
 }
 zle -N zle-line-init
-echo -ne '\e[5 q' # Use beam shape cursor on startup.
-preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
+preexec() { zle-line-init ;} # Use beam shape cursor for each new prompt.
 
 # END Set cursor shape to block for normal + visual mode, and beam for insert mode }}}
 
@@ -275,7 +273,7 @@ preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
 # Backgrounding and Unbackgrounding {{{
 
-# Use Ctrl-z swap in and out of vim (or any other process)
+# Use Ctrl-z to swap in and out of vim (or any other process)
 # https://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
 function ctrl-z-toggle () {
   if [[ $#BUFFER -eq 0 ]]; then
