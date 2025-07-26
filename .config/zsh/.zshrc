@@ -152,15 +152,8 @@ setopt HIST_IGNORE_ALL_DUPS
 
 # Bind up and down arrow keys
 
-if [ "$OS" = "Darwin" ]; then
-    bindkey '^[[A' history-substring-search-up
-    bindkey '^[[B' history-substring-search-down
-elif [ "$OS" = "Linux" ]; then
-    # https://superuser.com/a/1296543
-    # key dict is defined in /etc/zshrc
-    bindkey "$key[Up]" history-substring-search-up
-    bindkey "$key[Down]" history-substring-search-down
-fi
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 
 # Bind j and k for in vim mode
 bindkey -M vicmd 'k' history-substring-search-up
@@ -256,10 +249,27 @@ bindkey -M vicmd "^V" edit-command-line
 # Hit jk to enter NORMAL mode. You basically have to hit them at the same time.
 bindkey -s jk \\e
 
-# TODO: Allow backspace over newline
+# Make backspace always delete
+bindkey -M vicmd "^?" backward-delete-char
+bindkey -M viins "^?" backward-delete-char
 
-# TODO: BUG: Doesn't work with symbol changing for prompt
-# https://github.com/LukeSmithxyz/voidrice/blob/33e329c8cb44679c37054d1823ef487c2569fcdc/.config/zsh/.zshrc#L26-L56
+# Set cursor shape to block for normal + visual mode, and beam for insert mode {{{
+function zle-keymap-select () {
+    case $KEYMAP in
+        vicmd) echo -ne '\e[1 q';;      # block
+        viins|main) echo -ne '\e[5 q';; # beam
+    esac
+}
+zle -N zle-keymap-select
+zle-line-init() {
+    zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
+    echo -ne "\e[5 q"
+}
+zle -N zle-line-init
+echo -ne '\e[5 q' # Use beam shape cursor on startup.
+preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
+
+# END Set cursor shape to block for normal + visual mode, and beam for insert mode }}}
 
 # END vim }}}
 
