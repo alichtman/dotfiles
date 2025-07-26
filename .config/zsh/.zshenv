@@ -243,4 +243,4 @@ fi
 export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig/"
 
 # vim: ts=4 sw=4 tw=0 et ft=zsh :
-. "/Users/alichtman/.local/share/cargo/env"
+. "$XDG_DATA_HOME/cargo/env"
