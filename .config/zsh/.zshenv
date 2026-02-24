@@ -35,7 +35,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_DIRS="$XDG_DATA_DIRS:/var/lib/flatpak/exports/share"
 export XDG_DATA_DIRS="$XDG_DATA_DIRS:$HOME/.local/share/flatpak/exports/share"
-export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+[ "$OS" = "Linux" ] && export XDG_RUNTIME_DIR="/run/user/$(id -u)"
 export XDG_STATE_HOME="$HOME/.local/state"
 
 ############################
@@ -174,8 +174,10 @@ export PATH="$PATH:/sbin"
 export PATH="$PATH:/usr/local"
 export PATH="$PATH:/usr/local/sbin"
 export PATH="$PATH:/usr/sbin"
-export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
-export PATH="/home/linuxbrew/.linuxbrew/sbin:$PATH"
+if [ "$OS" = "Linux" ]; then
+    export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+    export PATH="/home/linuxbrew/.linuxbrew/sbin:$PATH"
+fi
 export PATH="/usr/bin:$PATH"
 export PATH="/usr/local/bin:$PATH"
 
@@ -209,7 +211,6 @@ export PATH="$HOME/.local/share/gem/bin:$PATH"
 export PATH="$PATH:$HOME/.local/share/gem/ruby/3.1.0/bin"
 
 
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
 # Deduplicate entries in PATH
 typeset -U PATH
@@ -218,7 +219,8 @@ export PATH
 # GNU-getopt
 
 if [ $OS = "Darwin" ]; then
-    export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
+    export BREW_PREFIX="$(brew --prefix)"
+    export FLAGS_GETOPT_CMD="$BREW_PREFIX/opt/gnu-getopt/bin/getopt"
 fi
 
 
@@ -228,7 +230,6 @@ export GO111MODULE="on"
 
 # Source cargo env if we can
 . "$HOME/.local/share/cargo/env" 2>/dev/null || true
-
 
 ###############
 # Startup Tasks
@@ -240,7 +241,6 @@ if [ "$OS" = "Linux" ]; then
 fi
 
 # Needed to build things with alsa. Idk why this isn't set by default?
-export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig/"
+[ "$OS" = "Linux" ] && export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig/"
 
 # vim: ts=4 sw=4 tw=0 et ft=zsh :
-. "$XDG_DATA_HOME/cargo/env"

@@ -71,23 +71,39 @@ zstyle ':zcomet:compinit' dump-file "$ZCOMET_CACHE/zcompdump"
 
 # zcomet plugins {{{
 
-zcomet load ohmyzsh lib async_prompt.zsh
-zcomet load ohmyzsh lib git.zsh
-zcomet snippet OMZ::plugins/git/git.plugin.zsh
-zcomet snippet OMZ::plugins/fzf/fzf.plugin.zsh
-# zcomet snippet OMZ::plugins/tmux/tmux.plugin.zsh
-zcomet snippet OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh
-zcomet snippet OMZ::plugins/colored-man-pages/colored-man-pages.plugin.zsh
+zcomet load romkatv/zsh-defer
+
+zsh-defer zcomet load ohmyzsh lib async_prompt.zsh
+zsh-defer zcomet load ohmyzsh lib git.zsh
+zsh-defer zcomet snippet OMZ::plugins/git/git.plugin.zsh
+zsh-defer zcomet snippet OMZ::plugins/fzf/fzf.plugin.zsh
+# zsh-defer zcomet snippet OMZ::plugins/tmux/tmux.plugin.zsh
+zsh-defer zcomet snippet OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh
+zsh-defer zcomet snippet OMZ::plugins/colored-man-pages/colored-man-pages.plugin.zsh
 
 # Other plugins
-zcomet load changyuheng/fz
-zcomet load rupa/z
-zcomet load zsh-users/zsh-completions
-zcomet load zsh-users/zsh-history-substring-search
-zcomet load changyuheng/zsh-interactive-cd
- # zcomet load softmoth/zsh-vim-mode
-zcomet load zdharma-continuum/fast-syntax-highlighting
-zcomet load zsh-users/zsh-autosuggestions
+zsh-defer zcomet load changyuheng/fz
+zsh-defer zcomet load rupa/z
+zsh-defer zcomet load zsh-users/zsh-completions
+zsh-defer zcomet load changyuheng/zsh-interactive-cd
+# zsh-defer zcomet load softmoth/zsh-vim-mode
+zsh-defer zcomet load zdharma-continuum/fast-syntax-highlighting
+zsh-defer zcomet load zsh-users/zsh-autosuggestions
+
+# history-substring-search and its keybindings must be deferred together
+_load_history_search() {
+    zcomet load zsh-users/zsh-history-substring-search
+    if [ "$OS" = "Darwin" ]; then
+        bindkey '^[[A' history-substring-search-up
+        bindkey '^[[B' history-substring-search-down
+    elif [ "$OS" = "Linux" ]; then
+        bindkey "$key[Up]" history-substring-search-up
+        bindkey "$key[Down]" history-substring-search-down
+    fi
+    bindkey -M vicmd 'k' history-substring-search-up
+    bindkey -M vicmd 'j' history-substring-search-down
+}
+zsh-defer _load_history_search
 
 # END zcomet Plugins }}}
 
@@ -116,14 +132,14 @@ COMPLETION_WAITING_DOTS="true"
 setopt globdots
 
 # homebrew completions
-if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+if [ -n "$BREW_PREFIX" ]; then
+  FPATH=$BREW_PREFIX/share/zsh/site-functions:$FPATH
 fi
 
 # Load completions
 fpath=(/usr/local/share/zsh-completions $fpath)
 
-zcomet compinit
+zsh-defer zcomet compinit
 
 # END zsh completions }}}
 
@@ -131,10 +147,14 @@ zcomet compinit
 
 # pyenv {{{
 
-# If pyenv is on PATH, load it and set the python interpreter version.
-if hash pyenv; then
-    eval "$(pyenv init -)"
-    pyenv global 3.13.1
+# If pyenv is on PATH, defer its init so it doesn't block the prompt.
+if hash pyenv 2>/dev/null; then
+    _pyenv_init() {
+        unfunction _pyenv_init
+        eval "$(pyenv init -)"
+        pyenv global 3.13.1
+    }
+    zsh-defer _pyenv_init
 fi
 
 # END pyenv}}}
@@ -150,13 +170,7 @@ export FZ_SUBDIR_CMD=jj
 
 setopt HIST_IGNORE_ALL_DUPS
 
-# Bind up and down arrow keys
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-
-# Bind j and k for in vim mode
-bindkey -M vicmd 'k' history-substring-search-up
-bindkey -M vicmd 'j' history-substring-search-down
+# Keybindings are set in _load_history_search (deferred above with the plugin)
 
 # END zsh-history-substring-search }}}
 
@@ -196,8 +210,6 @@ unsetopt nomatch
 
 # Append a trailing `/' to all directory names resulting from globbing
 setopt mark_dirs
-
-set termguicolors
 
 # Shift+Tab to get reverse menu completion
 bindkey '^[[Z' reverse-menu-complete
@@ -248,32 +260,16 @@ bindkey -M vicmd "^V" edit-command-line
 # Hit jk to enter NORMAL mode. You basically have to hit them at the same time.
 bindkey -s jk \\e
 
-# Make backspace always delete
-bindkey -M vicmd "^?" backward-delete-char
-bindkey -M viins "^?" backward-delete-char
+# TODO: Allow backspace over newline
 
-# Set cursor shape to block for normal + visual mode, and beam for insert mode {{{
-# https://github.com/LukeSmithxyz/voidrice/blob/master/.config/zsh/.zshrc#L40-L51
-function zle-keymap-select () {
-    case $KEYMAP in
-        vicmd) echo -ne '\e[1 q';;      # block
-        viins|main) echo -ne '\e[5 q';; # beam
-    esac
-}
-zle -N zle-keymap-select
-zle-line-init() {
-    echo -ne "\e[5 q"
-}
-zle -N zle-line-init
-preexec() { zle-line-init ;} # Use beam shape cursor for each new prompt.
-
-# END Set cursor shape to block for normal + visual mode, and beam for insert mode }}}
+# TODO: BUG: Doesn't work with symbol changing for prompt
+# https://github.com/LukeSmithxyz/voidrice/blob/33e329c8cb44679c37054d1823ef487c2569fcdc/.config/zsh/.zshrc#L26-L56
 
 # END vim }}}
 
 # Backgrounding and Unbackgrounding {{{
 
-# Use Ctrl-z to swap in and out of vim (or any other process)
+# Use Ctrl-z swap in and out of vim (or any other process)
 # https://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
 function ctrl-z-toggle () {
   if [[ $#BUFFER -eq 0 ]]; then
@@ -316,7 +312,7 @@ year-progress
 tls
 
 if [ "$OS" = "Darwin" ]; then
-	test -e "${ZDOTDIR}/.iterm2_shell_integration.zsh" && source "${ZDOTDIR}/.iterm2_shell_integration.zsh" || true
+	zsh-defer -c 'test -e "${ZDOTDIR}/.iterm2_shell_integration.zsh" && source "${ZDOTDIR}/.iterm2_shell_integration.zsh" || true'
 fi
 
 # If tmux is not running already, start it in the Background
@@ -340,8 +336,7 @@ fi
 # nvm {{{
 
 export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-nvm use node
+zsh-defer . "$NVM_DIR/nvm.sh" --no-use
 
 # }}}
 
