@@ -134,7 +134,6 @@ export STACK_ROOT="$XDG_DATA_HOME"/stack
 export NODE_REPL_HISTORY="$XDG_CACHE_HOME"/node_repl_history
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
 export NPM_CONFIG_CACHE="$XDG_CACHE_HOME"/npm
-export NPM_CONFIG_TMP="$XDG_RUNTIME_DIR"/npm
 export NVM_DIR="$HOME/.config/nvm"
 
 # taskwarrior
@@ -180,16 +179,12 @@ if [ "$OS" = "Linux" ]; then
 fi
 export PATH="/usr/bin:$PATH"
 export PATH="/usr/local/bin:$PATH"
+export PATH="/opt/homebrew/bin:$PATH"
 
 
 if [ "$OS" = "Darwin" ]; then
-    export PATH="/usr/local/opt/gnu-getopt/bin:$PATH"
+    export PATH="/opt/homebrew/opt/trash-cli/bin:$PATH"
     export PATH="$PATH:/Applications/VMware Fusion.app/Contents/Library"
-    export PATH="$PATH:/usr/local/Cellar/john-jumbo/1.8.0/share/john"
-    export PATH="$PATH:/usr/local/Cellar/node/13.11.0/bin"
-    export PATH="$PATH:$HOME/Library/Python/3.7/bin"
-    export PATH="$PATH:/usr/local/opt/openssl/bin"
-    export PATH="$PATH:/usr/local/opt/llvm/bin"
     export PATH="$PATH:$HOME/.local/share/radare2/prefix/bin"
 elif [ "$OS" = "Linux" ]; then
     export PATH="$PATH:/usr/lib/w3m/w3mimgdisplay"
@@ -210,7 +205,19 @@ export PATH="$PATH:$HOME/.rvm/bin"
 export PATH="$HOME/.local/share/gem/bin:$PATH"
 export PATH="$PATH:$HOME/.local/share/gem/ruby/3.1.0/bin"
 
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
+# # Ensure nvm default node takes precedence over system/Homebrew node.
+# # Eagerly adds the right bin to PATH without the overhead of sourcing nvm.sh —
+# # the lazy-loader in .zshrc still handles `nvm` commands.
+# if [ -s "$NVM_DIR/alias/default" ]; then
+#   _nvm_default=$(cat "$NVM_DIR/alias/default")
+#   # Resolve one level of chained aliases (e.g. "22" -> "v22.13.1")
+#   [ -s "$NVM_DIR/alias/$_nvm_default" ] && _nvm_default=$(cat "$NVM_DIR/alias/$_nvm_default")
+#   _nvm_bin="$NVM_DIR/versions/node/${_nvm_default}/bin"
+#   [ -d "$_nvm_bin" ] && export PATH="$_nvm_bin:$PATH"
+#   unset _nvm_default _nvm_bin
+# fi
 
 # Deduplicate entries in PATH
 typeset -U PATH
@@ -222,7 +229,6 @@ if [ $OS = "Darwin" ]; then
     export BREW_PREFIX="$(brew --prefix)"
     export FLAGS_GETOPT_CMD="$BREW_PREFIX/opt/gnu-getopt/bin/getopt"
 fi
-
 
 # Go Env
 
@@ -236,11 +242,10 @@ export GO111MODULE="on"
 ###############
 
 if [ "$OS" = "Linux" ]; then
+    # Needed to build things with alsa. Idk why this isn't set by default?
+    export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig/"
     # I use gpaste now
     #pgrep greenclip >/dev/null || (bash -c "greenclip daemon > /dev/null 2>&1 &")
 fi
-
-# Needed to build things with alsa. Idk why this isn't set by default?
-[ "$OS" = "Linux" ] && export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig/"
 
 # vim: ts=4 sw=4 tw=0 et ft=zsh :

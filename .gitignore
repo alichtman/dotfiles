@@ -7,3 +7,4 @@
 .config/tmux/resurrect
 .ssh/*
 .pypirc
+.config/zsh/.zsh_sessions

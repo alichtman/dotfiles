@@ -37,6 +37,8 @@ end, { remap = false, expr = true })
 
 vim.keymap.set("n", "CD", ":cd %:p:h<CR>", { desc = "Change directory to current buffer" })
 
+vim.keymap.set("n", "CD", ":cd %:p:h<CR>", { desc = "Change directory to current buffer" })
+
 -- Quickly select the text you just pasted
 vim.keymap.set("n", "gV", "`[v`]")
 

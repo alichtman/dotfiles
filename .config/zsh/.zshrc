@@ -33,6 +33,7 @@ export NOTES=$HOME/Desktop/Development/notes
 
 # ssh {{{
 
+# zstyle :omz:plugins:ssh-agent lazy yes
 if [ "$OS" = "Darwin" ]; then
     zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab rpi-hydrogen
 elif [ "$OS" = "Linux" ]; then
@@ -78,7 +79,7 @@ zsh-defer zcomet load ohmyzsh lib git.zsh
 zsh-defer zcomet snippet OMZ::plugins/git/git.plugin.zsh
 zsh-defer zcomet snippet OMZ::plugins/fzf/fzf.plugin.zsh
 # zsh-defer zcomet snippet OMZ::plugins/tmux/tmux.plugin.zsh
-zsh-defer zcomet snippet OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh
+zcomet snippet OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh
 zsh-defer zcomet snippet OMZ::plugins/colored-man-pages/colored-man-pages.plugin.zsh
 
 # Other plugins
@@ -139,7 +140,15 @@ fi
 # Load completions
 fpath=(/usr/local/share/zsh-completions $fpath)
 
-zsh-defer zcomet compinit
+_load_compinit() {
+    autoload -Uz compinit
+    local dump="$ZCOMET_CACHE/zcompdump"
+    # Fast: load existing dump, no fpath scan
+    compinit -C -d "$dump"
+    # Regenerate dump in background every session (next session picks it up)
+    (compinit -d "$dump" && zcompile "$dump") &|
+}
+zsh-defer _load_compinit
 
 # END zsh completions }}}
 
@@ -147,14 +156,16 @@ zsh-defer zcomet compinit
 
 # pyenv {{{
 
-# If pyenv is on PATH, defer its init so it doesn't block the prompt.
+# Lazy-load pyenv: initialize only on first use of pyenv/python/python3
 if hash pyenv 2>/dev/null; then
     _pyenv_init() {
-        unfunction _pyenv_init
+        unfunction _pyenv_init pyenv python python3 2>/dev/null
         eval "$(pyenv init -)"
-        pyenv global 3.13.1
+        pyenv global 3.14.3
     }
-    zsh-defer _pyenv_init
+    pyenv()   { _pyenv_init; pyenv   "$@" }
+    python()  { _pyenv_init; python  "$@" }
+    python3() { _pyenv_init; python3 "$@" }
 fi
 
 # END pyenv}}}
@@ -213,6 +224,9 @@ setopt mark_dirs
 
 # Shift+Tab to get reverse menu completion
 bindkey '^[[Z' reverse-menu-complete
+
+# Expand previous command inline with !!<Space>
+bindkey ' ' magic-space
 
 # END General zsh Behavior }}}
 
@@ -336,8 +350,19 @@ fi
 # nvm {{{
 
 export NVM_DIR="$HOME/.config/nvm"
-zsh-defer . "$NVM_DIR/nvm.sh" --no-use
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+nvm use node
 
-# }}}
+# # Lazy-load NVM: initialize only on first use of nvm/node/npm/npx
+# _nvm_init() {
+#     unfunction _nvm_init nvm node npm npx 2>/dev/null
+#     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+# }
+# nvm()  { _nvm_init; nvm  "$@" }
+# node() { _nvm_init; node "$@" }
+# npm()  { _nvm_init; npm  "$@" }
+# npx()  { _nvm_init; npx  "$@" }
+#
+# # }}}
 
 # vim: foldmethod=marker foldcolumn=1 et

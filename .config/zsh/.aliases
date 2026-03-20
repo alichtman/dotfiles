@@ -165,7 +165,6 @@ if [ "$OS" = "Darwin" ]; then
     alias run='launch'
     # This hack fixes some weird tmux + zsh bug
     alias fg='setopt monitor && fg'
-    alias trash='trash -F'
 elif [ "$OS" = "Linux" ]; then
     alias gpt='chatgpt'
     alias run='wofi -show drun'

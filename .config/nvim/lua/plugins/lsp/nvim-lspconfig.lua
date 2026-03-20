@@ -85,8 +85,7 @@ return {
       },
     })
 
-    mason_lspconfig.setup({
-      handlers = {
+    mason_lspconfig.setup({ handlers = {
       -- default handler for installed servers
       function(server_name)
         lspconfig[server_name].setup({
@@ -134,7 +133,6 @@ return {
           },
         })
       end,
-      }
-    })
+    }})
   end,
 }

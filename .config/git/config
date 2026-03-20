@@ -50,7 +50,7 @@
 [github]
 	user = alichtman
 [gpg]
-	program = gpg2
+	program = gpg
 [interactive]
 	diffFilter = diff-so-fancy --patch
 [blame]

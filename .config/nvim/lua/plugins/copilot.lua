@@ -25,8 +25,6 @@ return {
         jump_prev = "[[",
         jump_next = "]]",
         accept = "<C-l>",
-        accept_line = "<C-;>",
-        accept_word = "<C-,>",
         refresh = "gr",
         open = "<M-CR>",
       },
