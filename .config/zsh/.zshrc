@@ -33,7 +33,6 @@ export NOTES=$HOME/Desktop/Development/notes
 
 # ssh {{{
 
-# zstyle :omz:plugins:ssh-agent lazy yes
 if [ "$OS" = "Darwin" ]; then
     zstyle :omz:plugins:ssh-agent identities alichtman-GitHub alichtman-GitLab rpi-hydrogen
 elif [ "$OS" = "Linux" ]; then
@@ -42,25 +41,18 @@ fi
 
 # END ssh }}}
 
-# tmux {{{
-
-# export ZSH_TMUX_AUTOSTART=true
-# export ZSH_TMUX_AUTOCONNECT=false
-# export ZSH_TMUX_CONFIG="$XDG_CONFIG_HOME/tmux/tmux.conf"
-#
-# if [ "$OS" = "Darwin" ]; then
-    # export ZSH_TMUX_ITERM2=true
-# fi
-
-# }}}
-
 # zcomet setup {{{
 
 # clone zcomet if needed {{{
 ZCOMET_REPO="${XDG_DATA_HOME:-$HOME/.local/share}/zcomet"
 ZCOMET_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/zcomet"
 if [ ! -d "$ZCOMET_REPO" ]; then
-    git clone git@github.com:agkozak/zcomet.git "$ZCOMET_REPO"
+    # Try SSH first, fall back to HTTPS if it fails
+    if ! git clone git@github.com:agkozak/zcomet.git "$ZCOMET_REPO" 2>/dev/null; then
+        if ! git clone https://github.com/agkozak/zcomet.git "$ZCOMET_REPO"; then
+            echo "Error: Failed to clone zcomet repository via SSH and HTTPS"
+        fi
+    fi
 fi
 # END clone zcomet if needed }}}
 
@@ -78,11 +70,13 @@ zsh-defer zcomet load ohmyzsh lib async_prompt.zsh
 zsh-defer zcomet load ohmyzsh lib git.zsh
 zsh-defer zcomet snippet OMZ::plugins/git/git.plugin.zsh
 zsh-defer zcomet snippet OMZ::plugins/fzf/fzf.plugin.zsh
-# zsh-defer zcomet snippet OMZ::plugins/tmux/tmux.plugin.zsh
+
+# zcomet snippet OMZ::plugins/tmux/tmux.plugin.zsh
 zcomet snippet OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh
 zsh-defer zcomet snippet OMZ::plugins/colored-man-pages/colored-man-pages.plugin.zsh
 
 # Other plugins
+
 zsh-defer zcomet load changyuheng/fz
 zsh-defer zcomet load rupa/z
 zsh-defer zcomet load zsh-users/zsh-completions
@@ -105,6 +99,7 @@ _load_history_search() {
     bindkey -M vicmd 'j' history-substring-search-down
 }
 zsh-defer _load_history_search
+
 
 # END zcomet Plugins }}}
 
@@ -181,7 +176,14 @@ export FZ_SUBDIR_CMD=jj
 
 setopt HIST_IGNORE_ALL_DUPS
 
-# Keybindings are set in _load_history_search (deferred above with the plugin)
+# Keybindings are set above in _load_history_search
+# # Bind up and down arrow keys
+# bindkey '^[[A' history-substring-search-up
+# bindkey '^[[B' history-substring-search-down
+#
+# # Bind j and k for in vim mode
+# bindkey -M vicmd 'k' history-substring-search-up
+# bindkey -M vicmd 'j' history-substring-search-down
 
 # END zsh-history-substring-search }}}
 
@@ -274,16 +276,32 @@ bindkey -M vicmd "^V" edit-command-line
 # Hit jk to enter NORMAL mode. You basically have to hit them at the same time.
 bindkey -s jk \\e
 
-# TODO: Allow backspace over newline
+# Make backspace always delete
+bindkey -M vicmd "^?" backward-delete-char
+bindkey -M viins "^?" backward-delete-char
 
-# TODO: BUG: Doesn't work with symbol changing for prompt
-# https://github.com/LukeSmithxyz/voidrice/blob/33e329c8cb44679c37054d1823ef487c2569fcdc/.config/zsh/.zshrc#L26-L56
+# Set cursor shape to block for normal + visual mode, and beam for insert mode {{{
+# https://github.com/LukeSmithxyz/voidrice/blob/master/.config/zsh/.zshrc#L40-L51
+function zle-keymap-select () {
+    case $KEYMAP in
+        vicmd) echo -ne '\e[1 q';;      # block
+        viins|main) echo -ne '\e[5 q';; # beam
+    esac
+}
+zle -N zle-keymap-select
+zle-line-init() {
+    echo -ne "\e[5 q"
+}
+zle -N zle-line-init
+preexec() { zle-line-init ;} # Use beam shape cursor for each new prompt.
+
+# END Set cursor shape to block for normal + visual mode, and beam for insert mode }}}
 
 # END vim }}}
 
 # Backgrounding and Unbackgrounding {{{
 
-# Use Ctrl-z swap in and out of vim (or any other process)
+# Use Ctrl-z to swap in and out of vim (or any other process)
 # https://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
 function ctrl-z-toggle () {
   if [[ $#BUFFER -eq 0 ]]; then
@@ -326,8 +344,18 @@ year-progress
 tls
 
 if [ "$OS" = "Darwin" ]; then
-	zsh-defer -c 'test -e "${ZDOTDIR}/.iterm2_shell_integration.zsh" && source "${ZDOTDIR}/.iterm2_shell_integration.zsh" || true'
+    zsh-defer -c 'test -e "${ZDOTDIR}/.iterm2_shell_integration.zsh" && source "${ZDOTDIR}/.iterm2_shell_integration.zsh" || true'
 fi
+
+# tmux {{{
+
+# export ZSH_TMUX_AUTOSTART=true
+# export ZSH_TMUX_AUTOCONNECT=false
+# export ZSH_TMUX_CONFIG="$XDG_CONFIG_HOME/tmux/tmux.conf"
+#
+# if [ "$OS" = "Darwin" ]; then
+    # export ZSH_TMUX_ITERM2=true
+# fi
 
 # If tmux is not running already, start it in the Background
 if ! pgrep "tmux" > /dev/null
@@ -345,6 +373,9 @@ else
     fi
 fi
 
+# END tmux }}}
+
+
 # END Startup Tools }}}
 
 # nvm {{{
@@ -353,16 +384,6 @@ export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 nvm use node
 
-# # Lazy-load NVM: initialize only on first use of nvm/node/npm/npx
-# _nvm_init() {
-#     unfunction _nvm_init nvm node npm npx 2>/dev/null
-#     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-# }
-# nvm()  { _nvm_init; nvm  "$@" }
-# node() { _nvm_init; node "$@" }
-# npm()  { _nvm_init; npm  "$@" }
-# npx()  { _nvm_init; npx  "$@" }
-#
-# # }}}
+# }}}
 
 # vim: foldmethod=marker foldcolumn=1 et

@@ -2,7 +2,6 @@ local builtin = require("telescope.builtin")
 
 return {
   "nvim-telescope/telescope.nvim",
-  version = false,
   dependencies = {
     "nvim-lua/plenary.nvim",
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
@@ -14,7 +13,7 @@ return {
     {
       "<C-p>",
       function()
-        builtin.find_files({ find_command = { "rg", "--files", "--hidden", "-g", "!.git" } })
+        builtin.find_files()
       end,
       desc = "Fuzzy find files in cwd",
     },
@@ -31,6 +30,12 @@ return {
     local actions = require("telescope.actions")
 
     telescope.setup({
+      pickers = {
+        find_files = {
+          hidden = true,
+          file_ignore_patterns = { "%.git/" },
+        },
+      },
       defaults = {
         path_display = { "smart" },
         mappings = {

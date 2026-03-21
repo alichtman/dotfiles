@@ -1,10 +1,19 @@
 return {
-  "cdmill/focus.nvim",
-  cmd = { "Focus", "Zen", "Narrow" },
+  -- dir = "~/Desktop/Development/open-source-contributions/zen-mode.nvim",
+  -- "alichtman/zen-mode.nvim",
+  "folke/zen-mode.nvim",
+  dependencies = { "folke/twilight.nvim" },
+  cmd = "ZenMode",
   opts = {
-    -- your configuration comes here
-    -- or leave it empty to use the default settings
-    -- refer to the configuration section below
+    plugins = {
+      gitsigns = true,
+      tmux = false,
+    },
+    window = {
+      height = 0.9,
+      width = 0.85,
+    },
+    dont_exit_on_win_enter = true,
   },
-  keys = { { "<leader>z", "<cmd>Focus<cr>", desc = "Zen Mode" } },
+  keys = { { "<leader>z", "<cmd>ZenMode<cr>", desc = "Zen Mode" } },
 }

@@ -157,11 +157,11 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 
 -- END Make Folds Persistent }}}
 
--- GitCommitFormat {{{
+-- GitCommit {{{
 
-vim.api.nvim_create_augroup("GitCommitFormat", {})
+vim.api.nvim_create_augroup("GitCommit", {})
 vim.api.nvim_create_autocmd("FileType", {
-  group = "GitCommitFormat",
+  group = "GitCommit",
   pattern = { "gitcommit" },
   callback = function()
     vim.opt.textwidth = 72 -- Force the cursor onto a new line after 72 characters
@@ -173,7 +173,18 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- END GitCommitFormat }}}
+-- Always start cursor at beginning of git commit files (override loadview)
+vim.api.nvim_create_autocmd("BufWinEnter", {
+  group = "GitCommit",
+  pattern = { "*" },
+  callback = function()
+    if vim.bo.filetype == "gitcommit" then
+      vim.api.nvim_win_set_cursor(0, { 1, 0 })
+    end
+  end,
+})
+
+-- END GitCommit }}}
 
 -- Only configure Markdown Image Pasting for markdown docs {{{
 
@@ -252,11 +263,11 @@ vim.api.nvim_create_autocmd("QuitPre", {
     local wins = vim.api.nvim_list_wins()
     for _, w in ipairs(wins) do
       local bufname = vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(w))
-      if bufname:match("[No Name]") ~= nil then
+      if bufname:match("%[No Name%]") ~= nil or bufname == "" then
         table.insert(invalid_win, w)
       end
     end
-    if #invalid_win == #wins - 1 then
+    if #invalid_win == #wins - 1 and #wins > 1 then
       -- Should quit, so we close all invalid windows.
       for _, w in ipairs(invalid_win) do
         vim.api.nvim_win_close(w, true)

@@ -173,20 +173,18 @@ export PATH="$PATH:/sbin"
 export PATH="$PATH:/usr/local"
 export PATH="$PATH:/usr/local/sbin"
 export PATH="$PATH:/usr/sbin"
-if [ "$OS" = "Linux" ]; then
-    export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
-    export PATH="/home/linuxbrew/.linuxbrew/sbin:$PATH"
-fi
 export PATH="/usr/bin:$PATH"
 export PATH="/usr/local/bin:$PATH"
-export PATH="/opt/homebrew/bin:$PATH"
 
 
 if [ "$OS" = "Darwin" ]; then
+    export PATH="/opt/homebrew/bin:$PATH"
     export PATH="/opt/homebrew/opt/trash-cli/bin:$PATH"
     export PATH="$PATH:/Applications/VMware Fusion.app/Contents/Library"
     export PATH="$PATH:$HOME/.local/share/radare2/prefix/bin"
 elif [ "$OS" = "Linux" ]; then
+    export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+    export PATH="/home/linuxbrew/.linuxbrew/sbin:$PATH"
     export PATH="$PATH:/usr/lib/w3m/w3mimgdisplay"
     export PATH="/snap/bin::$PATH"
 fi
@@ -205,19 +203,8 @@ export PATH="$PATH:$HOME/.rvm/bin"
 export PATH="$HOME/.local/share/gem/bin:$PATH"
 export PATH="$PATH:$HOME/.local/share/gem/ruby/3.1.0/bin"
 
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
-# # Ensure nvm default node takes precedence over system/Homebrew node.
-# # Eagerly adds the right bin to PATH without the overhead of sourcing nvm.sh —
-# # the lazy-loader in .zshrc still handles `nvm` commands.
-# if [ -s "$NVM_DIR/alias/default" ]; then
-#   _nvm_default=$(cat "$NVM_DIR/alias/default")
-#   # Resolve one level of chained aliases (e.g. "22" -> "v22.13.1")
-#   [ -s "$NVM_DIR/alias/$_nvm_default" ] && _nvm_default=$(cat "$NVM_DIR/alias/$_nvm_default")
-#   _nvm_bin="$NVM_DIR/versions/node/${_nvm_default}/bin"
-#   [ -d "$_nvm_bin" ] && export PATH="$_nvm_bin:$PATH"
-#   unset _nvm_default _nvm_bin
-# fi
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
 # Deduplicate entries in PATH
 typeset -U PATH
@@ -230,6 +217,7 @@ if [ $OS = "Darwin" ]; then
     export FLAGS_GETOPT_CMD="$BREW_PREFIX/opt/gnu-getopt/bin/getopt"
 fi
 
+
 # Go Env
 
 export GO111MODULE="on"
@@ -237,15 +225,18 @@ export GO111MODULE="on"
 # Source cargo env if we can
 . "$HOME/.local/share/cargo/env" 2>/dev/null || true
 
+
 ###############
 # Startup Tasks
 ###############
 
 if [ "$OS" = "Linux" ]; then
-    # Needed to build things with alsa. Idk why this isn't set by default?
-    export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig/"
     # I use gpaste now
     #pgrep greenclip >/dev/null || (bash -c "greenclip daemon > /dev/null 2>&1 &")
 fi
 
+# Needed to build things with alsa. Idk why this isn't set by default?
+export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig/"
+
 # vim: ts=4 sw=4 tw=0 et ft=zsh :
+. "$XDG_DATA_HOME/cargo/env"

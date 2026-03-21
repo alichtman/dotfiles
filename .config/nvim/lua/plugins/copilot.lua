@@ -1,5 +1,6 @@
 return {
   "zbirenbaum/copilot.lua",
+  commit = "2b368ce",
   enabled = true,
   event = "InsertEnter",
   cmd = "Copilot",
@@ -25,6 +26,8 @@ return {
         jump_prev = "[[",
         jump_next = "]]",
         accept = "<C-l>",
+        -- accept_line = "<C-;>",
+        -- accept_word = "<C-,>",
         refresh = "gr",
         open = "<M-CR>",
       },
