@@ -5,7 +5,7 @@
     ".config/.ghci": {},
     ".config/bat/config": {},
     ".config/fzf-notes": {},
-    ".config/fast-fetch/config.jsonc": {},
+    ".config/fastfetch/config.jsonc": {},
     ".config/git/config": {},
     ".config/git/gitignore_global": {},
     ".config/irb/irbrc": {},
