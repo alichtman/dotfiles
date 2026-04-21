@@ -1,8 +1,8 @@
 return {
-  "RRethy/vim-illuminate",
+  "tzachar/local-highlight.nvim",
   config = function()
-    require("illuminate").configure({
-      filetypes_denylist = {
+    require("local-highlight").setup({
+      disable_file_types = {
         "dirbuf",
         "dirvish",
         "fugitive",
@@ -20,9 +20,7 @@ return {
       group = "highlight_symbol_under_cursor",
       callback = function()
         local formatting_opts = { fg = "#ff8700", bold = true }
-        vim.api.nvim_set_hl(0, "IlluminatedWordText", formatting_opts)
-        vim.api.nvim_set_hl(0, "IlluminatedWordRead", formatting_opts)
-        vim.api.nvim_set_hl(0, "IlluminatedWordWrite", formatting_opts)
+        vim.api.nvim_set_hl(0, "LocalHighlight", formatting_opts)
       end,
       desc = "Highlight symbol under cursor",
     })
