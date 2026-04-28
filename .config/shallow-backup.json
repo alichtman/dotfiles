@@ -4,8 +4,8 @@
   "dotfiles": {
     ".config/.ghci": {},
     ".config/bat/config": {},
-    ".config/fzf-notes": {},
     ".config/fastfetch/config.jsonc": {},
+    ".config/fzf-notes": {},
     ".config/git/config": {},
     ".config/git/gitignore_global": {},
     ".config/irb/irbrc": {},
