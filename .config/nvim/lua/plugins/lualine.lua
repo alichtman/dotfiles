@@ -3,7 +3,15 @@ return {
     -- dir = "/home/alichtman/Desktop/Development/open-source-contributions/lualine.nvim",
     "alichtman/lualine.nvim",
     branch = "alichtman/add_filepermissions",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+      {
+        "letieu/harpoon-lualine",
+        dependencies = {
+          { "ThePrimeagen/harpoon", branch = "harpoon2" },
+        },
+      },
+    },
     config = function()
       -- https://github.com/nvim-lualine/lualine.nvim/issues/1312
       vim.api.nvim_set_hl(0, "StatusLine", { reverse = false })
@@ -33,14 +41,5 @@ return {
         },
       })
     end,
-  },
-  {
-    "letieu/harpoon-lualine",
-    dependencies = {
-      {
-        "ThePrimeagen/harpoon",
-        branch = "harpoon2",
-      },
-    },
   },
 }
