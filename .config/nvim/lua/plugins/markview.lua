@@ -1,6 +1,6 @@
 return {
   "OXY2DEV/markview.nvim",
-  branch = "dev",
+  branch = "main",
   ft = { "md", "markdown" },
   lazy = false,
   dependencies = {

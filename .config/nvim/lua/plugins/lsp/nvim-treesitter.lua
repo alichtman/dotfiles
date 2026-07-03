@@ -1,58 +1,54 @@
+local ensure_installed = {
+  "json",
+  "javascript",
+  "typescript",
+  "tsx",
+  "yaml",
+  "html",
+  "css",
+  "markdown",
+  "markdown_inline",
+  "graphql",
+  "bash",
+  "lua",
+  "vim",
+  "rust",
+  "python",
+  "dockerfile",
+  "gitignore",
+  "query",
+  "vimdoc",
+  "c",
+  "toml",
+}
+
 return {
   "nvim-treesitter/nvim-treesitter",
-  event = { "BufReadPre", "BufNewFile" },
+  branch = "main",
   build = ":TSUpdate",
+  lazy = false,
   dependencies = {
     "windwp/nvim-ts-autotag",
   },
   config = function()
-    local treesitter = require("nvim-treesitter.configs")
+    require("nvim-treesitter").setup()
+    require("nvim-treesitter").install(ensure_installed)
 
-    -- configure treesitter
-    treesitter.setup({
-      -- enable syntax highlighting
-      highlight = {
-        enable = true,
-      },
-      -- enable indentation
-      indent = { enable = true },
-      -- enable autotagging (w/ nvim-ts-autotag plugin)
-      autotag = {
-        enable = true,
-      },
-      -- ensure these language parsers are installed
-      ensure_installed = {
-        "json",
-        "javascript",
-        "typescript",
-        "tsx",
-        "yaml",
-        "html",
-        "css",
-        "markdown",
-        "markdown_inline",
-        "graphql",
-        "bash",
-        "lua",
-        "vim",
-        "rust",
-        "python",
-        "dockerfile",
-        "gitignore",
-        "query",
-        "vimdoc",
-        "c",
-        "toml",
-      },
-      incremental_selection = {
-        enable = true,
-        keymaps = {
-          init_selection = "<C-space>",
-          node_incremental = "<C-space>",
-          scope_incremental = false,
-          node_decremental = "<bs>",
-        },
-      },
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = ensure_installed,
+      callback = function(args)
+        local lang = vim.treesitter.language.get_lang(args.match) or args.match
+        local ok = pcall(vim.treesitter.start, args.buf, lang)
+        if not ok then
+          return
+        end
+
+        vim.wo.foldmethod = "expr"
+        vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+        vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      end,
     })
+
+    require("nvim-ts-autotag").setup()
   end,
 }
